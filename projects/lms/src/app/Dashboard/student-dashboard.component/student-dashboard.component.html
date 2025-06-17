@@ -1,0 +1,94 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h2>🎓 Student Menu</h2>
+    <ul>
+      <li (click)="activeSection = 'profile'">👤 Profile</li>
+      <li (click)="activeSection = 'enroll'">📝 Enroll in Course</li>
+      <li (click)="activeSection = 'my-courses'">📚 My Courses</li>
+      <li (click)="activeSection = 'assignments'">📄 Assignments</li>
+      <li (click)="activeSection = 'submit'">📤 Submit Assignment</li>
+      <li (click)="activeSection = 'performance'">📈 Performance Report</li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>🎓 Student Dashboard</h1>
+
+    <!-- Profile -->
+    <section *ngIf="activeSection === 'profile'" class="card">
+  <h2>👤 Profile Details</h2>
+  <div class="profile-grid">
+    <div><strong>Full Name:</strong> {{ profile.fullName }}</div>
+    <div><strong>Email:</strong> {{ profile.email }}</div>
+    <div><strong>Mobile:</strong> {{ profile.mobile }}</div>
+    <div><strong>Gender:</strong> {{ profile.gender }}</div>
+    <div><strong>Date of Birth:</strong> {{ profile.dob | date }}</div>
+    <div><strong>Grade Level:</strong> {{ profile.gradeLevel }}</div>
+    <div><strong>Address:</strong> {{ profile.address }}</div>
+  </div>
+</section>
+
+    <!-- Enroll in Course -->
+    <section *ngIf="activeSection === 'enroll'" class="card">
+      <h2>📝 Enroll in a Course</h2>
+      <label>Course ID</label>
+      <input [(ngModel)]="enrollData.courseId" type="number" placeholder="Course ID" />
+      <button (click)="enrollCourse()">Enroll</button>
+    </section>
+
+    <!-- My Courses -->
+<section *ngIf="activeSection === 'my-courses'" class="card">
+  <h2>📚 My Courses</h2>
+  <div class="course-grid">
+    <div class="course-card" *ngFor="let c of enrolledCourses">
+      <p><strong>ID:</strong> {{ c.courseId }}</p>
+      <p><strong>Name:</strong> {{ c.courseName }}</p>
+      <p><strong>Category:</strong> {{ c.category }}</p>
+
+      <button *ngIf="c.pdfFilePath" (click)="viewPdf(c.pdfFilePath)" class="btn btn-primary">
+        📄 View Course PDF
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+    <!-- Assignments -->
+    <section *ngIf="activeSection === 'assignments'" class="card">
+      <h2>📄 Assigned Assignments</h2>
+      <div class="assignment-grid">
+        <div class="assignment-card" *ngFor="let a of assignedAssignments">
+          <p><strong>ID:</strong> {{ a.assignmentId }}</p>
+          <h3>{{ a.title }}</h3>
+          <p>{{ a.description }}</p>
+          <p><strong>Due:</strong> {{ a.dueDate | date }}</p>
+          <p><strong>Course:</strong> {{ a.courseName }} (ID: {{ a.courseId }})</p>
+          <a [href]="'https://localhost:44361/' + a.uploadFilePath" target="_blank" class="view-link">📄 View PDF</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Submit Assignment -->
+    <section *ngIf="activeSection === 'submit'" class="card">
+      <h2>📤 Submit Assignment</h2>
+      <label>Assignment ID</label>
+      <input [(ngModel)]="submitData.assignmentId" type="number" placeholder="Assignment ID" />
+      <label>Upload File</label>
+      <input type="file" (change)="onFileChange($event)" accept=".pdf,.doc,.docx" />
+      <button (click)="submitAssignment()">Submit</button>
+    </section>
+
+    <!-- Performance -->
+    <section *ngIf="activeSection === 'performance'" class="card">
+      <h2>📈 Performance Report</h2>
+      <div class="report-card" *ngFor="let p of performanceReports">
+        <p><strong>Course:</strong> {{ p.courseName }}</p>
+        <p><strong>Marks:</strong> {{ p.grade }}</p>
+        <p><strong>Remarks:</strong> {{ p.remarks }}</p>
+      </div>
+    </section>
+  </div>
+</div>

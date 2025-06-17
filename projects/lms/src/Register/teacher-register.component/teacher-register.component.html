@@ -1,0 +1,16 @@
+<div class="form-container">
+  <h2>🧑‍🏫 Teacher Registration</h2>
+
+  <form (ngSubmit)="registerTeacher()" #teacherForm="ngForm">
+    <input type="text" name="fullName" [(ngModel)]="teacher.fullName" placeholder="Full Name" required>
+    <input type="email" name="email" [(ngModel)]="teacher.email" placeholder="Email" required>
+    <input type="password" name="password" [(ngModel)]="teacher.password" placeholder="Password" required>
+    <input type="text" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" placeholder="Phone Number" required>
+    <input type="text" name="qualification" [(ngModel)]="teacher.qualification" placeholder="Qualification" required>
+    <input type="number" name="experienceYears" [(ngModel)]="teacher.experienceYears" placeholder="Experience (Years)" required>
+    <input type="text" name="specialization" [(ngModel)]="teacher.specialization" placeholder="Specialization" required>
+    <input type="text" name="teacherNO" [(ngModel)]="teacher.teacherNO" placeholder="Teacher No." required>
+
+    <button type="submit">Register</button>
+  </form>
+</div>

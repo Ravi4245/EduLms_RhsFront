@@ -1,0 +1,83 @@
+<h2>Pending Students</h2>
+<table>
+  <tr *ngFor="let student of pendingStudents">
+    <td>{{ student.fullName }}</td>
+    <td>{{ student.email }}</td>
+    <td>
+      <button (click)="approveStudent(student.studentId)">Approve</button>
+      <button (click)="rejectStudent(student.studentId)">Reject</button>
+    </td>
+  </tr>
+</table>
+
+<h2>Approved Students</h2>
+<table>
+  <tr *ngFor="let student of approvedStudents">
+    <td>{{ student.fullName }}</td>
+    <td>{{ student.email }}</td>
+    <td>
+      <button (click)="deleteApprovedStudent(student.studentId)">Delete</button>
+    </td>
+  </tr>
+</table>
+
+
+<h2>Pending Teachers</h2>
+<table>
+  <tr *ngFor="let teacher of pendingTeachers">
+    <td>{{ teacher.fullName }}</td>
+    <td>{{ teacher.email }}</td>
+    <td>
+      <button (click)="approveTeacher(teacher.teacherId)">Approve</button>
+      <button (click)="rejectTeacher(teacher.teacherId)">Reject</button>
+    </td>
+  </tr>
+</table>
+
+<h2>Approved Teachers</h2>
+<table>
+  <tr *ngFor="let teacher of approvedTeachers">
+    <td>{{ teacher.fullName }}</td>
+    <td>{{ teacher.email }}</td>
+    <td>
+      <button (click)="deleteApprovedTeacher(teacher.teacherId)">Delete</button>
+    </td>
+  </tr>
+</table>
+
+<h2>Courses</h2>
+<table>
+  <tr *ngFor="let course of courses">
+    <ng-container *ngIf="editingCourse?.courseId !== course.courseId; else editRow">
+      <td>{{ course.courseName }}</td>
+      <td>{{ course.description }}</td>
+      <td>
+        <button (click)="editCourse(course)">Edit</button>
+        <button (click)="deleteCourse(course.courseId)">Delete</button>
+      </td>
+    </ng-container>
+
+    <ng-template #editRow>
+      <td>
+        <input *ngIf="editingCourse" [(ngModel)]="editingCourse.courseName" />
+      </td>
+      <td>
+        <input *ngIf="editingCourse" [(ngModel)]="editingCourse.description" />
+      </td>
+      <td>
+        <button (click)="saveCourse()">Save</button>
+        <button (click)="cancelEdit()">Cancel</button>
+      </td>
+    </ng-template>
+  </tr>
+</table>
+
+<h2>Student Performance Reports</h2>
+<table>
+  <tr *ngFor="let report of performanceReports">
+    <td>Student ID: {{ report.studentId }}</td>
+    <td>Course ID: {{ report.courseId }}</td>
+    <td>Grade: {{ report.averageGrade }}</td>
+    <td>Remarks: {{ report.remarks }}</td>
+  </tr>
+</table>

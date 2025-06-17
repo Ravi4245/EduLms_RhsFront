@@ -1,0 +1,191 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h2>📋 Menu</h2>
+    <ul>
+      <li (click)="activeSection = 'profile'">👤 Profile</li>
+      <li (click)="activeSection = 'create-course'">📘 Create Course</li>
+      <li (click)="activeSection = 'my-courses'">📚 My Courses</li>
+      <li (click)="activeSection = 'enrolled-students'">👨‍🎓 Enrolled Students</li>
+      <li (click)="activeSection = 'create-assignment'">📝 Create Assignment</li>
+      <li (click)="activeSection = 'my-assignments'; loadCreatedAssignments()">🧾 My Assignments</li>
+      <!-- <li (click)="activeSection = 'view-submissions'">📤 View Submissions</li> -->
+      <li (click)="activeSection = 'performance-report'">📈 Performance Report</li>
+      <li (click)="activeSection = 'assign-course'">📚 Assign Course</li>
+      <li (click)="activeSection = 'assign-assignment'">🧾 Assign Assignment</li>
+      <li (click)="activeSection = 'all-submissions'">📁 All Submissions</li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>👨‍🏫 Teacher Dashboard</h1>
+
+    <!-- Profile -->
+    <section *ngIf="activeSection === 'profile'" class="card">
+      <h2>👤 Profile</h2>
+      <p><strong>Full Name:</strong> {{ profile.fullName }}</p>
+      <p><strong>Email:</strong> {{ profile.email }}</p>
+      <p><strong>Experience:</strong> {{ profile.experience }} years</p>
+      <p><strong>Specialization:</strong> {{ profile.specialization }}</p>
+      <p><strong>Phone:</strong> {{ profile.phone }}</p>
+    </section>
+
+    <!-- Create Course -->
+    <section *ngIf="activeSection === 'create-course'" class="card">
+      <h2>📘 Create Course</h2>
+      <input [(ngModel)]="newCourse.courseName" placeholder="Course Name" />
+      <input [(ngModel)]="newCourse.description" placeholder="Title" />
+      <!-- <input [(ngModel)]="newCourse.category" placeholder="Category" /> -->
+      <input type="file" (change)="onCoursePdfSelected($event)" accept=".pdf" />
+
+      <button (click)="createCourse()">Create Course</button>
+    </section>
+
+    <!-- My Courses -->
+<section *ngIf="activeSection === 'my-courses'" class="card">
+  <h2>📚 My Courses</h2>
+  <ul>
+    <li *ngFor="let c of courses">
+      <strong>{{ c.courseName }}</strong> ({{ c.category }})
+      <br />
+      <span><strong>Course ID:</strong> {{ c.courseId }}</span>
+      <br />
+      
+      <button (click)="deleteCourse(c.courseId)">Delete</button>
+      <button (click)="updateCourse(c)">Update</button>
+
+      <!-- ✅ View PDF Button -->
+      <button *ngIf="c.pdfFilePath" (click)="viewPdf(c.pdfFilePath)">📄 View PDF</button>
+    </li>
+  </ul>
+</section>
+
+
+
+    <!-- Enrolled Students -->
+<section *ngIf="activeSection === 'enrolled-students'" class="card">
+  <h2>👨‍🎓 Approved Students</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Email</th>
+        <th>Student ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of enrolledStudents">
+        <td>{{ student.studentName }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.studentId }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+
+    <!-- Create Assignment -->
+    <section *ngIf="activeSection === 'create-assignment'" class="card">
+      <h2>📝 Create Assignment</h2>
+      <input [(ngModel)]="newAssignment.courseId" placeholder="Course ID" type="number" />
+      <input [(ngModel)]="newAssignment.title" placeholder="Title" />
+      <input [(ngModel)]="newAssignment.description" placeholder="Description" />
+      <input [(ngModel)]="newAssignment.dueDate" type="date" />
+      <input type="file" (change)="onFileSelected($event)" accept=".pdf" />
+      <button (click)="createAssignment()">Create Assignment</button>
+    </section>
+
+
+    <!-- My Created Assignments -->
+<section *ngIf="activeSection === 'my-assignments'" class="card">
+  <h2>🧾 My Created Assignments</h2>
+  <ul>
+    <li *ngFor="let a of assignments">
+      <strong>Assignment ID:</strong> {{ a.assignmentId }} <br />
+      <strong>Title:</strong> {{ a.title }} <br />
+      <strong>Course ID:</strong> {{ a.courseId }} <br />
+      <strong>Due Date:</strong> {{ a.dueDate }} <br />
+      <a *ngIf="a.uploadFilePath" [href]="'https://localhost:44361/' + a.uploadFilePath" target="_blank">📄 View PDF</a>
+      <hr />
+    </li>
+  </ul>
+</section>
+
+
+    <!-- View Submissions
+    <section *ngIf="activeSection === 'view-submissions'" class="card">
+      <h2>📤 View Submissions</h2>
+      <input #aid type="number" placeholder="Assignment ID" />
+      <button (click)="viewSubmissions(+aid.value)">Load Submissions</button>
+      <div *ngFor="let s of submissions" class="submission-card">
+        <p><strong>Student ID:</strong> {{ s.studentId }}</p>
+        <p><strong>Grade:</strong> {{ s.grade }}</p>
+        <p><strong>Feedback:</strong> {{ s.feedback }}</p>
+        <input [(ngModel)]="s.grade" type="number" placeholder="New Grade" />
+        <input [(ngModel)]="s.feedback" placeholder="New Feedback" />
+        <button (click)="gradeSubmission(s)">Update</button>
+      </div>
+    </section> -->
+
+    <!-- Performance Report -->
+   <section *ngIf="activeSection === 'performance-report'" class="card">
+  <h2>📈 Create Performance Report</h2>
+  <input [(ngModel)]="newPerformance.studentId" placeholder="Student ID" />
+  <input [(ngModel)]="newPerformance.courseId" placeholder="Course ID" />
+  <input [(ngModel)]="newPerformance.averageGrade" type="number" placeholder="Marks" />
+  <input [(ngModel)]="newPerformance.remarks" placeholder="Remarks" />
+  <button (click)="createPerformance()">Create Report</button>
+
+  <h3>📊 Existing Reports</h3>
+  <ul>
+    <li *ngFor="let p of performanceReports">
+      <div *ngIf="editingReportId !== p.performanceReportId">
+        Student: {{ p.studentId }} | Course: {{ p.courseId }} | Grade: {{ p.averageGrade }} | Remarks: {{ p.remarks }}
+        <button (click)="editReport(p)">✏️ Edit</button>
+      </div>
+
+      <div *ngIf="editingReportId === p.performanceReportId">
+        Student: {{ p.studentId }} | Course: {{ p.courseId }}
+        <input [(ngModel)]="p.averageGrade" type="number" placeholder="Grade" />
+        <input [(ngModel)]="p.remarks" placeholder="Remarks" />
+        <button (click)="updatePerformance(p)">✅ Update</button>
+        <button (click)="cancelEdit()">❌ Cancel</button>
+      </div>
+    </li>
+  </ul>
+</section>
+
+
+    <!-- Assign Course -->
+    <section *ngIf="activeSection === 'assign-course'" class="card">
+      <h2>📚 Assign Course</h2>
+      <input [(ngModel)]="assignCourseData.studentId" placeholder="Student ID" />
+      <input [(ngModel)]="assignCourseData.courseId" placeholder="Course ID" />
+      <button (click)="assignCourseToStudent()">Assign</button>
+    </section>
+
+    <!-- Assign Assignment -->
+    <section *ngIf="activeSection === 'assign-assignment'" class="card">
+      <h2>🧾 Assign Assignment</h2>
+      <input [(ngModel)]="assignAssignmentData.studentId" placeholder="Student ID" />
+      <input [(ngModel)]="assignAssignmentData.assignmentId" placeholder="Assignment ID" />
+      <button (click)="assignAssignmentToStudenta()">Assign</button>
+    </section>
+
+    <!-- All Submissions -->
+    <section *ngIf="activeSection === 'all-submissions'" class="card">
+      <h2>📁 All Submissions</h2>
+      <button (click)="loadSubmittedAssignments()">Load Submissions</button>
+      <ul>
+        <li *ngFor="let s of submissions">
+          📄 <strong>{{ s.assignmentTitle }}</strong> by {{ s.studentName }}
+          <br />
+          Grade: {{ s.grade }} —
+          <a [href]="'https://localhost:44361/' + s.submittedFilePath" target="_blank">View File</a>
+        </li>
+      </ul>
+    </section>
+  </div>
+</div>

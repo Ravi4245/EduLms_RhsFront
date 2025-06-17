@@ -1,0 +1,24 @@
+<div class="form-container">
+  <h2>🎓 Student Registration</h2>
+
+  <form (ngSubmit)="registerStudent()" #studentForm="ngForm">
+    <input type="text" name="fullName" [(ngModel)]="student.fullName" placeholder="Full Name" required>
+    <input type="email" name="email" [(ngModel)]="student.email" placeholder="Email" required>
+    <input type="password" name="password" [(ngModel)]="student.password" placeholder="Password" required>
+    <input type="text" name="phoneNumber" [(ngModel)]="student.phoneNumber" placeholder="Phone Number" required>
+    <input type="date" name="dateOfBirth" [(ngModel)]="student.dateOfBirth" required>
+
+    <select name="gender" [(ngModel)]="student.gender" required>
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <input type="text" name="address" [(ngModel)]="student.address" placeholder="Address" required>
+    <input type="text" name="gradeLevel" [(ngModel)]="student.gradeLevel" placeholder="Grade Level (e.g., 10th, UG)" required>
+    <input type="text" name="studentNo" [(ngModel)]="student.studentNo" placeholder="Student No." required>
+
+    <button type="submit">Register</button>
+  </form>
+</div>

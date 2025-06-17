@@ -1,0 +1,16 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="login()">
+    <input type="email" placeholder="Email" [(ngModel)]="loginData.email" name="email" required />
+    <input type="password" placeholder="Password" [(ngModel)]="loginData.password" name="password" required />
+
+    <select [(ngModel)]="loginData.role" name="role" required>
+      <option value="" disabled selected>Select Role</option>
+      <option value="Admin">Admin</option>
+      <option value="Teacher">Teacher</option>
+      <option value="Student">Student</option>
+    </select>
+
+    <button type="submit">Login</button>
+  </form>
+</div>
