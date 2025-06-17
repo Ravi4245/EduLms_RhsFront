@@ -18,7 +18,7 @@ export class TeacherRegisterComponent {
     password: '',
     phoneNumber: '',
     qualification: '',
-    experienceYears: 0,
+    experienceYears: null,
     specialization: '',
     teacherNO: ''
   };
@@ -36,6 +36,23 @@ export class TeacherRegisterComponent {
         console.error(err);
       }
     });
+  }
+
+  clearForm() {
+    this.teacher = {
+      fullName: '',
+      email: '',
+      password: '',
+      phoneNumber: '',
+      qualification: '',
+      experienceYears: null,
+      specialization: '',
+      teacherNO: ''
+    };
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 }
 

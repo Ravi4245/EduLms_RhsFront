@@ -4,7 +4,7 @@
   background: #f1f5fb;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -24,17 +24,48 @@ input {
 }
 
 button {
-  width: 100%;
-  background-color: #2d89ef;
-  color: white;
   padding: 12px;
   font-size: 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.register-button {
+  width: 100%;
+  background-color: #2d89ef;
+  color: white;
   margin-top: 10px;
 }
 
-button:hover {
+.register-button:hover {
   background-color: #1a6fd0;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.clear-button {
+  background-color: #dc3545;
+  color: white;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.clear-button:hover {
+  background-color: #a71d2a;
+}
+
+.back-button {
+  background-color: #6c757d;
+  color: white;
+  flex: 1;
+}
+
+.back-button:hover {
+  background-color: #565e64;
 }

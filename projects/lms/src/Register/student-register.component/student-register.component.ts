@@ -39,4 +39,21 @@ export class StudentRegisterComponent {
       }
     });
   }
+   clearForm() {
+    this.student = {
+      fullName: '',
+      email: '',
+      password: '',
+      phoneNumber: '',
+      dateOfBirth: '',
+      gender: '',
+      address: '',
+      gradeLevel: '',
+      studentNo: ''
+    };
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
+  }
 }
