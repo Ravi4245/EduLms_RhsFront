@@ -3,19 +3,19 @@
 
   <form (ngSubmit)="registerStudent()" #studentForm="ngForm">
     <label>Full Name</label>
-    <input type="text" name="fullName" [(ngModel)]="student.fullName" required />
+    <input type="text" placeholder="Enter Full Name" name="fullName" [(ngModel)]="student.fullName" required />
 
     <label>Email</label>
-    <input type="email" name="email" [(ngModel)]="student.email" required />
+    <input type="email" placeholder="Enter email" name="email" [(ngModel)]="student.email" required />
 
     <label>Password</label>
-    <input type="password" name="password" [(ngModel)]="student.password" required />
+    <input type="password" placeholder="Enter password" name="password" [(ngModel)]="student.password" required />
 
     <label>Phone Number</label>
-    <input type="text" name="phoneNumber" [(ngModel)]="student.phoneNumber" required />
+    <input type="text" placeholder="Enter Phone." name="phoneNumber" [(ngModel)]="student.phoneNumber" required />
 
     <label>Date of Birth</label>
-    <input type="date" name="dateOfBirth" [(ngModel)]="student.dateOfBirth" required />
+    <input type="date"  name="dateOfBirth" [(ngModel)]="student.dateOfBirth" required />
 
     <label>Gender</label>
     <select name="gender" [(ngModel)]="student.gender" required>
@@ -26,13 +26,13 @@
     </select>
 
     <label>Address</label>
-    <input type="text" name="address" [(ngModel)]="student.address" required />
+    <input type="text" placeholder="Enter address" name="address" [(ngModel)]="student.address" required />
 
     <label>Grade Level</label>
-    <input type="text" name="gradeLevel" [(ngModel)]="student.gradeLevel" required />
+    <input type="text" placeholder="Enter grade" name="gradeLevel" [(ngModel)]="student.gradeLevel" required />
 
     <label>Student No.</label>
-    <input type="text" name="studentNo" [(ngModel)]="student.studentNo" required />
+    <input type="text" placeholder="Enter StudentNo" name="studentNo" [(ngModel)]="student.studentNo" required />
 
     <!-- CAPTCHA Section -->
     <label>CAPTCHA</label>

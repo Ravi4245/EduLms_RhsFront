@@ -3,28 +3,28 @@
 
   <form (ngSubmit)="registerTeacher()" #teacherForm="ngForm">
     <label>Full Name</label>
-    <input type="text" name="fullName" [(ngModel)]="teacher.fullName" required />
+    <input type="text" placeholder="Enter FullName" name="fullName" [(ngModel)]="teacher.fullName" required />
 
     <label>Email</label>
-    <input type="email" name="email" [(ngModel)]="teacher.email" required />
+    <input type="email" placeholder="Enter email" name="email" [(ngModel)]="teacher.email" required />
 
     <label>Password</label>
-    <input type="password" name="password" [(ngModel)]="teacher.password" required />
+    <input type="password" placeholder="Enter password" name="password" [(ngModel)]="teacher.password" required />
 
     <label>Phone Number</label>
-    <input type="text" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" required />
+    <input type="text" placeholder="Enter phoneNo" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" required />
 
     <label>Qualification</label>
-    <input type="text" name="qualification" [(ngModel)]="teacher.qualification" required />
+    <input type="text" placeholder="Enter qualification" name="qualification" [(ngModel)]="teacher.qualification" required />
 
     <label>Experience (Years)</label>
-    <input type="number" name="experienceYears" [(ngModel)]="teacher.experienceYears" required />
+    <input type="number" placeholder="Enter ExperienceYears" name="experienceYears" [(ngModel)]="teacher.experienceYears" required />
 
     <label>Specialization</label>
-    <input type="text" name="specialization" [(ngModel)]="teacher.specialization" required />
+    <input type="text" placeholder="Enter specialization" name="specialization" [(ngModel)]="teacher.specialization" required />
 
     <label>Teacher No.</label>
-    <input type="text" name="teacherNO" [(ngModel)]="teacher.teacherNO" required />
+    <input type="text" placeholder="Enter teacherNo" name="teacherNO" [(ngModel)]="teacher.teacherNO" required />
 
     <!-- CAPTCHA -->
     <label>CAPTCHA</label>
