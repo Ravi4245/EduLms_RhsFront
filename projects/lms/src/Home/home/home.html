@@ -27,67 +27,101 @@
   </section>
 </div>
 
-<section id="why-choose" class="why-choose">
-  <h2>Why Choose <span class="brand">EduLMS?</span></h2>
-  <div class="features">
-    <div class="feature-card">
+
+<section id="why-choose" class="features">
+  <div class="section-heading">
+    <h2>Why Choose <span class="highlight">EduLMS?</span></h2>
+    <p>Discover the key reasons why learners and instructors trust EduLMS for their online learning journey.</p>
+  </div>
+
+  <!-- 🆕 Feature Card Wrapper Grid -->
+  <div class="features-grid">
+    <div class="feature-card" (click)="goToFeatureDetail('goal')">
       <span>🎯</span>
       <h3>Goal Oriented</h3>
       <p>Focus on outcomes with our guided learning paths.</p>
     </div>
-    <div class="feature-card">
+
+    <div class="feature-card" (click)="goToFeatureDetail('instructor')">
       <span>🧑‍🏫</span>
       <h3>Expert Instructors</h3>
       <p>Learn from industry professionals and academic experts.</p>
     </div>
-    <div class="feature-card">
+
+    <div class="feature-card" (click)="goToFeatureDetail('mobile')">
       <span>📱</span>
       <h3>Mobile Ready</h3>
       <p>Study anytime, anywhere with our responsive platform.</p>
     </div>
+
+    <div class="feature-card" (click)="goToFeatureDetail('certified')">
+      <span>📜</span>
+      <h3>Certified Courses</h3>
+      <p>Receive verifiable certificates to boost your career and resume.</p>
+    </div>
+
+    <div class="feature-card" (click)="goToFeatureDetail('community')">
+      <span>🤝</span>
+      <h3>Supportive Community</h3>
+      <p>Engage in discussions, clear doubts, and grow with fellow learners.</p>
+    </div>
+
+    <div class="feature-card" (click)="goToFeatureDetail('tracking')">
+      <span>📊</span>
+      <h3>Progress Tracking</h3>
+      <p>Stay on track with detailed progress reports and achievements.</p>
+    </div>
+
+    <div class="feature-card" (click)="goToFeatureDetail('affordable')">
+      <span>💸</span>
+      <h3>Affordable Plans</h3>
+      <p>High-quality education at prices that suit your pocket.</p>
+    </div>
+
+    <div class="feature-card" (click)="goToFeatureDetail('secure')">
+      <span>🔒</span>
+      <h3>Secure & Private</h3>
+      <p>Your data is protected with top-tier encryption and privacy measures.</p>
+    </div>
   </div>
 </section>
+
+
 
 <!-- Featured Courses -->
-<section id="featured-courses" class="featured-courses">
-  <h2>📚 Updated Featured Courses</h2>
-  <div class="course-grid">
-    <div class="course-card">
-      <div class="course-header">
-        <span class="badge popular">Popular</span>
-      </div>
-      <h3>Full Stack Web Dev</h3>
-      <p>Master frontend and backend technologies.</p>
+<!-- <section id="system-summary" class="summary-section">
+  <h2 class="section-title">📊 System Summary</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon">🎓</div>
+      <h3>Approved Students</h3>
+      <p>{{ studentCount }} registered learners</p>
     </div>
-    <div class="course-card">
-      <div class="course-header">
-        <span class="badge new">New</span>
-      </div>
-      <h3>Cloud Computing</h3>
-      <p>Get hands-on with AWS, Azure & GCP.</p>
+
+    <div class="summary-card">
+      <div class="summary-icon">👨‍🏫</div>
+      <h3>Approved Teachers</h3>
+      <p>{{ teacherCount }} active instructors</p>
     </div>
-    <div class="course-card">
-      <div class="course-header">
-        <span class="badge trending">Trending</span>
-      </div>
-      <h3>AI & Machine Learning</h3>
-      <p>Unlock the power of data and algorithms.</p>
+  </div>
+</section> -->
+
+
+<!-- Contact / Feedback Section -->
+<section id="contact" class="feedback-form-section">
+  <div class="container">
+    <div class="footer-content">
+      <h2>📬 Contact Us</h2>
+      <p>We value your feedback!</p>
+
+      <form class="feedback-form">
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="What can we improve?" required></textarea>
+        <button type="submit">Send Feedback</button>
+      </form>
     </div>
   </div>
 </section>
-
-<!-- Contact / Feedback Section -->
-<section id="contact" class="footer">
-  <div class="footer-content">
-    <h2>📬 Contact Us</h2>
-    <p>We value your feedback!</p>
-
-    <form class="feedback-form">
-      <input type="email" placeholder="Your Email" required />
-      <textarea placeholder="What can we improve?" required></textarea>
-      <button type="submit">Send Feedback</button>
-    </form>
-
 
 
 <!-- 🎨 Footer -->

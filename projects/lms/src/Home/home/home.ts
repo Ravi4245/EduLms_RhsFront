@@ -37,5 +37,9 @@ export class Home {
   body.classList.toggle('dark-mode');
 }
 
-  
+goToFeatureDetail(type: string) {
+  this.router.navigate(['feature-details', type]);
+
+
+}
 }
