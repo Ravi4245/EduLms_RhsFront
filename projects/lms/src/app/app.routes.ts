@@ -7,10 +7,15 @@ import { AdminDashboardComponent } from './Dashboard/admin-dashboard.component/a
 import { TeacherDashboardComponent } from './Dashboard/teacher-dashboard.component/teacher-dashboard.component';
 import { StudentDashboardComponent } from './Dashboard/student-dashboard.component/student-dashboard.component';
 import { AuthGuard } from './auth-guard';
+import { FeatureDetailComponent } from './feature-detail/feature-detail';
+
 
 
 export const routes: Routes = [
   { path: '', component: Home },
+{ path: 'feature-details/:type', component: FeatureDetailComponent },
+
+
   { path: 'student-register', component: StudentRegisterComponent },
   { path: 'teacher-register', component: TeacherRegisterComponent },
   { path: 'login', component: LoginComponent },

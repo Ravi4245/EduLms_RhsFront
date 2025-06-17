@@ -1,0 +1,17 @@
+<div class="feature-detail-container">
+  <h1>{{ featureEmoji }} {{ featureTitle }}</h1>
+
+  <p class="feature-description">
+    {{ featureDesc }}
+  </p>
+
+  <!-- Removed image as per request -->
+  <!-- <img *ngIf="featureImage" [src]="featureImage" class="feature-img" /> -->
+
+  <h3 *ngIf="featureBenefits.length" class="benefits-title">Key Benefits:</h3>
+  <ul class="benefits-list">
+    <li *ngFor="let item of featureBenefits">✅ {{ item }}</li>
+  </ul>
+
+  <a routerLink="/" class="back-link">⬅️ Back to Home</a>
+</div>
