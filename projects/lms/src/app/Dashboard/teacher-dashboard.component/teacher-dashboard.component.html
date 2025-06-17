@@ -1,3 +1,12 @@
+  <header class="top-navbar">
+    <div class="navbar-content">
+      <div class="navbar-center-text">
+        <h1>Hi {{ profile.fullName }}, welcome to your dashboard</h1>
+      </div>
+      <button class="logout-btn" (click)="logout()">🚪 Logout</button>
+    </div>
+  </header>
+
 <div class="dashboard-container">
   <!-- Sidebar -->
   <nav class="sidebar">
@@ -33,14 +42,15 @@
 
     <!-- Create Course -->
     <section *ngIf="activeSection === 'create-course'" class="card">
-      <h2>📘 Create Course</h2>
-      <input [(ngModel)]="newCourse.courseName" placeholder="Course Name" />
-      <input [(ngModel)]="newCourse.description" placeholder="Title" />
-      <!-- <input [(ngModel)]="newCourse.category" placeholder="Category" /> -->
-      <input type="file" (change)="onCoursePdfSelected($event)" accept=".pdf" />
+  <h2>📘 Create Course</h2>
+  <input name="courseName" [(ngModel)]="newCourse.courseName" placeholder="Course Name" />
+  <input name="description" [(ngModel)]="newCourse.description" placeholder="Description" />
+  <input name="category" [(ngModel)]="newCourse.category" placeholder="Category" />
+  <input type="file" (change)="onCoursePdfSelected($event)" accept=".pdf" />
 
-      <button (click)="createCourse()">Create Course</button>
-    </section>
+  <button (click)="createCourse()">Create Course</button>
+</section>
+
 
     <!-- My Courses -->
 <section *ngIf="activeSection === 'my-courses'" class="card">

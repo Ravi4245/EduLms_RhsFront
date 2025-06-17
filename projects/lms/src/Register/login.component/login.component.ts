@@ -21,7 +21,7 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   login() {
-  const apiUrl = 'https://localhost:44361/api/Login/Login';
+  const apiUrl = 'https://localhost:7072/api/Login/Login';
 
   this.http.post(apiUrl, this.loginData).subscribe(
     (res: any) => {

@@ -1,4 +1,18 @@
+<!-- Top Navbar -->
+<header class="top-navbar">
+  <div class="navbar-content">
+    <div class="navbar-center-text">
+      <h1>Hi {{ profile.fullName }}, welcome to your dashboard</h1>
+    </div>
+    <button class="logout-btn" (click)="logout()">🚪 Logout</button>
+  </div>
+</header>
+
+
 <div class="dashboard-container">
+
+  
+
   <!-- Sidebar -->
   <nav class="sidebar">
     <h2>🎓 Student Menu</h2>
@@ -14,7 +28,7 @@
 
   <!-- Main Content -->
   <div class="content">
-    <h1>🎓 Student Dashboard</h1>
+    
 
     <!-- Profile -->
     <section *ngIf="activeSection === 'profile'" class="card">
@@ -56,20 +70,19 @@
 
 
 
-    <!-- Assignments -->
-    <section *ngIf="activeSection === 'assignments'" class="card">
-      <h2>📄 Assigned Assignments</h2>
-      <div class="assignment-grid">
-        <div class="assignment-card" *ngFor="let a of assignedAssignments">
-          <p><strong>ID:</strong> {{ a.assignmentId }}</p>
-          <h3>{{ a.title }}</h3>
-          <p>{{ a.description }}</p>
-          <p><strong>Due:</strong> {{ a.dueDate | date }}</p>
-          <p><strong>Course:</strong> {{ a.courseName }} (ID: {{ a.courseId }})</p>
-          <a [href]="'https://localhost:44361/' + a.uploadFilePath" target="_blank" class="view-link">📄 View PDF</a>
-        </div>
-      </div>
-    </section>
+  <section *ngIf="activeSection === 'assignments'" class="card">
+  <h2>📄 Assigned Assignments</h2>
+  <div class="assignment-grid">
+    <div class="assignment-card" *ngFor="let a of assignedAssignments">
+      <p><strong>ID:</strong> {{ a.AssignmentId }}</p>
+      <h3>{{ a.Title }}</h3>
+      <p>{{ a.Description }}</p>
+      <p><strong>Due:</strong> {{ a.DueDate | date }}</p>
+      <a [href]="'https://localhost:44361/' + a.File" target="_blank" class="view-link">📄 View PDF</a>
+    </div>
+  </div>
+</section>
+
 
     <!-- Submit Assignment -->
     <section *ngIf="activeSection === 'submit'" class="card">

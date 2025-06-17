@@ -26,7 +26,7 @@ export class TeacherRegisterComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   registerTeacher() {
-    this.http.post('https://localhost:44361/api/Teacher/RegisterTeacher', this.teacher).subscribe({
+    this.http.post('https://localhost:7072/api/Teacher/RegisterTeacher', this.teacher).subscribe({
       next: (res:any) => {
         alert(res.message);
         this.router.navigate(['/']);

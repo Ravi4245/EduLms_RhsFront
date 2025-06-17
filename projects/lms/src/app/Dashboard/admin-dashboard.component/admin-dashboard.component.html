@@ -1,83 +1,124 @@
-<h2>Pending Students</h2>
-<table>
-  <tr *ngFor="let student of pendingStudents">
-    <td>{{ student.fullName }}</td>
-    <td>{{ student.email }}</td>
-    <td>
-      <button (click)="approveStudent(student.studentId)">Approve</button>
-      <button (click)="rejectStudent(student.studentId)">Reject</button>
-    </td>
-  </tr>
-</table>
+<!-- Navbar -->
+<header class="top-navbar">
+  <div class="navbar-content">
+    <div class="navbar-center-text">
+      <h1>Welcome Admin Dashboard</h1>
+    </div>
+    <button class="logout-btn" (click)="logout()">🚪 Logout</button>
+  </div>
+</header>
 
-<h2>Approved Students</h2>
-<table>
-  <tr *ngFor="let student of approvedStudents">
-    <td>{{ student.fullName }}</td>
-    <td>{{ student.email }}</td>
-    <td>
-      <button (click)="deleteApprovedStudent(student.studentId)">Delete</button>
-    </td>
-  </tr>
-</table>
+<!-- Main Dashboard Layout -->
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h2>📋 Admin Panel</h2>
+    <ul>
+      <li (click)="activeSection = 'pending-students'">🕒 Pending Students</li>
+      <li (click)="activeSection = 'approved-students'">✅ Approved Students</li>
+      <li (click)="activeSection = 'pending-teachers'">🕒 Pending Teachers</li>
+      <li (click)="activeSection = 'approved-teachers'">✅ Approved Teachers</li>
+      <li (click)="activeSection = 'courses'">📘 Courses</li>
+      <li (click)="activeSection = 'performance-reports'">📊 Performance Reports</li>
+    </ul>
+  </nav>
 
+  <!-- Content Area -->
+  <div class="content">
+    <!-- Pending Students -->
+    <section *ngIf="activeSection === 'pending-students'" class="card">
+      <h2>Pending Students</h2>
+      <table>
+        <tr *ngFor="let student of pendingStudents">
+          <td>{{ student.fullName }}</td>
+          <td>{{ student.email }}</td>
+          <td>
+            <button (click)="approveStudent(student.studentId)">Approve</button>
+            <button (click)="rejectStudent(student.studentId)">Reject</button>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-<h2>Pending Teachers</h2>
-<table>
-  <tr *ngFor="let teacher of pendingTeachers">
-    <td>{{ teacher.fullName }}</td>
-    <td>{{ teacher.email }}</td>
-    <td>
-      <button (click)="approveTeacher(teacher.teacherId)">Approve</button>
-      <button (click)="rejectTeacher(teacher.teacherId)">Reject</button>
-    </td>
-  </tr>
-</table>
+    <!-- Approved Students -->
+    <section *ngIf="activeSection === 'approved-students'" class="card">
+      <h2>Approved Students</h2>
+      <table>
+        <tr *ngFor="let student of approvedStudents">
+          <td>{{ student.fullName }}</td>
+          <td>{{ student.email }}</td>
+          <td>
+            <button (click)="deleteApprovedStudent(student.studentId)">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-<h2>Approved Teachers</h2>
-<table>
-  <tr *ngFor="let teacher of approvedTeachers">
-    <td>{{ teacher.fullName }}</td>
-    <td>{{ teacher.email }}</td>
-    <td>
-      <button (click)="deleteApprovedTeacher(teacher.teacherId)">Delete</button>
-    </td>
-  </tr>
-</table>
+    <!-- Pending Teachers -->
+    <section *ngIf="activeSection === 'pending-teachers'" class="card">
+      <h2>Pending Teachers</h2>
+      <table>
+        <tr *ngFor="let teacher of pendingTeachers">
+          <td>{{ teacher.fullName }}</td>
+          <td>{{ teacher.email }}</td>
+          <td>
+            <button (click)="approveTeacher(teacher.teacherId)">Approve</button>
+            <button (click)="rejectTeacher(teacher.teacherId)">Reject</button>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-<h2>Courses</h2>
-<table>
-  <tr *ngFor="let course of courses">
-    <ng-container *ngIf="editingCourse?.courseId !== course.courseId; else editRow">
-      <td>{{ course.courseName }}</td>
-      <td>{{ course.description }}</td>
-      <td>
-        <button (click)="editCourse(course)">Edit</button>
-        <button (click)="deleteCourse(course.courseId)">Delete</button>
-      </td>
-    </ng-container>
+    <!-- Approved Teachers -->
+    <section *ngIf="activeSection === 'approved-teachers'" class="card">
+      <h2>Approved Teachers</h2>
+      <table>
+        <tr *ngFor="let teacher of approvedTeachers">
+          <td>{{ teacher.fullName }}</td>
+          <td>{{ teacher.email }}</td>
+          <td>
+            <button (click)="deleteApprovedTeacher(teacher.teacherId)">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-    <ng-template #editRow>
-      <td>
-        <input *ngIf="editingCourse" [(ngModel)]="editingCourse.courseName" />
-      </td>
-      <td>
-        <input *ngIf="editingCourse" [(ngModel)]="editingCourse.description" />
-      </td>
-      <td>
-        <button (click)="saveCourse()">Save</button>
-        <button (click)="cancelEdit()">Cancel</button>
-      </td>
-    </ng-template>
-  </tr>
-</table>
+    <!-- Courses -->
+    <section *ngIf="activeSection === 'courses'" class="card">
+      <h2>Courses</h2>
+      <table>
+        <tr *ngFor="let course of courses">
+          <ng-container *ngIf="editingCourse?.courseId !== course.courseId; else editRow">
+            <td>{{ course.courseName }}</td>
+            <td>{{ course.description }}</td>
+            <td>
+              <button (click)="editCourse(course)">Edit</button>
+              <button (click)="deleteCourse(course.courseId)">Delete</button>
+            </td>
+          </ng-container>
+       <ng-template #editRow>
+  <td><input *ngIf="editingCourse" [(ngModel)]="editingCourse.courseName" /></td>
+  <td><input *ngIf="editingCourse" [(ngModel)]="editingCourse.description" /></td>
+  <td>
+    <button (click)="saveCourse()">Save</button>
+    <button (click)="cancelEdit()">Cancel</button>
+  </td>
+</ng-template>
+        </tr>
+      </table>
+    </section>
 
-<h2>Student Performance Reports</h2>
-<table>
-  <tr *ngFor="let report of performanceReports">
-    <td>Student ID: {{ report.studentId }}</td>
-    <td>Course ID: {{ report.courseId }}</td>
-    <td>Grade: {{ report.averageGrade }}</td>
-    <td>Remarks: {{ report.remarks }}</td>
-  </tr>
-</table>
+    <!-- Performance Reports -->
+    <section *ngIf="activeSection === 'performance-reports'" class="card">
+      <h2>Student Performance Reports</h2>
+      <table>
+        <tr *ngFor="let report of performanceReports">
+          <td>Student ID: {{ report.studentId }}</td>
+          <td>Course ID: {{ report.courseId }}</td>
+          <td>Grade: {{ report.averageGrade }}</td>
+          <td>Remarks: {{ report.remarks }}</td>
+        </tr>
+      </table>
+    </section>
+  </div>
+</div>

@@ -27,7 +27,7 @@ export class StudentRegisterComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   registerStudent() {
-    this.http.post('https://localhost:44361/api/Student/RegisterStudent', this.student).subscribe({
+    this.http.post('https://localhost:7072/api/Student/RegisterStudent', this.student).subscribe({
       next: (res:any) => {
         alert(res.message);
       

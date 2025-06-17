@@ -66,7 +66,7 @@ ngOnInit() {
 }
 
   loadProfile() {
-    this.http.get<any>(`https://localhost:44361/api/Student/Profile/${this.studentId}`)
+    this.http.get<any>(`https://localhost:7072/api/Student/Profile/${this.studentId}`)
       .subscribe({
         next: res => {
           this.profile = res;
@@ -77,7 +77,7 @@ ngOnInit() {
   }
 
   loadMyCourses() {
-  this.http.get<any[]>(`https://localhost:44361/api/Student/MyCourses/${this.studentId}`)
+  this.http.get<any[]>(`https://localhost:7072/api/Student/MyCourses/${this.studentId}`)
     .subscribe({
       next: res => {
         this.courses = res;
@@ -91,7 +91,7 @@ ngOnInit() {
 }
 
   loadEnrolledCourses() {
-    this.http.get<any[]>(`https://localhost:44361/api/Student/EnrolledCourses/${this.studentId}`)
+    this.http.get<any[]>(`https://localhost:7072/api/Student/EnrolledCourses/${this.studentId}`)
       .subscribe({
         next: res => {
           this.enrolledCourses = res;
@@ -101,7 +101,12 @@ ngOnInit() {
       });
   }
 
-  
+  logout() {
+  localStorage.removeItem('studentId');
+  alert('Logged out successfully!');
+  window.location.href = '/'; // Or use Router if routing is enabled
+}
+
 
   enrollCourse() {
     const { courseId } = this.enrollData;
@@ -111,7 +116,7 @@ ngOnInit() {
     }
 
     this.http.post<any>(
-      `https://localhost:44361/api/Student/Enroll?studentId=${this.studentId}&courseId=${courseId}`,
+      `https://localhost:7072/api/Student/Enroll?studentId=${this.studentId}&courseId=${courseId}`,
       {}
     ).subscribe({
       next: res => {
@@ -126,16 +131,17 @@ ngOnInit() {
     });
   }
 
-  loadAssignments() {
-    this.http.get<any[]>(`https://localhost:44361/api/Student/MyAssignments/${this.studentId}`)
-      .subscribe({
-        next: res => {
-          this.assignments = res;
-          this.cd.detectChanges();
-        },
-        error: err => console.error('❌ Assignment load error:', err)
-      });
-  }
+ 
+loadAssignments() {
+  this.http.get<any[]>(`https://localhost:7072/api/Student/MyAssignments/${this.studentId}`)
+    .subscribe({
+      next: res => {
+        this.assignedAssignments = res;  // use assignedAssignments here
+        this.cd.detectChanges();
+      },
+      error: err => console.error('❌ Assignment load error:', err)
+    });
+}
 
   onFileChange(event: any) {
     this.selectedFile = event.target.files[0];
@@ -150,7 +156,7 @@ ngOnInit() {
     const formData = new FormData();
     formData.append("file", this.selectedFile);
 
-    const url = `https://localhost:44361/api/Student/SubmitAssignment?assignmentId=${this.submitData.assignmentId}&studentId=${this.studentId}`;
+    const url = `https://localhost:7072/api/Student/SubmitAssignment?assignmentId=${this.submitData.assignmentId}&studentId=${this.studentId}`;
 
     this.http.post<{ message: string }>(url, formData).subscribe({
       next: res => {
@@ -167,7 +173,7 @@ ngOnInit() {
   }
 
   loadPerformanceReport() {
-    this.http.get<any[]>(`https://localhost:44361/api/Student/PerformanceReport/${this.studentId}`)
+    this.http.get<any[]>(`https://localhost:7072/api/Student/PerformanceReport/${this.studentId}`)
       .subscribe({
         next: res => {
           this.performanceReports = res;
@@ -179,7 +185,7 @@ ngOnInit() {
 
   loadAssignedAssignments() {
   const studentId = localStorage.getItem('studentId');
-  this.http.get<any[]>(`https://localhost:44361/api/Teacher/StudentAssignments/${studentId}`)
+  this.http.get<any[]>(`https://localhost:7072/api/Teacher/StudentAssignments/${studentId}`)
     .subscribe(res => {
       this.assignedAssignments = res;
     });

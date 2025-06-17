@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-teacher-dashboard',
@@ -28,12 +29,12 @@ export class TeacherDashboardComponent implements OnInit {
   editingReportId: number | null = null;
   
 
-  newCourse = {
-    courseName: '',
-    description: '',
-    category: '',
-    createdByTeacherId: 0
-  };
+newCourse = {
+  courseName: '',
+  description: '',
+  category: '',
+  createdByTeacherId: 0
+};
 
   newAssignment = {
     courseId: null as number | null,
@@ -61,10 +62,10 @@ export class TeacherDashboardComponent implements OnInit {
     assignmentId: null as number | null
   };
 
-  onCoursePdfSelected(event: any): void {
-  this.selectedCoursePdf = event.target.files[0];
-}
-  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
+//   onCoursePdfSelected(event: any): void {
+//   this.selectedCoursePdf = event.target.files[0];
+// }
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef,private router: Router) {}
 
   ngOnInit(): void {
     const storedId = localStorage.getItem('teacherId');
@@ -85,7 +86,7 @@ export class TeacherDashboardComponent implements OnInit {
   }
 
   viewPdf(path: string) {
-  const fullPath = `https://localhost:44361/${path}`;
+  const fullPath = `https://localhost:7072/${path}`;
   window.open(fullPath, '_blank');
 }
 
@@ -98,7 +99,7 @@ editReport(report: any) {
 }
   // ✅ Load Teacher Profile
   loadTeacherProfile() {
-    this.http.get<any>(`https://localhost:44361/api/Teacher/Profile/${this.teacherId}`)
+    this.http.get<any>(`https://localhost:7072/api/Teacher/Profile/${this.teacherId}`)
 
       .subscribe({
         next: res => {
@@ -113,36 +114,46 @@ editReport(report: any) {
 
   // ------- Course Methods -------
   loadCourses() {
-    this.http.get<any[]>(`https://localhost:44361/api/Teacher/MyCourses/${this.teacherId}`)
+    this.http.get<any[]>(`https://localhost:7072/api/Teacher/MyCourses/${this.teacherId}`)
       .subscribe(res => {
         this.courses = res;
         this.cd.detectChanges();
       });
   }
 
+  // ------- Course Methods -------
+ 
+onCoursePdfSelected(event: any) {
+  if (event.target.files && event.target.files.length > 0) {
+    this.selectedCoursePdf = event.target.files[0];
+  }
+}
+
+
  createCourse() {
   const formData = new FormData();
-  formData.append('courseName', this.newCourse.courseName);
-  formData.append('description', this.newCourse.description);
-  formData.append('category', this.newCourse.category);
-  formData.append('createdByTeacherId', this.teacherId.toString());
+  formData.append('CourseName', this.newCourse.courseName);
+  formData.append('Description', this.newCourse.description);
+  formData.append('Category', this.newCourse.category);
+  formData.append('CreatedByTeacherId', this.teacherId.toString());
 
   if (this.selectedCoursePdf) {
-    formData.append('pdfFile', this.selectedCoursePdf);
+    formData.append('PdfFile', this.selectedCoursePdf);
   }
 
-  this.http.post<any>(`https://localhost:44361/api/Teacher/CreateCourse`, formData)
+  this.http.post<any>(`https://localhost:7072/api/Teacher/CreateCourse`, formData)
     .subscribe(res => {
       alert(res.message);
       this.newCourse = { courseName: '', description: '', category: '', createdByTeacherId: this.teacherId };
       this.selectedCoursePdf = null;
       this.loadCourses();
+    }, err => {
+      console.error('Create course error:', err);
     });
 }
 
-
   updateCourse(course: any) {
-    this.http.put<any>(`https://localhost:44361/api/Teacher/UpdateCourse`, course)
+    this.http.put<any>(`https://localhost:7072/api/Teacher/UpdateCourse`, course)
       .subscribe(res => {
         alert(res.message);
         this.loadCourses();
@@ -150,7 +161,7 @@ editReport(report: any) {
   }
 
   deleteCourse(courseId: number) {
-    this.http.delete<any>(`https://localhost:44361/api/Teacher/DeleteCourse/${courseId}/${this.teacherId}`)
+    this.http.delete<any>(`https://localhost:7072/api/Teacher/DeleteCourse/${courseId}/${this.teacherId}`)
       .subscribe(res => {
         alert(res.message);
         this.loadCourses();
@@ -174,7 +185,7 @@ editReport(report: any) {
       formData.append('file', this.selectedFile, this.selectedFile.name);
     }
 
-    this.http.post<any>(`https://localhost:44361/api/Teacher/CreateAssignment`, formData)
+    this.http.post<any>(`https://localhost:7072/api/Teacher/CreateAssignment`, formData)
       .subscribe(res => {
         alert(res.message);
         this.newAssignment = {
@@ -191,7 +202,7 @@ editReport(report: any) {
   }
 
 loadCreatedAssignments() {
-  this.http.get<any[]>(`https://localhost:44361/api/Teacher/MyAssignments/${this.teacherId}`)
+  this.http.get<any[]>(`https://localhost:7072/api/Teacher/MyAssignments/${this.teacherId}`)
     .subscribe(res => {
       this.assignments = res;
     });
@@ -199,7 +210,7 @@ loadCreatedAssignments() {
 
   assignAssignmentToStudenta() {
     const { studentId, assignmentId } = this.assignAssignmentData;
-    this.http.post<any>(`https://localhost:44361/api/Teacher/AssignAssignmentToStudent?assignmentId=${assignmentId}&studentId=${studentId}`, {})
+    this.http.post<any>(`https://localhost:7072/api/Teacher/AssignAssignmentToStudent?assignmentId=${assignmentId}&studentId=${studentId}`, {})
       .subscribe(res => {
         alert(res.message);
         this.assignAssignmentData = { studentId: null, assignmentId: null };
@@ -208,7 +219,7 @@ loadCreatedAssignments() {
   }
 
   viewSubmissions(assignmentId: number) {
-    this.http.get<any[]>(`https://localhost:44361/api/Teacher/Submissions/${assignmentId}`)
+    this.http.get<any[]>(`https://localhost:7072/api/Teacher/Submissions/${assignmentId}`)
       .subscribe(res => {
         this.submissions = res;
         this.cd.detectChanges();
@@ -216,7 +227,7 @@ loadCreatedAssignments() {
   }
 
   loadSubmittedAssignments() {
-    this.http.get<any[]>(`https://localhost:44361/api/Teacher/SubmittedAssignments/${this.teacherId}`)
+    this.http.get<any[]>(`https://localhost:7072/api/Teacher/SubmittedAssignments/${this.teacherId}`)
       .subscribe({
         next: res => {
           this.submissions = res;
@@ -230,7 +241,7 @@ loadCreatedAssignments() {
   }
 
   gradeSubmission(sub: any) {
-    this.http.put<any>(`https://localhost:44361/api/Teacher/GradeSubmission`, sub)
+    this.http.put<any>(`https://localhost:7072/api/Teacher/GradeSubmission`, sub)
       .subscribe(res => {
         alert(res.message);
         this.viewSubmissions(sub.assignmentId);
@@ -239,7 +250,7 @@ loadCreatedAssignments() {
 
   // ------- Performance Methods -------
   loadPerformanceReports() {
-    this.http.get<any[]>(`https://localhost:44361/api/Admin/StudentPerformance`)
+    this.http.get<any[]>(`https://localhost:7072/api/Admin/StudentPerformance`)
       .subscribe(res => {
         this.performanceReports = res;
         this.cd.detectChanges();
@@ -247,7 +258,7 @@ loadCreatedAssignments() {
   }
 
   createPerformance() {
-    this.http.post<any>(`https://localhost:44361/api/Teacher/CreatePerformance`, this.newPerformance)
+    this.http.post<any>(`https://localhost:7072/api/Teacher/CreatePerformance`, this.newPerformance)
       .subscribe(res => {
         alert(res.message);
         this.newPerformance = { studentId: null, courseId: null, averageGrade: null, remarks: '' };
@@ -256,7 +267,7 @@ loadCreatedAssignments() {
   }
 
   updatePerformance(report: any) {
-    this.http.put<any>(`https://localhost:44361/api/Teacher/UpdatePerformance`, report)
+    this.http.put<any>(`https://localhost:7072/api/Teacher/UpdatePerformance`, report)
       .subscribe(res => {
         alert(res.message);
         this.loadPerformanceReports();
@@ -266,7 +277,7 @@ loadCreatedAssignments() {
   // ------- Enrollment Methods -------
   assignCourseToStudent() {
     const { studentId, courseId } = this.assignCourseData;
-    this.http.post<any>(`https://localhost:44361/api/Teacher/AssignCourseToStudent?studentId=${studentId}&courseId=${courseId}`, {})
+    this.http.post<any>(`https://localhost:7072/api/Teacher/AssignCourseToStudent?studentId=${studentId}&courseId=${courseId}`, {})
       .subscribe(res => {
         alert(res.message);
         this.assignCourseData = { studentId: null, courseId: null };
@@ -275,7 +286,7 @@ loadCreatedAssignments() {
   }
 
 loadEnrolledStudents() {
-  this.http.get<any[]>(`https://localhost:44361/api/Teacher/ApprovedStudents`)
+  this.http.get<any[]>(`https://localhost:7072/api/Teacher/ApprovedStudents`)
     .subscribe({
       next: res => {
         this.enrolledStudents = res;
@@ -287,5 +298,10 @@ loadEnrolledStudents() {
         alert("Failed to load approved students.");
       }
     });
+}
+
+logout() {
+  localStorage.removeItem('teacherId'); // or however you're storing the login
+  this.router.navigate(['/']); // go to home or login page
 }
 }

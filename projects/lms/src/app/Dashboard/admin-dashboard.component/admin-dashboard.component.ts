@@ -50,6 +50,7 @@ export class AdminDashboardComponent implements OnInit {
   performanceReports: PerformanceReport[] = [];
 
   editingCourse: Course | null = null;
+  activeSection: string = 'pending-students'; // default section
 
   constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
 
@@ -69,15 +70,19 @@ export class AdminDashboardComponent implements OnInit {
   // ---------------------- Students ----------------------
 
   loadPendingStudents() {
-    this.http.get<Student[]>('https://localhost:44361/api/Admin/PendingStudents')
+    this.http.get<Student[]>('https://localhost:7072/api/Admin/PendingStudents')
       .subscribe((data) => {
         this.pendingStudents = data;
         this.cd.detectChanges();
       });
   }
 
+  setActiveSection(section: string) {
+  this.activeSection = section;
+}
+
   loadApprovedStudents() {
-    this.http.get<Student[]>('https://localhost:44361/api/Admin/ApprovedStudents')
+    this.http.get<Student[]>('https://localhost:7072/api/Admin/ApprovedStudents')
       .subscribe((data) => {
         this.approvedStudents = data;
         this.cd.detectChanges();
@@ -85,7 +90,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   approveStudent(id: number) {
-    this.http.put<any>(`https://localhost:44361/api/Admin/ApproveStudent/${id}`, {})
+    this.http.put<any>(`https://localhost:7072/api/Admin/ApproveStudent/${id}`, {})
       .subscribe((response) => {
         alert(response.message);
         this.refreshAllData();
@@ -93,7 +98,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   rejectStudent(id: number) {
-    this.http.delete<any>(`https://localhost:44361/api/Admin/RejectStudent/${id}`)
+    this.http.delete<any>(`https://localhost:7072/api/Admin/RejectStudent/${id}`)
       .subscribe((response) => {
         alert(response.message);
         this.refreshAllData();
@@ -101,7 +106,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
  deleteApprovedStudent(id: number) {
-  this.http.delete<any>(`https://localhost:44361/api/Admin/DeleteApprovedStudent/${id}`)
+  this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedStudent/${id}`)
     .subscribe((res) => {
       alert(res.message);
       this.refreshAllData();
@@ -113,7 +118,7 @@ export class AdminDashboardComponent implements OnInit {
   // ---------------------- Teachers ----------------------
 
   loadPendingTeachers() {
-    this.http.get<Teacher[]>('https://localhost:44361/api/Admin/PendingTeachers')
+    this.http.get<Teacher[]>('https://localhost:7072/api/Admin/PendingTeachers')
       .subscribe((data) => {
         this.pendingTeachers = data;
         this.cd.detectChanges();
@@ -121,7 +126,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadApprovedTeachers() {
-    this.http.get<Teacher[]>('https://localhost:44361/api/Admin/ApprovedTeachers')
+    this.http.get<Teacher[]>('https://localhost:7072/api/Admin/ApprovedTeachers')
       .subscribe((data) => {
         this.approvedTeachers = data;
         this.cd.detectChanges();
@@ -129,7 +134,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   approveTeacher(id: number) {
-    this.http.put<any>(`https://localhost:44361/api/Admin/ApproveTeacher/${id}`, {})
+    this.http.put<any>(`https://localhost:7072/api/Admin/ApproveTeacher/${id}`, {})
       .subscribe((response) => {
         alert(response.message);
         this.refreshAllData();
@@ -137,7 +142,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   rejectTeacher(id: number) {
-    this.http.delete<any>(`https://localhost:44361/api/Admin/RejectTeacher/${id}`)
+    this.http.delete<any>(`https://localhost:7072/api/Admin/RejectTeacher/${id}`)
       .subscribe((response) => {
         alert(response.message);
         this.refreshAllData();
@@ -145,7 +150,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
  deleteApprovedTeacher(id: number) {
-  this.http.delete<any>(`https://localhost:44361/api/Admin/DeleteApprovedTeacher/${id}`)
+  this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedTeacher/${id}`)
     .subscribe({
       next: (res) => {
         alert(res.message);
@@ -160,7 +165,7 @@ export class AdminDashboardComponent implements OnInit {
   // ---------------------- Courses ----------------------
 
   loadCourses() {
-    this.http.get<Course[]>('https://localhost:44361/api/Admin/Courses')
+    this.http.get<Course[]>('https://localhost:7072/api/Admin/Courses')
       .subscribe((data) => {
         this.courses = data;
         this.cd.detectChanges();
@@ -168,7 +173,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   deleteCourse(id: number) {
-    this.http.delete<any>(`https://localhost:44361/api/Admin/DeleteCourse/${id}`)
+    this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteCourse/${id}`)
       .subscribe((response) => {
         alert(response.message);
         this.loadCourses();
@@ -182,7 +187,7 @@ export class AdminDashboardComponent implements OnInit {
   saveCourse() {
     if (!this.editingCourse) return;
 
-    this.http.put<any>(`https://localhost:44361/api/Admin/UpdateCourse/${this.editingCourse.courseId}`, this.editingCourse)
+    this.http.put<any>(`https://localhost:7072/api/Admin/UpdateCourse/${this.editingCourse.courseId}`, this.editingCourse)
       .subscribe((response) => {
         alert(response.message);
         this.editingCourse = null;
@@ -197,10 +202,20 @@ export class AdminDashboardComponent implements OnInit {
   // ---------------------- Performance ----------------------
 
   loadPerformanceReports() {
-    this.http.get<PerformanceReport[]>('https://localhost:44361/api/Admin/StudentPerformance')
+    this.http.get<PerformanceReport[]>('https://localhost:7072/api/Admin/StudentPerformance')
       .subscribe((data) => {
         this.performanceReports = data;
         this.cd.detectChanges();
       });
   }
+
+  logout(): void {
+  // Clear any stored tokens or session data
+  localStorage.clear();
+  sessionStorage.clear();
+
+  // Optionally, you can redirect to login page
+  window.location.href = '/login'; // Adjust path if needed
+}
+
 }
