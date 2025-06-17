@@ -45,5 +45,16 @@ export class LoginComponent {
     }
   );
 }
+ clearForm() {
+    this.loginData = {
+      email: '',
+      password: '',
+      role: ''
+    };
+  }
+
+  goBack() {
+    this.router.navigate(['/']); // Navigate to home
+  }
 
 }
