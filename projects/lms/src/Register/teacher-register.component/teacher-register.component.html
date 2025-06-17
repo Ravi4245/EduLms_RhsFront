@@ -2,15 +2,43 @@
   <h2>🧑‍🏫 Teacher Registration</h2>
 
   <form (ngSubmit)="registerTeacher()" #teacherForm="ngForm">
-    <input type="text" name="fullName" [(ngModel)]="teacher.fullName" placeholder="Full Name" required>
-    <input type="email" name="email" [(ngModel)]="teacher.email" placeholder="Email" required>
-    <input type="password" name="password" [(ngModel)]="teacher.password" placeholder="Password" required>
-    <input type="text" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" placeholder="Phone Number" required>
-    <input type="text" name="qualification" [(ngModel)]="teacher.qualification" placeholder="Qualification" required>
-    <input type="number" name="experienceYears" [(ngModel)]="teacher.experienceYears" placeholder="Experience (Years)" required>
-    <input type="text" name="specialization" [(ngModel)]="teacher.specialization" placeholder="Specialization" required>
-    <input type="text" name="teacherNO" [(ngModel)]="teacher.teacherNO" placeholder="Teacher No." required>
+    <label>Full Name</label>
+    <input type="text" name="fullName" [(ngModel)]="teacher.fullName" required />
 
-    <button type="submit">Register</button>
+    <label>Email</label>
+    <input type="email" name="email" [(ngModel)]="teacher.email" required />
+
+    <label>Password</label>
+    <input type="password" name="password" [(ngModel)]="teacher.password" required />
+
+    <label>Phone Number</label>
+    <input type="text" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" required />
+
+    <label>Qualification</label>
+    <input type="text" name="qualification" [(ngModel)]="teacher.qualification" required />
+
+    <label>Experience (Years)</label>
+    <input type="number" name="experienceYears" [(ngModel)]="teacher.experienceYears" required />
+
+    <label>Specialization</label>
+    <input type="text" name="specialization" [(ngModel)]="teacher.specialization" required />
+
+    <label>Teacher No.</label>
+    <input type="text" name="teacherNO" [(ngModel)]="teacher.teacherNO" required />
+
+    <!-- CAPTCHA -->
+    <label>CAPTCHA</label>
+    <div class="captcha-box">
+      <span class="captcha-text">{{ captcha }}</span>
+      <button type="button" class="refresh-btn" (click)="generateCaptcha()">🔄</button>
+    </div>
+    <input type="text" [(ngModel)]="userCaptchaInput" name="captchaInput" placeholder="Enter CAPTCHA" required />
+
+    <button type="submit" class="register-button">Register</button>
   </form>
+
+  <div class="button-group">
+    <button class="clear-button" (click)="clearForm()">Clear</button>
+    <button class="back-button" (click)="goBack()">Back</button>
+  </div>
 </div>

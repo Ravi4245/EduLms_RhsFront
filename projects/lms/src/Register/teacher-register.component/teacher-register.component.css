@@ -1,40 +1,89 @@
 .form-container {
-  width: 400px;
-  margin: 50px auto;
-  background: #f1f5fb;
+  max-width: 500px;
+  margin: auto;
   padding: 30px;
+  background: #f9f9f9;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
+label {
+  font-weight: 600;
+  margin-top: 12px;
+  display: block;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 10px;
-  margin: 8px 0 12px;
+  margin-top: 6px;
+  margin-bottom: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 15px;
 }
 
-button {
-  width: 100%;
-  background-color: #2d89ef;
+.register-button {
+  background-color: #007BFF;
   color: white;
   padding: 12px;
-  font-size: 16px;
+  width: 100%;
   border: none;
   border-radius: 6px;
+  font-weight: bold;
   cursor: pointer;
+}
+
+.register-button:hover {
+  background-color: #0056b3;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
   margin-top: 10px;
 }
 
-button:hover {
-  background-color: #1a6fd0;
+.clear-button, .back-button {
+  width: 48%;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.clear-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.back-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.captcha-box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.captcha-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  letter-spacing: 4px;
+  background: repeating-linear-gradient(-45deg, #222, #444 10px, #825454 20px);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.refresh-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  margin-left: 12px;
+  cursor: pointer;
 }
