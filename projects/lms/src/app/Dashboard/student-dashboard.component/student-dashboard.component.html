@@ -60,7 +60,6 @@
       <p><strong>ID:</strong> {{ c.courseId }}</p>
       <p><strong>Name:</strong> {{ c.courseName }}</p>
       <p><strong>Category:</strong> {{ c.category }}</p>
-
       <button *ngIf="c.pdfFilePath" (click)="viewPdf(c.pdfFilePath)" class="btn btn-primary">
         📄 View Course PDF
       </button>
@@ -70,7 +69,9 @@
 
 
 
-  <section *ngIf="activeSection === 'assignments'" class="card">
+
+
+<section *ngIf="activeSection === 'assignments'" class="card">
   <h2>📄 Assigned Assignments</h2>
   <div class="assignment-grid">
     <div class="assignment-card" *ngFor="let a of assignedAssignments">
@@ -82,6 +83,7 @@
     </div>
   </div>
 </section>
+
 
 
     <!-- Submit Assignment -->

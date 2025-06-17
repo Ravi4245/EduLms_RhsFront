@@ -1,34 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+// import { Injectable } from '@angular/core';
+// import { HttpClient } from '@angular/common/http';
+// import { Observable } from 'rxjs';
 
-export interface Student {
-  studentId: number;
-  fullName: string;
-  email: string;
-  phoneNumber?: string;
-}
+// interface CountResponse {
+//   count: number;
+// }
 
-export interface Teacher {
-  teacherId: number;
-  fullName: string;
-  email: string;
-  phoneNumber?: string;
-}
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class AdminService {
+//   private baseUrl = 'https://localhost:7072/api/Admin'; // your backend base url
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AdminService {
-  private baseUrl = 'https://localhost:7072/api/Admin';
+//   constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {}
+//   getApprovedStudentsCount(): Observable<CountResponse> {
+//     return this.http.get<CountResponse>(`${this.baseUrl}/ApprovedStudentsCount`);
+//   }
 
-  getApprovedStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.baseUrl}/ApprovedStudents`);
-  }
-
-  getApprovedTeachers(): Observable<Teacher[]> {
-    return this.http.get<Teacher[]>(`${this.baseUrl}/ApprovedTeachers`);
-  }
-}
+//   getApprovedTeachersCount(): Observable<CountResponse> {
+//     return this.http.get<CountResponse>(`${this.baseUrl}/ApprovedTeachersCount`);
+//   }
+// }
