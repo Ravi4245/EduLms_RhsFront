@@ -3,28 +3,167 @@
 
   <form (ngSubmit)="registerTeacher()" #teacherForm="ngForm">
     <label>Full Name</label>
-    <input type="text" placeholder="Enter FullName" name="fullName" [(ngModel)]="teacher.fullName" required />
+    
+<input
+      type="text"
+      name="fullName"
+      [(ngModel)]="teacher.fullName"
+      (keyup)="checkFullName()"
+      placeholder="Full Name"
+      required
+      maxlength="50"
+      minlength="3"
+      #fullName="ngModel"
+    />
+    <div *ngIf="fullName.errors?.['required'] && fullName.touched" class="error">
+      Full Name is required.
+    </div>
+    <div *ngIf="fullName.errors?.['minlength'] && fullName.touched" class="error">
+      Full Name must be at least 3 characters.
+    </div>
+    <div *ngIf="fullName.errors?.['maxlength'] && fullName.touched" class="error">
+      Full Name cannot exceed 50 characters.
+    </div>
+    <div *ngIf="hasNumberInFullName" class="error">
+      Do not enter number in Full Name.
+    </div>
 
     <label>Email</label>
-    <input type="email" placeholder="Enter email" name="email" [(ngModel)]="teacher.email" required />
+   <!-- Email -->
+<input
+  type="email"
+  name="email"
+  [(ngModel)]="teacher.email"
+  (keyup)="checkEmail()"
+  placeholder="Email (e.g., name&#64;example.com or name&#64;example.co.in)"
+  required
+  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$"
+  #email="ngModel"
+/>
+
+<div *ngIf="email.errors?.['required'] && email.touched" class="error">
+  Email is required.
+</div>
+<div *ngIf="(email.touched || email.dirty) && hasInvalidEmailFormat" class="error">
+  Enter a valid Email ID.
+</div>
+
 
     <label>Password</label>
-    <input type="password" placeholder="Enter password" name="password" [(ngModel)]="teacher.password" required />
+    <!-- Password -->
+    <input
+      type="password"
+      name="password"
+      [(ngModel)]="teacher.password"
+      (keyup)="checkPassword()"
+      placeholder="Password"
+      required
+      maxlength="20"
+      minlength="8"
+      #password="ngModel"
+    />
+    <div *ngIf="password.errors?.['required'] && password.touched" class="error">
+      Password is required.
+    </div>
+    <div *ngIf="(password.touched || password.dirty) && hasInvalidPasswordFormat" class="error">
+      Password must contain at least one uppercase letter, one number, and one special character.
+    </div>
 
     <label>Phone Number</label>
-    <input type="text" placeholder="Enter phoneNo" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" required />
+     <!-- Phone Number -->
+    <input
+      type="text"
+      name="phoneNumber"
+      [(ngModel)]="teacher.phoneNumber"
+      (keyup)="checkPhoneNumber()"
+      placeholder="Phone Number"
+      required
+      maxlength="10"
+      minlength="10"
+      pattern="^[0-9]{10}$"
+      #phoneNumber="ngModel"
+    />
+    <div *ngIf="phoneNumber.errors?.['required'] && phoneNumber.touched" class="error">
+      Phone Number is required.
+    </div>
+    <div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && hasInvalidPhoneFormat" class="error">
+      Enter a valid 10-digit phone number (digits only).
+    </div>
 
     <label>Qualification</label>
-    <input type="text" placeholder="Enter qualification" name="qualification" [(ngModel)]="teacher.qualification" required />
+     <!-- Qualification -->
+    <input
+      type="text"
+      name="qualification"
+      [(ngModel)]="teacher.qualification"
+      placeholder="Qualification"
+      required
+      minlength="2"
+      #qualification="ngModel"
+    />
+    <div *ngIf="qualification.errors?.['required'] && qualification.touched" class="error">
+      Qualification is required.
+    </div>
+    <div *ngIf="qualification.errors?.['minlength'] && qualification.touched" class="error">
+      Qualification must be at least 2 characters.
+    </div>
 
     <label>Experience (Years)</label>
-    <input type="number" placeholder="Enter ExperienceYears" name="experienceYears" [(ngModel)]="teacher.experienceYears" required />
+    <!-- Experience (Years) -->
+    <input
+      type="number"
+      name="experienceYears"
+      [(ngModel)]="teacher.experienceYears"
+      placeholder="Experience (Years)"
+      required
+      min="0"
+      max="50"
+      #experienceYears="ngModel"
+    />
+    <div *ngIf="experienceYears.errors?.['required'] && experienceYears.touched" class="error">
+      Experience is required.
+    </div>
+    <div *ngIf="(experienceYears.errors?.['min'] || experienceYears.errors?.['max']) && experienceYears.touched" class="error">
+      Experience must be between 0 and 50 years.
+    </div>
 
     <label>Specialization</label>
-    <input type="text" placeholder="Enter specialization" name="specialization" [(ngModel)]="teacher.specialization" required />
+     <!-- Specialization -->
+    <input
+      type="text"
+      name="specialization"
+      [(ngModel)]="teacher.specialization"
+      placeholder="Specialization"
+      required
+      minlength="2"
+      #specialization="ngModel"
+    />
+    <div *ngIf="specialization.errors?.['required'] && specialization.touched" class="error">
+      Specialization is required.
+    </div>
+    <div *ngIf="specialization.errors?.['minlength'] && specialization.touched" class="error">
+      Specialization must be at least 2 characters.
+    </div>
 
     <label>Teacher No.</label>
-    <input type="text" placeholder="Enter teacherNo" name="teacherNO" [(ngModel)]="teacher.teacherNO" required />
+    <!-- Teacher No -->
+    <input
+      type="text"
+      name="teacherNo"
+      [(ngModel)]="teacher.teacherNO"
+      (keyup)="checkTeacherNo()"
+      placeholder="Teacher No."
+      required
+      maxlength="5"
+      pattern="^[0-9]{1,5}$"
+      #teacherNo="ngModel"
+    />
+    <div *ngIf="teacherNo.errors?.['required'] && teacherNo.touched" class="error">
+      Teacher Number is required.
+    </div>
+    <div *ngIf="(teacherNo.dirty || teacherNo.touched) && hasInvalidTeacherNo" class="error">
+      Enter a valid Teacher Number (up to 5 digits).
+    </div>
 
     <!-- CAPTCHA -->
     <label>CAPTCHA</label>

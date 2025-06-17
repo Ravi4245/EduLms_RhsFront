@@ -71,3 +71,26 @@ button {
 .back-button:hover {
   background-color: #565e64;
 }
+/* Validation styles */
+.error {
+  color: #d93025; /* Red color for errors */
+  font-size: 0.875rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* Highlight invalid inputs */
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border-color: #d93025;
+  background-color: #ffe6e6;
+}
+
+/* Optional: smoother focus style for inputs */
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

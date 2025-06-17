@@ -29,7 +29,7 @@
     <section *ngIf="activeSection === 'pending-students'" class="card">
       <h2>Pending Students</h2>
       <table>
-        <tr *ngFor="let student of pendingStudents">
+        <tr *ngFor="let student of getPaginatedData(pendingStudents, studentPage)">
           <td>{{ student.fullName }}</td>
           <td>{{ student.email }}</td>
           <td>
@@ -38,13 +38,18 @@
           </td>
         </tr>
       </table>
+      <div class="pagination-controls">
+        <button (click)="changePage('student', 'prev')" [disabled]="studentPage === 1">Previous</button>
+        <span>Page {{ studentPage }}</span>
+        <button (click)="changePage('student', 'next')" [disabled]="studentPage * itemsPerPage >= pendingStudents.length">Next</button>
+      </div>
     </section>
 
     <!-- Approved Students -->
     <section *ngIf="activeSection === 'approved-students'" class="card">
       <h2>Approved Students</h2>
       <table>
-        <tr *ngFor="let student of approvedStudents">
+        <tr *ngFor="let student of getPaginatedData(approvedStudents, approvedStudentPage)">
           <td>{{ student.fullName }}</td>
           <td>{{ student.email }}</td>
           <td>
@@ -52,13 +57,18 @@
           </td>
         </tr>
       </table>
+      <div class="pagination-controls">
+        <button (click)="changePage('approvedStudent', 'prev')" [disabled]="approvedStudentPage === 1">Previous</button>
+        <span>Page {{ approvedStudentPage }}</span>
+        <button (click)="changePage('approvedStudent', 'next')" [disabled]="approvedStudentPage * itemsPerPage >= approvedStudents.length">Next</button>
+      </div>
     </section>
 
     <!-- Pending Teachers -->
     <section *ngIf="activeSection === 'pending-teachers'" class="card">
       <h2>Pending Teachers</h2>
       <table>
-        <tr *ngFor="let teacher of pendingTeachers">
+        <tr *ngFor="let teacher of getPaginatedData(pendingTeachers, teacherPage)">
           <td>{{ teacher.fullName }}</td>
           <td>{{ teacher.email }}</td>
           <td>
@@ -67,13 +77,18 @@
           </td>
         </tr>
       </table>
+      <div class="pagination-controls">
+        <button (click)="changePage('teacher', 'prev')" [disabled]="teacherPage === 1">Previous</button>
+        <span>Page {{ teacherPage }}</span>
+        <button (click)="changePage('teacher', 'next')" [disabled]="teacherPage * itemsPerPage >= pendingTeachers.length">Next</button>
+      </div>
     </section>
 
     <!-- Approved Teachers -->
     <section *ngIf="activeSection === 'approved-teachers'" class="card">
       <h2>Approved Teachers</h2>
       <table>
-        <tr *ngFor="let teacher of approvedTeachers">
+        <tr *ngFor="let teacher of getPaginatedData(approvedTeachers, approvedTeacherPage)">
           <td>{{ teacher.fullName }}</td>
           <td>{{ teacher.email }}</td>
           <td>
@@ -81,13 +96,18 @@
           </td>
         </tr>
       </table>
+      <div class="pagination-controls">
+        <button (click)="changePage('approvedTeacher', 'prev')" [disabled]="approvedTeacherPage === 1">Previous</button>
+        <span>Page {{ approvedTeacherPage }}</span>
+        <button (click)="changePage('approvedTeacher', 'next')" [disabled]="approvedTeacherPage * itemsPerPage >= approvedTeachers.length">Next</button>
+      </div>
     </section>
 
     <!-- Courses -->
     <section *ngIf="activeSection === 'courses'" class="card">
       <h2>Courses</h2>
       <table>
-        <tr *ngFor="let course of courses">
+        <tr *ngFor="let course of getPaginatedData(courses, coursePage)">
           <ng-container *ngIf="editingCourse?.courseId !== course.courseId; else editRow">
             <td>{{ course.courseName }}</td>
             <td>{{ course.description }}</td>
@@ -96,29 +116,43 @@
               <button (click)="deleteCourse(course.courseId)">Delete</button>
             </td>
           </ng-container>
-       <ng-template #editRow>
-  <td><input *ngIf="editingCourse" [(ngModel)]="editingCourse.courseName" /></td>
-  <td><input *ngIf="editingCourse" [(ngModel)]="editingCourse.description" /></td>
-  <td>
-    <button (click)="saveCourse()">Save</button>
-    <button (click)="cancelEdit()">Cancel</button>
-  </td>
+    <ng-template #editRow>
+  <ng-container *ngIf="editingCourse">
+    <td><input [(ngModel)]="editingCourse.courseName" /></td>
+    <td><input [(ngModel)]="editingCourse.description" /></td>
+    <td>
+      <button (click)="saveCourse()">Save</button>
+      <button (click)="cancelEdit()">Cancel</button>
+    </td>
+  </ng-container>
 </ng-template>
+
+
         </tr>
       </table>
+      <div class="pagination-controls">
+        <button (click)="changePage('course', 'prev')" [disabled]="coursePage === 1">Previous</button>
+        <span>Page {{ coursePage }}</span>
+        <button (click)="changePage('course', 'next')" [disabled]="coursePage * itemsPerPage >= courses.length">Next</button>
+      </div>
     </section>
 
     <!-- Performance Reports -->
     <section *ngIf="activeSection === 'performance-reports'" class="card">
       <h2>Student Performance Reports</h2>
       <table>
-        <tr *ngFor="let report of performanceReports">
+        <tr *ngFor="let report of getPaginatedData(performanceReports, reportPage)">
           <td>Student ID: {{ report.studentId }}</td>
           <td>Course ID: {{ report.courseId }}</td>
           <td>Grade: {{ report.averageGrade }}</td>
           <td>Remarks: {{ report.remarks }}</td>
         </tr>
       </table>
+      <div class="pagination-controls">
+        <button (click)="changePage('report', 'prev')" [disabled]="reportPage === 1">Previous</button>
+        <span>Page {{ reportPage }}</span>
+        <button (click)="changePage('report', 'next')" [disabled]="reportPage * itemsPerPage >= performanceReports.length">Next</button>
+      </div>
     </section>
   </div>
 </div>

@@ -3,36 +3,164 @@
 
   <form (ngSubmit)="registerStudent()" #studentForm="ngForm">
     <label>Full Name</label>
-    <input type="text" placeholder="Enter Full Name" name="fullName" [(ngModel)]="student.fullName" required />
+    <!-- Full Name with live number check -->
+    <input
+      type="text"
+      name="fullName"
+      [(ngModel)]="student.fullName"
+      (keyup)="checkFullName()"
+      placeholder="Full Name"
+      required
+      maxlength="50"
+      minlength="3"
+      #fullName="ngModel"
+    />
+    <div *ngIf="fullName.errors?.['required'] && fullName.touched" class="error">
+      Full Name is required.
+    </div>
+    <div *ngIf="fullName.errors?.['minlength'] && fullName.touched" class="error">
+      Full Name must be at least 3 characters.
+    </div>
+    <div *ngIf="fullName.errors?.['maxlength'] && fullName.touched" class="error">
+      Full Name cannot exceed 50 characters.
+    </div>
+    <div *ngIf="hasNumberInFullName" class="error">
+      Do not enter number in Full Name.
+    </div>
+
 
     <label>Email</label>
-    <input type="email" placeholder="Enter email" name="email" [(ngModel)]="student.email" required />
+    <input
+  type="email"
+  name="email"
+  [(ngModel)]="student.email"
+  (keyup)="checkEmail()"
+  placeholder="Email (e.g., name&#64;example.com or name&#64;example.co.in)"
+  required
+  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$"
+  #email="ngModel"
+/>
+<div *ngIf="email.errors?.['required'] && email.touched" class="error">
+  Email is required.
+</div>
+<div *ngIf="(email.dirty) && (email.errors?.['pattern'] || hasInvalidEmailFormat)" class="error">
+  Enter a valid Email ID (e.g., name&#64;example.com or name&#64;example.co.in).
+</div>
 
     <label>Password</label>
-    <input type="password" placeholder="Enter password" name="password" [(ngModel)]="student.password" required />
+    <input
+  type="password"
+  name="password"
+  [(ngModel)]="student.password"
+  (keyup)="checkPassword()"
+  placeholder="Password"
+  required
+  maxlength="20"
+  minlength="8"
+  #password="ngModel"
+/>
+<div *ngIf="password.errors?.['required'] && password.touched" class="error">
+  Password is required.
+</div>
+<div *ngIf="(password.touched || password.dirty) && hasInvalidPasswordFormat" class="error">
+  Password must contain at least one uppercase letter, one number, and one special character.
+</div>
 
     <label>Phone Number</label>
-    <input type="text" placeholder="Enter Phone." name="phoneNumber" [(ngModel)]="student.phoneNumber" required />
+    <input
+  type="text"
+  name="phoneNumber"
+  [(ngModel)]="student.phoneNumber"
+  (keyup)="checkPhoneNumber()"
+  placeholder="Phone Number"
+  required
+  #phoneNumber="ngModel"
+/>
+<div *ngIf="phoneNumber.errors?.['required'] && phoneNumber.touched" class="error">
+  Phone Number is required.
+</div>
+<div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && hasInvalidPhoneFormat" class="error">
+  Enter a valid 10-digit phone number (digits only).
+</div>
+
 
     <label>Date of Birth</label>
-    <input type="date"  name="dateOfBirth" [(ngModel)]="student.dateOfBirth" required />
+     <!-- Date of Birth -->
+    <input
+      type="date"
+      name="dateOfBirth"
+      [(ngModel)]="student.dateOfBirth"
+      required
+      #dob="ngModel"
+    />
+    <div *ngIf="dob.invalid && dob.touched" class="error">
+      Date of birth is required.
+    </div>
 
     <label>Gender</label>
-    <select name="gender" [(ngModel)]="student.gender" required>
+    <!-- Gender -->
+    <select
+      name="gender"
+      [(ngModel)]="student.gender"
+      required
+      #gender="ngModel"
+    >
       <option value="">Select Gender</option>
       <option value="Male">Male</option>
       <option value="Female">Female</option>
       <option value="Other">Other</option>
     </select>
+    <div *ngIf="gender.invalid && gender.touched" class="error">
+      Gender is required.
+    </div>
 
     <label>Address</label>
-    <input type="text" placeholder="Enter address" name="address" [(ngModel)]="student.address" required />
+     <!-- Address -->
+    <input
+      type="text"
+      name="address"
+      [(ngModel)]="student.address"
+      placeholder="Address"
+      required
+      minlength="5"
+      #address="ngModel"
+    />
+    <div *ngIf="address.invalid && address.touched" class="error">
+      Address is required (minimum 5 characters).
+    </div>
 
     <label>Grade Level</label>
-    <input type="text" placeholder="Enter grade" name="gradeLevel" [(ngModel)]="student.gradeLevel" required />
+ <!-- Grade Level -->
+    <input
+      type="text"
+      name="gradeLevel"
+      [(ngModel)]="student.gradeLevel"
+      placeholder="Grade Level (e.g., 10th, UG)"
+      required
+      pattern="^[a-zA-Z0-9\s]+$"
+      #gradeLevel="ngModel"
+    />
+    <div *ngIf="gradeLevel.invalid && gradeLevel.touched" class="error">
+      Valid grade level is required.
+    </div>
 
     <label>Student No.</label>
-    <input type="text" placeholder="Enter StudentNo" name="studentNo" [(ngModel)]="student.studentNo" required />
+    <!-- Student No -->
+<input
+  type="text"
+  name="studentNo"
+  [(ngModel)]="student.studentNo"
+  (keyup)="checkStudentNo()"
+  placeholder="Student No."
+  required
+  #studentNo="ngModel"
+/>
+<div *ngIf="studentNo.errors?.['required'] && studentNo.touched" class="error">
+  Student Number is required.
+</div>
+<div *ngIf="(studentNo.dirty || studentNo.touched) && hasInvalidStudentNo" class="error">
+  Enter a valid Student Number (up to 5 digits).
+</div>
 
     <!-- CAPTCHA Section -->
     <label>CAPTCHA</label>

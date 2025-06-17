@@ -49,6 +49,15 @@ export class AdminDashboardComponent implements OnInit {
   courses: Course[] = [];
   performanceReports: PerformanceReport[] = [];
 
+  studentPage: number = 1;
+approvedStudentPage: number = 1;
+teacherPage: number = 1;
+approvedTeacherPage: number = 1;
+coursePage: number = 1;
+reportPage: number = 1;
+
+itemsPerPage: number = 5;
+
   editingCourse: Course | null = null;
   activeSection: string = 'pending-students'; // default section
 
@@ -88,6 +97,11 @@ export class AdminDashboardComponent implements OnInit {
         this.cd.detectChanges();
       });
   }
+
+  getPaginatedData<T>(data: T[], page: number): T[] {
+  const startIndex = (page - 1) * this.itemsPerPage;
+  return data.slice(startIndex, startIndex + this.itemsPerPage);
+}
 
   approveStudent(id: number) {
     this.http.put<any>(`https://localhost:7072/api/Admin/ApproveStudent/${id}`, {})
@@ -217,5 +231,31 @@ export class AdminDashboardComponent implements OnInit {
   // Optionally, you can redirect to login page
   window.location.href = '/login'; // Adjust path if needed
 }
+
+changePage(section: string, direction: 'next' | 'prev') {
+  switch (section) {
+    case 'teacher':
+      if (direction === 'next') this.teacherPage++;
+      else if (direction === 'prev' && this.teacherPage > 1) this.teacherPage--;
+      break;
+
+    case 'student':
+      if (direction === 'next') this.studentPage++;
+      else if (direction === 'prev' && this.studentPage > 1) this.studentPage--;
+      break;
+
+    case 'report':
+      if (direction === 'next') this.reportPage++;
+      else if (direction === 'prev' && this.reportPage > 1) this.reportPage--;
+      break;
+
+    case 'course':
+      if (direction === 'next') this.coursePage++;
+      else if (direction === 'prev' && this.coursePage > 1) this.coursePage--;
+      break;
+  }
+}
+
+
 
 }

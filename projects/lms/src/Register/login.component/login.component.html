@@ -1,24 +1,74 @@
 <div class="login-container">
   <h2>Login</h2>
-  <form (ngSubmit)="login()">
+
+  <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
     
+    <!-- Email -->
     <label for="email">Email</label>
-    <input type="email" placeholder="Email" [(ngModel)]="loginData.email" name="email" required />
+    <input
+      id="email"
+      type="email"
+      name="email"
+      placeholder="Email"
+      [(ngModel)]="loginData.email"
+      required
+      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$"
+      #email="ngModel"
+    />
+    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
+      <small *ngIf="email.errors?.['required']">Email is required.</small>
+      <small *ngIf="email.errors?.['pattern']">
+        Enter a valid email (e.g., user&#64;example.com or user&#64;example.co.in).
+      </small>
+    </div>  
 
+    <!-- Password -->
     <label for="password">Password</label>
-    <input type="password" placeholder="Password" [(ngModel)]="loginData.password" name="password" required />
+    <input
+      id="password"
+      type="password"
+      name="password"
+      placeholder="Password"
+      [(ngModel)]="loginData.password"
+      required
+      minlength="8"
+      #password="ngModel"
+    />
+    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
+      <small *ngIf="password.errors?.['required']">Password is required.</small>
+      <small *ngIf="password.errors?.['minlength']">
+        Password must be at least 8 characters.
+      </small>
+    </div>
 
+    <!-- Role -->
     <label for="role">Select Role</label>
-    <select [(ngModel)]="loginData.role" name="role" required>
+    <select
+      id="role"
+      [(ngModel)]="loginData.role"
+      name="role"
+      required
+      #role="ngModel"
+    >
       <option value="" disabled selected>Select Role</option>
       <option value="Admin">Admin</option>
       <option value="Teacher">Teacher</option>
       <option value="Student">Student</option>
     </select>
+    <div *ngIf="role.invalid && (role.dirty || role.touched)" class="error">
+      <small *ngIf="role.errors?.['required']">Role is required.</small>
+    </div>
 
+    <!-- Error Message Display -->
+    <div *ngIf="errorMessage" class="error">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Login Button -->
     <button type="submit" class="login-button">Login</button>
   </form>
 
+  <!-- Clear & Back Buttons -->
   <div class="button-group">
     <button class="clear-button" (click)="clearForm()">Clear all</button>
     <button class="back-button" (click)="goBack()">Back</button>
