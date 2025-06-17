@@ -1,10 +1,101 @@
-<div class="home-container">
-  <h1>📚 Welcome to EduLMS</h1>
-  <p>Select an option to get started:</p>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <a class="logo" href="#">EduLMS</a>
+    <ul class="nav-links">
+      <li><a href="#home">🏠 Home</a></li>
+      <li><a href="#why-choose">Why Choose EduLMS?</a></li>
+      <li><a href="#featured-courses">📚 Featured Courses</a></li>
+      <li><a href="#contact">📬 Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<div>
+<section id="home" class="hero-section">
+  <h1>Welcome to <span class="brand">EduLMS</span></h1>
+  <p>Empower your learning with modern tools and expert instructors.</p>
+  <div class="typewriter">Your future begins here...</div>
+  
 
   <div class="button-group">
     <button (click)="goToStudentRegister()">🎓 Student Registration</button>
     <button (click)="goToTeacherRegister()">🧑‍🏫 Teacher Registration</button>
     <button (click)="goToLogin()">🔐 Login</button>
   </div>
+  </section>
 </div>
+
+<section id="why-choose" class="why-choose">
+  <h2>Why Choose <span class="brand">EduLMS?</span></h2>
+  <div class="features">
+    <div class="feature-card">
+      <span>🎯</span>
+      <h3>Goal Oriented</h3>
+      <p>Focus on outcomes with our guided learning paths.</p>
+    </div>
+    <div class="feature-card">
+      <span>🧑‍🏫</span>
+      <h3>Expert Instructors</h3>
+      <p>Learn from industry professionals and academic experts.</p>
+    </div>
+    <div class="feature-card">
+      <span>📱</span>
+      <h3>Mobile Ready</h3>
+      <p>Study anytime, anywhere with our responsive platform.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Courses -->
+<section id="featured-courses" class="featured-courses">
+  <h2>📚 Updated Featured Courses</h2>
+  <div class="course-grid">
+    <div class="course-card">
+      <div class="course-header">
+        <span class="badge popular">Popular</span>
+      </div>
+      <h3>Full Stack Web Dev</h3>
+      <p>Master frontend and backend technologies.</p>
+    </div>
+    <div class="course-card">
+      <div class="course-header">
+        <span class="badge new">New</span>
+      </div>
+      <h3>Cloud Computing</h3>
+      <p>Get hands-on with AWS, Azure & GCP.</p>
+    </div>
+    <div class="course-card">
+      <div class="course-header">
+        <span class="badge trending">Trending</span>
+      </div>
+      <h3>AI & Machine Learning</h3>
+      <p>Unlock the power of data and algorithms.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact / Feedback Section -->
+<section id="contact" class="footer">
+  <div class="footer-content">
+    <h2>📬 Contact Us</h2>
+    <p>We value your feedback!</p>
+
+    <form class="feedback-form">
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="What can we improve?" required></textarea>
+      <button type="submit">Send Feedback</button>
+    </form>
+
+
+
+<!-- 🎨 Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 EduLMS. Made with ❤️ by Team Edu.</p>
+    <div class="footer-links">
+      <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Support</a>
+    </div>
+  </div>
+</footer>
