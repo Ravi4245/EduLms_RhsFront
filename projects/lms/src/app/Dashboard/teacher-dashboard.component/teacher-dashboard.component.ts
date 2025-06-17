@@ -4,6 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
+// Add this interface to avoid TS errors
+interface AssignmentModel {
+  assignmentId: number;
+  courseId: number;
+  teacherId: number;
+  title: string;
+  description?: string;
+  uploadFilePath?: string;
+  dueDate: string;
+}
+
 @Component({
   selector: 'app-teacher-dashboard',
   standalone: true,
@@ -21,20 +32,24 @@ export class TeacherDashboardComponent implements OnInit {
   profile: any = {};  // ✅ NEW profile object
 
   courses: any[] = [];
-  assignments: any[] = [];
+  assignments: AssignmentModel[] = [];  // Use interface here
   submissions: any[] = [];
   performanceReports: any[] = [];
   enrolledStudents: any[] = [];
   selectedCoursePdf: File | null = null;
   editingReportId: number | null = null;
-  
+  // Pagination for enrolled students
+  currentPage: number = 1;
+  itemsPerPage: number = 3;
 
-newCourse = {
-  courseName: '',
-  description: '',
-  category: '',
-  createdByTeacherId: 0
-};
+  editingAssignment: AssignmentModel | null = null;  // Use interface
+
+  newCourse = {
+    courseName: '',
+    description: '',
+    category: '',
+    createdByTeacherId: 0
+  };
 
   newAssignment = {
     courseId: null as number | null,
@@ -62,10 +77,7 @@ newCourse = {
     assignmentId: null as number | null
   };
 
-//   onCoursePdfSelected(event: any): void {
-//   this.selectedCoursePdf = event.target.files[0];
-// }
-  constructor(private http: HttpClient, private cd: ChangeDetectorRef,private router: Router) {}
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit(): void {
     const storedId = localStorage.getItem('teacherId');
@@ -79,28 +91,39 @@ newCourse = {
       this.loadPerformanceReports();
       this.loadSubmittedAssignments();
       this.loadEnrolledStudents();
-      this.loadCreatedAssignments();
+      this.loadAssignments();  // Load created assignments here
     } else {
       alert('❌ Teacher ID not found. Please login again.');
     }
   }
 
-  viewPdf(path: string) {
-  const fullPath = `https://localhost:7072/${path}`;
-  window.open(fullPath, '_blank');
-}
+  startEditAssignment(assignment: AssignmentModel) {
+    this.editingAssignment = { ...assignment };
+  }
 
   cancelEdit() {
-  this.editingReportId = null;
+    this.editingAssignment = null;
+  }
+
+  viewPdf(path: string) {
+    const fullPath = `https://localhost:7072/${path}`;
+    window.open(fullPath, '_blank');
+  }
+
+  
+get paginatedEnrolledStudents() {
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+  const end = start + this.itemsPerPage;
+  return this.enrolledStudents.slice(start, end);
 }
 
-editReport(report: any) {
-  this.editingReportId = report.performanceReportId;
+get totalPages(): number {
+  return Math.ceil(this.enrolledStudents.length / this.itemsPerPage);
 }
+
   // ✅ Load Teacher Profile
   loadTeacherProfile() {
     this.http.get<any>(`https://localhost:7072/api/Teacher/Profile/${this.teacherId}`)
-
       .subscribe({
         next: res => {
           this.profile = res;
@@ -114,43 +137,41 @@ editReport(report: any) {
 
   // ------- Course Methods -------
   loadCourses() {
-    this.http.get<any[]>(`https://localhost:7072/api/Teacher/MyCourses/${this.teacherId}`)
+   this.http.get<any[]>(`https://localhost:7072/api/Teacher/MyCourses/${this.teacherId}`)
+  .subscribe((res: any[]) => {
+    this.courses = res;
+    this.cd.detectChanges();
+  });
+
+  }
+
+  onCoursePdfSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedCoursePdf = event.target.files[0];
+    }
+  }
+
+  createCourse() {
+    const formData = new FormData();
+    formData.append('CourseName', this.newCourse.courseName);
+    formData.append('Description', this.newCourse.description);
+    formData.append('Category', this.newCourse.category);
+    formData.append('CreatedByTeacherId', this.teacherId.toString());
+
+    if (this.selectedCoursePdf) {
+      formData.append('PdfFile', this.selectedCoursePdf);
+    }
+
+    this.http.post<any>(`https://localhost:7072/api/Teacher/CreateCourse`, formData)
       .subscribe(res => {
-        this.courses = res;
-        this.cd.detectChanges();
+        alert(res.message);
+        this.newCourse = { courseName: '', description: '', category: '', createdByTeacherId: this.teacherId };
+        this.selectedCoursePdf = null;
+        this.loadCourses();
+      }, err => {
+        console.error('Create course error:', err);
       });
   }
-
-  // ------- Course Methods -------
- 
-onCoursePdfSelected(event: any) {
-  if (event.target.files && event.target.files.length > 0) {
-    this.selectedCoursePdf = event.target.files[0];
-  }
-}
-
-
- createCourse() {
-  const formData = new FormData();
-  formData.append('CourseName', this.newCourse.courseName);
-  formData.append('Description', this.newCourse.description);
-  formData.append('Category', this.newCourse.category);
-  formData.append('CreatedByTeacherId', this.teacherId.toString());
-
-  if (this.selectedCoursePdf) {
-    formData.append('PdfFile', this.selectedCoursePdf);
-  }
-
-  this.http.post<any>(`https://localhost:7072/api/Teacher/CreateCourse`, formData)
-    .subscribe(res => {
-      alert(res.message);
-      this.newCourse = { courseName: '', description: '', category: '', createdByTeacherId: this.teacherId };
-      this.selectedCoursePdf = null;
-      this.loadCourses();
-    }, err => {
-      console.error('Create course error:', err);
-    });
-}
 
   updateCourse(course: any) {
     this.http.put<any>(`https://localhost:7072/api/Teacher/UpdateCourse`, course)
@@ -197,16 +218,60 @@ onCoursePdfSelected(event: any) {
           dueDate: ''
         };
         this.selectedFile = null;
-        this.loadSubmittedAssignments();
+        this.loadAssignments();
       });
   }
 
-loadCreatedAssignments() {
-  this.http.get<any[]>(`https://localhost:7072/api/Teacher/MyAssignments/${this.teacherId}`)
-    .subscribe(res => {
-      this.assignments = res;
+  loadAssignments() {
+    this.http.get<AssignmentModel[]>(`https://localhost:7072/api/Teacher/MyAssignments/${this.teacherId}`)
+      .subscribe(data => {
+        this.assignments = data;
+        this.cd.detectChanges();
+      }, err => {
+        console.error('Failed to load assignments', err);
+      });
+  }
+
+  updateAssignment() {
+    if (!this.editingAssignment) return;
+
+    this.http.put<any>(
+      `https://localhost:7072/api/Teacher/UpdateAssignment/${this.editingAssignment.assignmentId}`,
+      this.editingAssignment
+    ).subscribe({
+      next: (response) => {
+        alert(response.message);
+        this.loadAssignments();
+        this.editingAssignment = null;
+      },
+      error: (err) => {
+        alert('Failed to update assignment');
+        console.error(err);
+      }
     });
+  }
+
+  editReport(report: any) {
+  this.editingReportId = report.performanceReportId;
 }
+
+  deleteAssignment(id: number) {
+    if (confirm('Are you sure you want to delete this assignment?')) {
+      this.http.delete<any>(`https://localhost:7072/api/Teacher/DeleteAssignment/${id}`)
+        .subscribe({
+          next: (response) => {
+            alert(response.message);
+            this.loadAssignments();
+          },
+          error: (err) => {
+            alert('Failed to delete assignment');
+            console.error(err);
+          }
+        });
+    }
+  }
+
+  // ------- Other Methods -------
 
   assignAssignmentToStudenta() {
     const { studentId, assignmentId } = this.assignAssignmentData;
@@ -248,7 +313,6 @@ loadCreatedAssignments() {
       });
   }
 
-  // ------- Performance Methods -------
   loadPerformanceReports() {
     this.http.get<any[]>(`https://localhost:7072/api/Admin/StudentPerformance`)
       .subscribe(res => {
@@ -274,7 +338,6 @@ loadCreatedAssignments() {
       });
   }
 
-  // ------- Enrollment Methods -------
   assignCourseToStudent() {
     const { studentId, courseId } = this.assignCourseData;
     this.http.post<any>(`https://localhost:7072/api/Teacher/AssignCourseToStudent?studentId=${studentId}&courseId=${courseId}`, {})
@@ -285,23 +348,29 @@ loadCreatedAssignments() {
       });
   }
 
-loadEnrolledStudents() {
-  this.http.get<any[]>(`https://localhost:7072/api/Teacher/ApprovedStudents`)
-    .subscribe({
-      next: res => {
-        this.enrolledStudents = res;
-        console.log("✅ Approved Students:", res);  // Debug
-        this.cd.detectChanges();
-      },
-      error: err => {
-        console.error("❌ Failed to load approved students", err);
-        alert("Failed to load approved students.");
-      }
-    });
-}
+  loadEnrolledStudents() {
+    this.http.get<any[]>(`https://localhost:7072/api/Teacher/ApprovedStudents`)
+      .subscribe({
+        next: res => {
+          this.enrolledStudents = res;
+          this.cd.detectChanges();
+        },
+        error: err => {
+          console.error("❌ Failed to load approved students", err);
+          alert("Failed to load approved students.");
+        }
+      });
+  }
 
-logout() {
-  localStorage.removeItem('teacherId'); // or however you're storing the login
-  this.router.navigate(['/']); // go to home or login page
+  logout() {
+    localStorage.removeItem('teacherId');
+    this.router.navigate(['/']);
+  }
+
+  loadCreatedAssignments() {
+  this.http.get<any[]>(`https://localhost:7072/api/Teacher/MyAssignments/${this.teacherId}`)
+    .subscribe(res => {
+      this.assignments = res;
+    });
 }
 }

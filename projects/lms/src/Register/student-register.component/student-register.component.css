@@ -87,3 +87,36 @@ input, select {
   margin-left: 12px;
   cursor: pointer;
 }
+
+/* Validation styles */
+.error {
+  color: #d93025; /* red */
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* Highlight invalid and touched inputs */
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border-color: #d93025;
+  background-color: #ffe6e6;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #0057e7;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #003ea1;
+}

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -18,23 +18,33 @@ export class LoginComponent {
     role: ''
   };
 
+  errorMessage: string = '';
+
   constructor(private http: HttpClient, private router: Router) {}
 
-  login() {
+login(form: NgForm) {
+  this.errorMessage = '';
+
+  // ✅ Check if form is invalid
+  if (form.invalid) {
+    this.errorMessage = 'Please fill all fields correctly.';
+    return;
+  }
+
   const apiUrl = 'https://localhost:7072/api/Login/Login';
 
   this.http.post(apiUrl, this.loginData).subscribe(
     (res: any) => {
-      alert(res.message); // Shows "Login successful as Student" etc.
+      alert(res.message); // Shows "Login successful as Student", etc.
 
       localStorage.setItem('token', res.token);
 
       // ✅ Store ID based on role
       if (res.role === 'Student') {
-        localStorage.setItem('studentId', res.id);  // FIXED ✅
+        localStorage.setItem('studentId', res.id);
         this.router.navigate(['/student-dashboard']);
       } else if (res.role === 'Teacher') {
-        localStorage.setItem('teacherId', res.id);  // FIXED ✅
+        localStorage.setItem('teacherId', res.id);
         this.router.navigate(['/teacher-dashboard']);
       } else if (res.role === 'Admin') {
         this.router.navigate(['/admin-dashboard']);
@@ -45,6 +55,9 @@ export class LoginComponent {
     }
   );
 }
+
+
+
  clearForm() {
     this.loginData = {
       email: '',

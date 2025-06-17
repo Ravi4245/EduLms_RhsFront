@@ -73,9 +73,10 @@
 
 
 
-    <!-- Enrolled Students -->
+<!-- Enrolled Students with Pagination -->
 <section *ngIf="activeSection === 'enrolled-students'" class="card">
   <h2>👨‍🎓 Approved Students</h2>
+
   <table>
     <thead>
       <tr>
@@ -85,14 +86,28 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let student of enrolledStudents">
+      <tr *ngFor="let student of paginatedEnrolledStudents">
         <td>{{ student.studentName }}</td>
         <td>{{ student.email }}</td>
         <td>{{ student.studentId }}</td>
       </tr>
     </tbody>
   </table>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-controls">
+    <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">
+      ⬅️ Prev
+    </button>
+
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">
+      Next ➡️
+    </button>
+  </div>
 </section>
+
 
 
 
@@ -108,20 +123,46 @@
     </section>
 
 
-    <!-- My Created Assignments -->
-<section *ngIf="activeSection === 'my-assignments'" class="card">
+    
+<!-- My Created Assignments -->
+<section *ngIf="activeSection === 'my-assignments'" class="card my-assignments">
   <h2>🧾 My Created Assignments</h2>
+  
   <ul>
     <li *ngFor="let a of assignments">
       <strong>Assignment ID:</strong> {{ a.assignmentId }} <br />
       <strong>Title:</strong> {{ a.title }} <br />
       <strong>Course ID:</strong> {{ a.courseId }} <br />
-      <strong>Due Date:</strong> {{ a.dueDate }} <br />
+      <strong>Due Date:</strong> {{ a.dueDate | date }} <br />
       <a *ngIf="a.uploadFilePath" [href]="'https://localhost:44361/' + a.uploadFilePath" target="_blank">📄 View PDF</a>
-      <hr />
+      <br />
+
+      <button (click)="startEditAssignment(a)">✏️ Edit</button>
+      <button (click)="deleteAssignment(a.assignmentId)">🗑️ Delete</button>
     </li>
   </ul>
+
+  <!-- Edit form -->
+  <div *ngIf="editingAssignment" class="edit-form">
+    <h3>Edit Assignment (ID: {{ editingAssignment.assignmentId }})</h3>
+    <label>
+      Title:
+      <input [(ngModel)]="editingAssignment.title" />
+    </label>
+    <label>
+      Due Date:
+      <input type="date" [(ngModel)]="editingAssignment.dueDate" />
+    </label>
+    <label>
+      Course ID:
+      <input type="number" [(ngModel)]="editingAssignment.courseId" disabled />
+    </label>
+    <br />
+    <button (click)="updateAssignment()">Save</button>
+    <button (click)="cancelEdit()">Cancel</button>
+  </div>
 </section>
+
 
 
     <!-- View Submissions

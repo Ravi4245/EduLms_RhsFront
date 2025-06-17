@@ -24,6 +24,47 @@ export class StudentRegisterComponent {
     studentNo: ''
   };
 
+   hasNumberInFullName = false;
+
+ // constructor(private http: HttpClient, private router: Router) {}
+
+  checkFullName() {
+    // Check for digits in the full name
+    this.hasNumberInFullName = /\d/.test(this.student.fullName);
+  }
+
+  hasInvalidEmailFormat = false;
+
+checkEmail() {
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$/;
+  this.hasInvalidEmailFormat = !pattern.test(this.student.email || '');
+}
+hasInvalidPasswordFormat = false;
+
+checkPassword() {
+  const strongPasswordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+  this.hasInvalidPasswordFormat = !strongPasswordPattern.test(this.student.password);
+}
+hasInvalidPhoneFormat = false;
+
+checkPhoneNumber() {
+  const validPhonePattern = /^\d{10}$/; // Exactly 10 digits
+  this.hasInvalidPhoneFormat = !validPhonePattern.test(this.student.phoneNumber);
+}
+
+hasInvalidStudentNo = false;
+
+checkStudentNo() {
+  const validStudentNoPattern = /^\d{1,5}$/; // 1 to 5 digits only
+  this.hasInvalidStudentNo = !validStudentNoPattern.test(this.student.studentNo);
+}
+
+
+
+
+
+  
+
   captcha = '';
   userCaptchaInput = '';
 
