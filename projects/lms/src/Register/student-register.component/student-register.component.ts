@@ -36,7 +36,7 @@ export class StudentRegisterComponent {
   hasInvalidEmailFormat = false;
 
 checkEmail() {
-  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$/;
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$/;
   this.hasInvalidEmailFormat = !pattern.test(this.student.email || '');
 }
 hasInvalidPasswordFormat = false;

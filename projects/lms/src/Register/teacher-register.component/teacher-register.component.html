@@ -35,9 +35,9 @@
   name="email"
   [(ngModel)]="teacher.email"
   (keyup)="checkEmail()"
-  placeholder="Email (e.g., name&#64;example.com or name&#64;example.co.in)"
+  placeholder="Email (e.g., name&#64;example.com or name&#64;example.co.in or name&#64;example.in )"
   required
-  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$"
+  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$"
   #email="ngModel"
 />
 

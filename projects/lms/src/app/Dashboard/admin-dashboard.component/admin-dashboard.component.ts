@@ -119,15 +119,20 @@ itemsPerPage: number = 5;
       });
   }
 
- deleteApprovedStudent(id: number) {
+deleteApprovedStudent(id: number) {
   this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedStudent/${id}`)
-    .subscribe((res) => {
-      alert(res.message);
-      this.refreshAllData();
-    }, (err) => {
-      alert(err.error.message || "Error deleting student");
+    .subscribe({
+      next: (res) => {
+        alert(res.message);
+        this.refreshAllData();
+      },
+      error: (err) => {
+        // Show the message from backend or a default error
+        alert(err.error?.message || "Error deleting student");
+      }
     });
 }
+
 
   // ---------------------- Teachers ----------------------
 
@@ -163,18 +168,21 @@ itemsPerPage: number = 5;
       });
   }
 
- deleteApprovedTeacher(id: number) {
+deleteApprovedTeacher(id: number) {
   this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedTeacher/${id}`)
     .subscribe({
       next: (res) => {
-        alert(res.message);
+        alert(res.message || "Teacher deleted successfully");
         this.refreshAllData();
       },
       error: (err) => {
-        alert(err.error.message || "Error deleting teacher");
+        const errorMsg = err?.error?.message || "Error deleting teacher";
+        alert(errorMsg);
       }
     });
 }
+
+
 
   // ---------------------- Courses ----------------------
 

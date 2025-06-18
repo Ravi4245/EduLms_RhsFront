@@ -63,7 +63,7 @@
       <br />
       
       <button (click)="deleteCourse(c.courseId)">Delete</button>
-      <button (click)="updateCourse(c)">Update</button>
+      <!-- <button (click)="updateCourse(c)">Update</button> -->
 
       <!-- ✅ View PDF Button -->
       <button *ngIf="c.pdfFilePath" (click)="viewPdf(c.pdfFilePath)">📄 View PDF</button>
@@ -134,7 +134,7 @@
       <strong>Title:</strong> {{ a.title }} <br />
       <strong>Course ID:</strong> {{ a.courseId }} <br />
       <strong>Due Date:</strong> {{ a.dueDate | date }} <br />
-      <a *ngIf="a.uploadFilePath" [href]="'https://localhost:44361/' + a.uploadFilePath" target="_blank">📄 View PDF</a>
+      <a *ngIf="a.uploadFilePath" [href]="'https://localhost:7072/' + a.uploadFilePath" target="_blank">📄 View PDF</a>
       <br />
 
       <button (click)="startEditAssignment(a)">✏️ Edit</button>
@@ -228,13 +228,13 @@
     <!-- All Submissions -->
     <section *ngIf="activeSection === 'all-submissions'" class="card">
       <h2>📁 All Submissions</h2>
-      <button (click)="loadSubmittedAssignments()">Load Submissions</button>
+      
       <ul>
         <li *ngFor="let s of submissions">
           📄 <strong>{{ s.assignmentTitle }}</strong> by {{ s.studentName }}
           <br />
-          Grade: {{ s.grade }} —
-          <a [href]="'https://localhost:44361/' + s.submittedFilePath" target="_blank">View File</a>
+          File: {{ s.grade }} 
+          <a [href]="'https://localhost:7072/' + s.submittedFilePath" target="_blank">View File</a>
         </li>
       </ul>
     </section>

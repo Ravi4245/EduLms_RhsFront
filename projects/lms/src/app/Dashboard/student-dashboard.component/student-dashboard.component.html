@@ -36,7 +36,7 @@
   <div class="profile-grid">
     <div><strong>Full Name:</strong> {{ profile.fullName }}</div>
     <div><strong>Email:</strong> {{ profile.email }}</div>
-    <div><strong>Mobile:</strong> {{ profile.mobile }}</div>
+    <!-- <div><strong>Mobile:</strong> {{ profile.mobile }}</div> -->
     <div><strong>Gender:</strong> {{ profile.gender }}</div>
     <div><strong>Date of Birth:</strong> {{ profile.dob | date }}</div>
     <div><strong>Grade Level:</strong> {{ profile.gradeLevel }}</div>
@@ -60,9 +60,10 @@
       <p><strong>ID:</strong> {{ c.courseId }}</p>
       <p><strong>Name:</strong> {{ c.courseName }}</p>
       <p><strong>Category:</strong> {{ c.category }}</p>
-      <button *ngIf="c.pdfFilePath" (click)="viewPdf(c.pdfFilePath)" class="btn btn-primary">
-        📄 View Course PDF
-      </button>
+<button *ngIf="c.pdfFilePath" (click)="viewPdfa(c.pdfFilePath)" class="btn btn-primary">
+  📄 View Course PDF
+</button>
+
     </div>
   </div>
 </section>
@@ -73,16 +74,31 @@
 
 <section *ngIf="activeSection === 'assignments'" class="card">
   <h2>📄 Assigned Assignments</h2>
-  <div class="assignment-grid">
+
+  <!-- Debug output: shows raw data -->
+  <!-- <pre *ngIf="assignedAssignments">{{ assignedAssignments | json }}</pre> -->
+
+  <!-- Show message if no assignments -->
+  <div *ngIf="assignedAssignments.length === 0">
+    <p>✅ No assignments available to show.</p>
+  </div>
+
+  <!-- Render each assignment -->
+  <div class="assignment-grid" *ngIf="assignedAssignments.length > 0">
     <div class="assignment-card" *ngFor="let a of assignedAssignments">
-      <p><strong>ID:</strong> {{ a.AssignmentId }}</p>
-      <h3>{{ a.Title }}</h3>
-      <p>{{ a.Description }}</p>
-      <p><strong>Due:</strong> {{ a.DueDate | date }}</p>
-      <a [href]="'https://localhost:44361/' + a.File" target="_blank" class="view-link">📄 View PDF</a>
+      <p><strong>ID:</strong> {{ a.assignmentId }}</p>
+      <h3>{{ a.title }}</h3>
+      <p>{{ a.description }}</p>
+      <p><strong>Due:</strong> {{ a.dueDate | date }}</p>
+
+      <!-- Adjust the domain as needed -->
+      <a *ngIf="a.file" [href]="'https://localhost:7072/' + a.file" target="_blank" class="view-link">
+        📄 View PDF
+      </a>
     </div>
   </div>
 </section>
+
 
 
 

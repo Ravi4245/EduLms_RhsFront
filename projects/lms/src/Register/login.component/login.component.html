@@ -12,13 +12,13 @@
       placeholder="Email"
       [(ngModel)]="loginData.email"
       required
-      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$"
+      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$"
       #email="ngModel"
     />
     <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
       <small *ngIf="email.errors?.['required']">Email is required.</small>
       <small *ngIf="email.errors?.['pattern']">
-        Enter a valid email (e.g., user&#64;example.com or user&#64;example.co.in).
+        Enter a valid email (e.g., user&#64;example.com or user&#64;example.co.in or user&#64;example.co.in).
       </small>
     </div>  
 

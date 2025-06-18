@@ -115,21 +115,38 @@
       <h2>📬 Contact Us</h2>
       <p>We value your feedback!</p>
 
-      <form class="feedback-form" (ngSubmit)="submitFeedback()" #f="ngForm">
-  <input type="email" name="email" [(ngModel)]="feedback.email" placeholder="Your Email" required />
-  <textarea name="message" [(ngModel)]="feedback.message" placeholder="What can we improve?" required></textarea>
+      <form class="feedback-form" #f="ngForm" (ngSubmit)="submitFeedback(f)">
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="feedback.email"
+          placeholder="Your Email"
+          required
+        />
+        <textarea
+          name="message"
+          [(ngModel)]="feedback.message"
+          placeholder="What can we improve?"
+          required
+        ></textarea>
 
-  <!-- 🧠 Simple CAPTCHA -->
-  <div class="captcha-container">
-    <label>What is {{ captchaNum1 }} + {{ captchaNum2 }} ?</label>
-    <input type="number" [(ngModel)]="captchaAnswer" name="captchaAnswer" required />
-  </div>
+        <!-- 🧠 Simple CAPTCHA -->
+        <div class="captcha-container">
+          <label>What is {{ captchaNum1 }} + {{ captchaNum2 }} ?</label>
+          <input
+            type="number"
+            [(ngModel)]="captchaAnswer"
+            name="captchaAnswer"
+            required
+          />
+        </div>
 
-  <button type="submit">Send Feedback</button>
-</form>
+        <button type="submit">Send Feedback</button>
+      </form>
     </div>
   </div>
 </section>
+
 
 
 <!-- 🎨 Footer -->

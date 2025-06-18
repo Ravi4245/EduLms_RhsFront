@@ -37,7 +37,7 @@ export class TeacherRegisterComponent {
 
   // Email validation: username@example.com
   checkEmail() {
-  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in)$/;
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$/;
   this.hasInvalidEmailFormat = !pattern.test(this.teacher.email || '');
 }
 

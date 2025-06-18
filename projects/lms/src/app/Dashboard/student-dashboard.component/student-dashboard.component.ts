@@ -56,11 +56,16 @@ ngOnInit() {
     this.loadProfile();
     this.loadMyCourses();
     this.loadEnrolledCourses();
-    this.loadAssignments();
+     this.loadAssignments();
     this.loadPerformanceReport();
-     this.loadAssignedAssignments(); 
+    // this.loadAssignedAssignments(); 
      
   }
+
+  viewPdfa(pdfPath: string) {
+  const fullUrl = `https://localhost:7072/${pdfPath}`;
+  window.open(fullUrl, '_blank');
+}
 
  viewPdf(pdfUrl: string) {
   window.open(pdfUrl, '_blank');
@@ -83,6 +88,9 @@ loadMyCourses() {
       next: res => {
         this.enrolledCourses = res;
         console.log("✅ My Courses with PDFs:", this.enrolledCourses);
+        this.enrolledCourses.forEach(course => {
+          console.log("PDF Path:", course.pdfFilePath);
+        });
       },
       error: err => {
         console.error("❌ Failed to load courses", err);
@@ -90,6 +98,7 @@ loadMyCourses() {
       }
     });
 }
+
 
 
 
