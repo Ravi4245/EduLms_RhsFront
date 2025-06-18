@@ -2,8 +2,7 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-//import { AdminService } from '../../app/Services/admin.service';
-
+import { HttpClient } from '@angular/common/http'; // 👈 Add this
 
 @Component({
   selector: 'app-home',
@@ -15,34 +14,24 @@ import { FormsModule } from '@angular/forms';
 export class Home implements OnInit {
   darkMode: boolean = false;
 
-  // studentCount: number = 0;
-  // teacherCount: number = 0;
+  feedback = {
+    email: '',
+    message: ''
+  };
+
+  captchaNum1 = 0;
+  captchaNum2 = 0;
+  captchaAnswer = 0;
 
   @HostBinding('class.dark-mode') get isDarkMode() {
     return this.darkMode;
   }
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
-    // this.loadCounts();
+    this.generateCaptcha();
   }
-
-//   loadCounts() {
-//     this.adminService.getApprovedStudentsCount().subscribe({
-//   next: (res: { count: number }) => this.studentCount = res.count,
-
-//   error: (err: any) => console.error('Failed to load student count', err)
-// });
-
-
-//    this.adminService.getApprovedTeachersCount().subscribe({
-//  next: (res: { count: number }) => this.teacherCount = res.count,
-
-//   error: (err: any) => console.error('Failed to load teacher count', err)
-// });
-
-//   }
 
   goToStudentRegister() {
     this.router.navigate(['/student-register']);
@@ -57,11 +46,36 @@ export class Home implements OnInit {
   }
 
   toggleDarkMode() {
-    const body = document.body;
-    body.classList.toggle('dark-mode');
+    document.body.classList.toggle('dark-mode');
   }
 
   goToFeatureDetail(type: string) {
     this.router.navigate(['feature-details', type]);
+  }
+
+  generateCaptcha() {
+    this.captchaNum1 = Math.floor(Math.random() * 10);
+    this.captchaNum2 = Math.floor(Math.random() * 10);
+  }
+
+  submitFeedback() {
+    const correctAnswer = this.captchaNum1 + this.captchaNum2;
+    if (this.captchaAnswer !== correctAnswer) {
+      alert("❌ CAPTCHA is incorrect!");
+      this.generateCaptcha();
+      return;
+    }
+
+    this.http.post('https://localhost:7072/api/Feedback/Submit', this.feedback).subscribe({
+      next: () => {
+        alert("✅ Feedback submitted successfully!");
+        this.feedback = { email: '', message: '' };
+        this.captchaAnswer = 0;
+        this.generateCaptcha();
+      },
+      error: () => {
+        alert("❌ Failed to submit feedback.");
+      }
+    });
   }
 }
