@@ -55,7 +55,7 @@ ngOnInit() {
   refreshAll() {
     this.loadProfile();
     this.loadMyCourses();
-    this.loadEnrolledCourses();
+   // this.loadEnrolledCourses();
      this.loadAssignments();
     this.loadPerformanceReport();
     // this.loadAssignedAssignments(); 
@@ -70,6 +70,11 @@ ngOnInit() {
  viewPdf(pdfUrl: string) {
   window.open(pdfUrl, '_blank');
 }
+
+trackByCourseId(index: number, course: any): number {
+  return course.courseId;
+}
+
 
   loadProfile() {
     this.http.get<any>(`https://localhost:7072/api/Student/Profile/${this.studentId}`)

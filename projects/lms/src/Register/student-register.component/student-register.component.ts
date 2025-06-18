@@ -24,14 +24,15 @@ export class StudentRegisterComponent {
     studentNo: ''
   };
 
-   hasNumberInFullName = false;
+  hasInvalidFullName = false;
 
- // constructor(private http: HttpClient, private router: Router) {}
+checkFullName() {
+  // Only allow letters, spaces, apostrophes, and hyphens
+  const validNamePattern = /^[a-zA-Z\s'-]+$/;
 
-  checkFullName() {
-    // Check for digits in the full name
-    this.hasNumberInFullName = /\d/.test(this.student.fullName);
-  }
+  // Set to true if the full name does NOT match the valid pattern
+  this.hasInvalidFullName = !validNamePattern.test(this.student.fullName);
+}
 
   hasInvalidEmailFormat = false;
 

@@ -30,10 +30,16 @@ export class TeacherRegisterComponent {
   hasInvalidTeacherNo = false;
 
   // Full Name validation: no numbers allowed
-  checkFullName() {
-    const regex = /\d/;
-    this.hasNumberInFullName = regex.test(this.teacher.fullName);
-  }
+  hasInvalidFullName = false;
+
+checkFullName() {
+  // Allow only letters, spaces, apostrophes, and hyphens
+  const validNamePattern = /^[a-zA-Z\s'-]+$/;
+
+  // Set to true if input is invalid
+  this.hasInvalidFullName = !validNamePattern.test(this.teacher.fullName);
+}
+
 
   // Email validation: username@example.com
   checkEmail() {

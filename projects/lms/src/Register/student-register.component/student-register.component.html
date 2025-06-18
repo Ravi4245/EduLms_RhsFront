@@ -24,9 +24,10 @@
     <div *ngIf="fullName.errors?.['maxlength'] && fullName.touched" class="error">
       Full Name cannot exceed 50 characters.
     </div>
-    <div *ngIf="hasNumberInFullName" class="error">
-      Do not enter number in Full Name.
-    </div>
+    <div *ngIf="hasInvalidFullName" class="error">
+  Full Name must contain only letters (no numbers or special characters).
+</div>
+
 
 
     <label>Email</label>

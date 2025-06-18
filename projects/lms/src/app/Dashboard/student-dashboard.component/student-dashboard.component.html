@@ -56,17 +56,18 @@
 <section *ngIf="activeSection === 'my-courses'" class="card">
   <h2>📚 My Courses</h2>
   <div class="course-grid">
-    <div class="course-card" *ngFor="let c of enrolledCourses">
+    <div class="course-card" *ngFor="let c of enrolledCourses; trackBy: trackByCourseId">
       <p><strong>ID:</strong> {{ c.courseId }}</p>
       <p><strong>Name:</strong> {{ c.courseName }}</p>
       <p><strong>Category:</strong> {{ c.category }}</p>
-<button *ngIf="c.pdfFilePath" (click)="viewPdfa(c.pdfFilePath)" class="btn btn-primary">
-  📄 View Course PDF
-</button>
-
+      <a *ngIf="c.pdfFilePath" [href]="'https://localhost:7072/' + c.pdfFilePath" target="_blank" class="view-link">
+        📄 View PDF
+      </a>
     </div>
   </div>
 </section>
+
+
 
 
 
