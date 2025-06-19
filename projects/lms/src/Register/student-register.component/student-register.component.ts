@@ -49,9 +49,9 @@ checkPassword() {
 hasInvalidPhoneFormat = false;
 
 checkPhoneNumber() {
-  const validPhonePattern = /^\d{10}$/; // Exactly 10 digits
-  this.hasInvalidPhoneFormat = !validPhonePattern.test(this.student.phoneNumber);
-}
+    const phonePattern = /^\d{10}$/;
+    this.hasInvalidPhoneFormat = !phonePattern.test(this.student.phoneNumber);
+  }
 
 hasInvalidStudentNo = false;
 

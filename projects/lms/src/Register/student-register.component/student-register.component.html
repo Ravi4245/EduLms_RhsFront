@@ -67,22 +67,26 @@
   Password must contain at least one uppercase letter, one number, and one special character.
 </div>
 
-    <label>Phone Number</label>
+    <!-- Phone Number -->
+     <label>Phone No</label>
     <input
-  type="text"
-  name="phoneNumber"
-  [(ngModel)]="student.phoneNumber"
-  (keyup)="checkPhoneNumber()"
-  placeholder="Phone Number"
-  required
-  #phoneNumber="ngModel"
-/>
-<div *ngIf="phoneNumber.errors?.['required'] && phoneNumber.touched" class="error">
-  Phone Number is required.
-</div>
-<div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && hasInvalidPhoneFormat" class="error">
-  Enter a valid 10-digit phone number (digits only).
-</div>
+      type="text"
+      name="phoneNumber"
+      [(ngModel)]="student.phoneNumber"
+      (keyup)="checkPhoneNumber()"
+      placeholder="Phone Number"
+      required
+      maxlength="10"
+      minlength="10"
+      pattern="^[0-9]{10}$"
+      #phoneNumber="ngModel"
+    />
+    <div *ngIf="phoneNumber.errors?.['required'] && phoneNumber.touched" class="error">
+      Phone Number is required.
+    </div>
+    <div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && hasInvalidPhoneFormat" class="error">
+      Enter a valid 10-digit phone number (digits only).
+    </div>
 
 
     <label>Date of Birth</label>
