@@ -21,21 +21,33 @@
 
 .navbar-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  /* flex-direction: row-reverse; */
 }
 
 .logo {
-  color: #161313;
-  font-size: 1.8rem;
-  font-weight: bold;
+  margin-right: 2rem;  
+  margin-left: auto; /* Pushes logo to the right */
   text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 40px;
+  width: 40px;
+  display: block;
+  object-fit: cover;       /* Ensures image covers the round shape */
+  border-radius: 50%;      /* Makes the image perfectly round */
 }
 
 .nav-links {
   display: flex;
   list-style: none;
   gap: 1.5rem;
+  /* margin-left: auto; ✅ Pushes nav-links to the right */
+  align-items: center; /* ✅ Vertical centering */
 }
 
 .nav-links li a {
@@ -237,4 +249,3 @@
   margin-bottom: 10px;
   padding: 8px;
 }
-

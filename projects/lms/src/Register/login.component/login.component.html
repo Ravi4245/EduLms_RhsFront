@@ -18,7 +18,7 @@
     <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
       <small *ngIf="email.errors?.['required']">Email is required.</small>
       <small *ngIf="email.errors?.['pattern']">
-        Enter a valid email (e.g., user&#64;example.com or user&#64;example.co.in or user&#64;example.co.in).
+        Enter a valid email (e.g., user&#64;example.com or user&#64;example.co.in).
       </small>
     </div>  
 
@@ -39,24 +39,6 @@
       <small *ngIf="password.errors?.['minlength']">
         Password must be at least 8 characters.
       </small>
-    </div>
-
-    <!-- Role -->
-    <label for="role">Select Role</label>
-    <select
-      id="role"
-      [(ngModel)]="loginData.role"
-      name="role"
-      required
-      #role="ngModel"
-    >
-      <option value="" disabled selected>Select Role</option>
-      <option value="Admin">Admin</option>
-      <option value="Teacher">Teacher</option>
-      <option value="Student">Student</option>
-    </select>
-    <div *ngIf="role.invalid && (role.dirty || role.touched)" class="error">
-      <small *ngIf="role.errors?.['required']">Role is required.</small>
     </div>
 
     <!-- Error Message Display -->

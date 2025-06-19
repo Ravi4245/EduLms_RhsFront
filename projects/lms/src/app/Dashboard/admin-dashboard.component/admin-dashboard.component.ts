@@ -48,6 +48,7 @@ export class AdminDashboardComponent implements OnInit {
   approvedTeachers: Teacher[] = [];
   courses: Course[] = [];
   performanceReports: PerformanceReport[] = [];
+ 
 
   studentPage: number = 1;
 approvedStudentPage: number = 1;
@@ -241,28 +242,66 @@ deleteApprovedTeacher(id: number) {
 }
 
 changePage(section: string, direction: 'next' | 'prev') {
+  const totalPages = {
+    teacher: Math.ceil(this.pendingTeachers.length / this.itemsPerPage),
+    approvedTeacher: Math.ceil(this.approvedTeachers.length / this.itemsPerPage),
+    student: Math.ceil(this.pendingStudents.length / this.itemsPerPage),
+    approvedStudent: Math.ceil(this.approvedStudents.length / this.itemsPerPage),
+    course: Math.ceil(this.courses.length / this.itemsPerPage),
+    report: Math.ceil(this.performanceReports.length / this.itemsPerPage),
+  };
+
   switch (section) {
     case 'teacher':
-      if (direction === 'next') this.teacherPage++;
+      if (direction === 'next' && this.teacherPage < totalPages.teacher) this.teacherPage++;
       else if (direction === 'prev' && this.teacherPage > 1) this.teacherPage--;
       break;
 
+    case 'approvedTeacher':
+      if (direction === 'next' && this.approvedTeacherPage < totalPages.approvedTeacher) this.approvedTeacherPage++;
+      else if (direction === 'prev' && this.approvedTeacherPage > 1) this.approvedTeacherPage--;
+      break;
+
     case 'student':
-      if (direction === 'next') this.studentPage++;
+      if (direction === 'next' && this.studentPage < totalPages.student) this.studentPage++;
       else if (direction === 'prev' && this.studentPage > 1) this.studentPage--;
       break;
 
-    case 'report':
-      if (direction === 'next') this.reportPage++;
-      else if (direction === 'prev' && this.reportPage > 1) this.reportPage--;
+    case 'approvedStudent':
+      if (direction === 'next' && this.approvedStudentPage < totalPages.approvedStudent) this.approvedStudentPage++;
+      else if (direction === 'prev' && this.approvedStudentPage > 1) this.approvedStudentPage--;
       break;
 
     case 'course':
-      if (direction === 'next') this.coursePage++;
+      if (direction === 'next' && this.coursePage < totalPages.course) this.coursePage++;
       else if (direction === 'prev' && this.coursePage > 1) this.coursePage--;
+      break;
+
+    case 'report':
+      if (direction === 'next' && this.reportPage < totalPages.report) this.reportPage++;
+      else if (direction === 'prev' && this.reportPage > 1) this.reportPage--;
       break;
   }
 }
+
+
+updatePage(section: string, page: number) {
+  switch (section) {
+    case 'teacher':
+      this.teacherPage = page;
+      break;
+    case 'student':
+      this.studentPage = page;
+      break;
+    case 'report':
+      this.reportPage = page;
+      break;
+    case 'course':
+      this.coursePage = page;
+      break;
+  }
+}
+
 
 
 

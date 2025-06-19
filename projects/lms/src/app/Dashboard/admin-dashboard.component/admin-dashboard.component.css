@@ -6,6 +6,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 60px; /* Fixed height for calculation */
+  box-sizing: border-box;
 }
 
 .navbar-content {
@@ -39,10 +41,11 @@
 /* Dashboard Layout */
 .dashboard-container {
   display: flex;
-  min-height: calc(100vh - 60px); /* Account for navbar height */
+  height: calc(100vh - 60px); /* FIX: use height instead of min-height */
   font-family: Arial, sans-serif;
   background: #f4f7f9;
 }
+
 
 /* Sidebar */
 .sidebar {
@@ -51,6 +54,8 @@
   color: white;
   padding: 20px;
   box-sizing: border-box;
+  user-select: none;
+  overflow: hidden; /* Prevent sidebar scrolling */
 }
 
 .sidebar h2 {
@@ -58,7 +63,6 @@
   margin-bottom: 1.5rem;
   font-weight: 700;
   font-size: 1.3rem;
-  user-select: none;
 }
 
 .sidebar ul {
@@ -73,7 +77,6 @@
   border-radius: 4px;
   margin-bottom: 8px;
   transition: background-color 0.3s ease;
-  user-select: none;
 }
 
 .sidebar ul li:hover {
@@ -85,7 +88,8 @@
   flex: 1;
   padding: 25px 30px;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: auto;  /* Scroll only here */
+  background: white; /* Optional: for clarity */
 }
 
 /* Card Style */
@@ -212,6 +216,8 @@ input[type="email"] {
 
   .content {
     padding: 15px;
+    height: auto; /* Let content flow naturally */
+    overflow-y: visible;
   }
 
   table td > button {

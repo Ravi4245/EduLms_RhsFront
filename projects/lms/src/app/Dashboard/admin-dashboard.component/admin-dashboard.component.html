@@ -116,18 +116,16 @@
               <button (click)="deleteCourse(course.courseId)">Delete</button>
             </td>
           </ng-container>
-    <ng-template #editRow>
-  <ng-container *ngIf="editingCourse">
-    <td><input [(ngModel)]="editingCourse.courseName" /></td>
-    <td><input [(ngModel)]="editingCourse.description" /></td>
-    <td>
-      <button (click)="saveCourse()">Save</button>
-      <button (click)="cancelEdit()">Cancel</button>
-    </td>
-  </ng-container>
-</ng-template>
-
-
+          <ng-template #editRow>
+            <ng-container *ngIf="editingCourse">
+              <td><input [(ngModel)]="editingCourse.courseName" /></td>
+              <td><input [(ngModel)]="editingCourse.description" /></td>
+              <td>
+                <button (click)="saveCourse()">Save</button>
+                <button (click)="cancelEdit()">Cancel</button>
+              </td>
+            </ng-container>
+          </ng-template>
         </tr>
       </table>
       <div class="pagination-controls">
@@ -154,5 +152,8 @@
         <button (click)="changePage('report', 'next')" [disabled]="reportPage * itemsPerPage >= performanceReports.length">Next</button>
       </div>
     </section>
+
+    
+
   </div>
 </div>
