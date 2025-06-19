@@ -6,6 +6,27 @@
   border-radius: 12px;
   box-shadow: 0 0 15px rgb(0, 0, 0);
 }
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  grid-column: span 2;
+}
 
 label {
   font-weight: 600;
@@ -88,20 +109,19 @@ input, select {
   cursor: pointer;
 }
 
-.refresh-btn:hover{
-  background-color:#f9f9f9
+.refresh-btn:hover {
+  background-color: #f9f9f9;
 }
 
 /* Validation styles */
 .error {
-  color: #7b3c37; /* red */
+  color: #7b3c37;
   font-size: 12px;
   margin-top: -10px;
   margin-bottom: 10px;
   font-weight: 600;
 }
 
-/* Highlight invalid and touched inputs */
 input.ng-invalid.ng-touched,
 select.ng-invalid.ng-touched {
   border-color: #d93025;
@@ -122,5 +142,61 @@ button {
 }
 
 button:hover {
-  /* /background-color: #ed9f89; */
+  background-color: #0042a7;
 }
+
+
+.captcha-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px; /* adds spacing between captcha text and refresh button */
+  margin-bottom: 12px;
+}
+
+.captcha-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  letter-spacing: 4px;
+  background: repeating-linear-gradient(-45deg, #323131, #484545 10px, #994343 20px);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.refresh-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 16px; /* smaller icon size */
+  cursor: pointer;
+  margin: 0;
+  padding: 2px 4px; /* smaller padding */
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  width: 28px;
+  border-radius: 4px;
+}
+
+
+.refresh-btn:hover {
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
+
+/* Make CAPTCHA input look like other input fields */
+input[name="captchaInput"] {
+  width: 50%;
+  padding: 10px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+
