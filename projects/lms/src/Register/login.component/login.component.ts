@@ -14,60 +14,58 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 export class LoginComponent {
   loginData = {
     email: '',
-    password: '',
-    role: ''
+    password: ''
   };
 
   errorMessage: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
-login(form: NgForm) {
-  this.errorMessage = '';
+  login(form: NgForm) {
+    this.errorMessage = '';
 
-  // ✅ Check if form is invalid
-  if (form.invalid) {
-    this.errorMessage = 'Please fill all fields correctly.';
-    return;
+    // ✅ Check if form is invalid
+    if (form.invalid) {
+      this.errorMessage = 'Please fill all fields correctly.';
+      return;
+    }
+
+    const apiUrl = 'https://localhost:7072/api/Login/Login';
+
+    this.http.post(apiUrl, this.loginData).subscribe(
+      (res: any) => {
+        alert(res.message); // e.g., "Login successful as Student"
+
+        // ✅ Use role returned from backend
+        const role = res.role;
+
+        if (role === 'Admin') {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/admin-dashboard']);
+        } else if (role === 'Teacher') {
+          localStorage.setItem('teacherId', res.id);
+          this.router.navigate(['/teacher-dashboard']);
+        } else if (role === 'Student') {
+          localStorage.setItem('studentId', res.id);
+          this.router.navigate(['/student-dashboard']);
+        } else {
+          this.errorMessage = 'Unknown role returned from server.';
+        }
+      },
+      err => {
+        alert(err.error?.message || 'Login failed. Please check your credentials.');
+      }
+    );
   }
 
-  const apiUrl = 'https://localhost:7072/api/Login/Login';
-
-  this.http.post(apiUrl, this.loginData).subscribe(
-    (res: any) => {
-      alert(res.message); // Shows "Login successful as Student", etc.
-
-      localStorage.setItem('token', res.token);
-
-      // ✅ Store ID based on role
-      if (res.role === 'Student') {
-        localStorage.setItem('studentId', res.id);
-        this.router.navigate(['/student-dashboard']);
-      } else if (res.role === 'Teacher') {
-        localStorage.setItem('teacherId', res.id);
-        this.router.navigate(['/teacher-dashboard']);
-      } else if (res.role === 'Admin') {
-        this.router.navigate(['/admin-dashboard']);
-      }
-    },
-    err => {
-      alert(err.error || 'Login failed. Please check credentials.');
-    }
-  );
-}
-
-
-
- clearForm() {
+  clearForm() {
     this.loginData = {
       email: '',
-      password: '',
-      role: ''
+      password: ''
     };
   }
 
   goBack() {
     this.router.navigate(['/']); // Navigate to home
   }
-
 }

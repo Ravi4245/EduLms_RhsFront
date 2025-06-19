@@ -15,6 +15,19 @@ interface AssignmentModel {
   dueDate: string;
 }
 
+interface Student {
+  StudentId: number;
+  StudentName: string;
+  Email: string;
+}
+
+interface Course {
+  courseId: number;
+  courseName: string;
+  category: string;
+  pdfFilePath?: string;
+}
+
 @Component({
   selector: 'app-teacher-dashboard',
   standalone: true,
@@ -38,8 +51,22 @@ export class TeacherDashboardComponent implements OnInit {
   enrolledStudents: any[] = [];
   selectedCoursePdf: File | null = null;
   editingReportId: number | null = null;
+ assignedStudentsByCourse: Student[] = [];
+assignedStudentsByAssignment: Student[] = [];
+
   // Pagination for enrolled students
   currentPage: number = 1;
+  // Assignment pagination
+currentAssignmentPage: number = 1;
+assignmentsPerPage: number = 5;
+paginatedAssignments: AssignmentModel[] = [];
+
+// Student pagination (for assign-assignment section)
+currentStudentPage: number = 1;
+studentsPerPage: number = 5;
+paginatedStudents: Student[] = [];
+
+  
   itemsPerPage: number = 3;
 
   editingAssignment: AssignmentModel | null = null;  // Use interface
@@ -50,6 +77,13 @@ export class TeacherDashboardComponent implements OnInit {
     category: '',
     createdByTeacherId: 0
   };
+
+
+  assignByNameData = {
+  studentName: '',
+  assignmentTitle: ''
+};
+
 
   newAssignment = {
     courseId: null as number | null,
@@ -80,22 +114,24 @@ export class TeacherDashboardComponent implements OnInit {
   constructor(private http: HttpClient, private cd: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit(): void {
-    const storedId = localStorage.getItem('teacherId');
-    if (storedId) {
-      this.teacherId = +storedId;
-      this.newCourse.createdByTeacherId = this.teacherId;
-      this.newAssignment.teacherId = this.teacherId;
+  const storedId = localStorage.getItem('teacherId');
 
-      this.loadTeacherProfile();      // ✅ Load profile
-      this.loadCourses();
-      this.loadPerformanceReports();
-      this.loadSubmittedAssignments();
-      this.loadEnrolledStudents();
-      this.loadAssignments();  // Load created assignments here
-    } else {
-      alert('❌ Teacher ID not found. Please login again.');
-    }
+  if (storedId) {
+    this.teacherId = +storedId;
+    this.newCourse.createdByTeacherId = this.teacherId;
+    this.newAssignment.teacherId = this.teacherId;
+
+    this.loadTeacherProfile();
+    this.loadCourses();
+    this.loadPerformanceReports();
+    this.loadSubmittedAssignments();
+    this.loadEnrolledStudents();
+    this.loadAssignments();
+  } else {
+    alert('❌ Teacher ID not found. Please login again.');
   }
+}
+
 
   startEditAssignment(assignment: AssignmentModel) {
     this.editingAssignment = { ...assignment };
@@ -222,15 +258,30 @@ get totalPages(): number {
       });
   }
 
+  updatePaginatedAssignments(): void {
+  const start = (this.currentAssignmentPage - 1) * this.assignmentsPerPage;
+  const end = start + this.assignmentsPerPage;
+  this.paginatedAssignments = this.assignments.slice(start, end);
+}
+
+updatePaginatedStudents(): void {
+  const start = (this.currentStudentPage - 1) * this.studentsPerPage;
+  const end = start + this.studentsPerPage;
+  this.paginatedStudents = this.enrolledStudents.slice(start, end);
+}
+
+
   loadAssignments() {
-    this.http.get<AssignmentModel[]>(`https://localhost:7072/api/Teacher/MyAssignments/${this.teacherId}`)
-      .subscribe(data => {
-        this.assignments = data;
-        this.cd.detectChanges();
-      }, err => {
-        console.error('Failed to load assignments', err);
-      });
-  }
+  this.http.get<AssignmentModel[]>(`https://localhost:7072/api/Teacher/MyAssignments/${this.teacherId}`)
+    .subscribe(data => {
+      this.assignments = data;
+      this.updatePaginatedAssignments(); // ✅
+      this.cd.detectChanges();
+    }, err => {
+      console.error('Failed to load assignments', err);
+    });
+}
+
 
   updateAssignment() {
     if (!this.editingAssignment) return;
@@ -348,19 +399,23 @@ get totalPages(): number {
       });
   }
 
-  loadEnrolledStudents() {
-    this.http.get<any[]>(`https://localhost:7072/api/Teacher/ApprovedStudents`)
-      .subscribe({
-        next: res => {
-          this.enrolledStudents = res;
-          this.cd.detectChanges();
-        },
-        error: err => {
-          console.error("❌ Failed to load approved students", err);
-          alert("Failed to load approved students.");
-        }
-      });
-  }
+ loadEnrolledStudents() {
+  this.http.get<any[]>(`https://localhost:7072/api/Teacher/ApprovedStudents`)
+    .subscribe({
+      next: res => {
+        this.enrolledStudents = res;
+        this.updatePaginatedStudents(); // ✅
+        this.cd.detectChanges();
+      },
+      error: err => {
+        console.error("❌ Failed to load approved students", err);
+        alert("Failed to load approved students.");
+      }
+    });
+}
+
+
+
 
   logout() {
     localStorage.removeItem('teacherId');
@@ -373,4 +428,44 @@ get totalPages(): number {
       this.assignments = res;
     });
 }
+
+
+
+
+
+// 🔹 Get Students Assigned to a Specific Course
+getAssignedStudentsByCourse(courseId: number) {
+  this.http.get<Student[]>(`https://localhost:7072/api/Teacher/AssignedStudentsByCourse/${courseId}`)
+    .subscribe({
+      next: res => {
+        this.assignedStudentsByCourse = res;
+        console.log("📘 Students for Course ID", courseId, res);
+        this.cd.detectChanges();
+      },
+      error: err => {
+        console.error("❌ Failed to fetch students for course", err);
+        alert("Failed to load assigned students for course.");
+      }
+    });
+}
+
+// 🔹 Get Students Assigned to a Specific Assignment
+getAssignedStudentsByAssignment(assignmentId: number) {
+  this.http.get<Student[]>(`https://localhost:7072/api/Teacher/AssignedStudentsByAssignment/${assignmentId}`)
+    .subscribe({
+      next: res => {
+        this.assignedStudentsByAssignment = res;
+        console.log("📄 Students for Assignment ID", assignmentId, res);
+        this.cd.detectChanges();
+      },
+      error: err => {
+        console.error("❌ Failed to fetch students for assignment", err);
+        alert("Failed to load assigned students for assignment.");
+      }
+    });
+}
+
+
+
+
 }
