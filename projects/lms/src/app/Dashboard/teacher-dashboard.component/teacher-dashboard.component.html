@@ -172,42 +172,78 @@
 
 
     <!-- Performance Report -->
-    <section *ngIf="activeSection === 'performance-report'" class="card">
-      <h2>📈 Create Performance Report</h2>
-      <input [(ngModel)]="newPerformance.studentId" placeholder="Student ID" />
-      <input [(ngModel)]="newPerformance.courseId" placeholder="Course ID" />
-      <input [(ngModel)]="newPerformance.averageGrade" type="number" placeholder="Marks" />
-      <input [(ngModel)]="newPerformance.remarks" placeholder="Remarks" />
-      <button (click)="createPerformance()">Create Report</button>
+<section *ngIf="activeSection === 'performance-report'" class="card">
+  <h2>📈 Create Performance Report</h2>
 
-      <h3>📊 Existing Reports</h3>
-      <ul>
-        <li *ngFor="let p of performanceReports">
-          <div *ngIf="editingReportId !== p.performanceReportId">
-            Student: {{ p.studentId }} | Course: {{ p.courseId }} | Grade: {{ p.averageGrade }} | Remarks: {{ p.remarks }}
-            <button (click)="editReport(p)">✏️ Edit</button>
-          </div>
-          <div *ngIf="editingReportId === p.performanceReportId">
-            Student: {{ p.studentId }} | Course: {{ p.courseId }}
-            <input [(ngModel)]="p.averageGrade" type="number" placeholder="Grade" />
-            <input [(ngModel)]="p.remarks" placeholder="Remarks" />
-            <button (click)="updatePerformance(p)">✅ Update</button>
-            <button (click)="cancelEdit()">❌ Cancel</button>
-          </div>
-        </li>
-      </ul>
-    </section>
+  <!-- Student Dropdown -->
+  <label for="student-select">👨‍🎓 Select Student:</label>
+  <select [(ngModel)]="newPerformance.studentId" id="student-select">
+    <option value="" disabled selected>Select a Student</option>
+    <option *ngFor="let student of enrolledStudents" [value]="student.studentId">
+      {{ student.studentName }} (ID: {{ student.studentId }})
+    </option>
+  </select>
+
+  <!-- Course Dropdown -->
+  <label for="course-select">📘 Select Course:</label>
+  <select [(ngModel)]="newPerformance.courseId" id="course-select">
+    <option value="" disabled selected>Select a Course</option>
+    <option *ngFor="let course of courses" [value]="course.courseId">
+      {{ course.courseName }} (ID: {{ course.courseId }})
+    </option>
+  </select>
+
+  <!-- Grade and Remarks -->
+  <input [(ngModel)]="newPerformance.averageGrade" type="number" placeholder="Marks" />
+  <input [(ngModel)]="newPerformance.remarks" placeholder="Remarks" />
+  <button (click)="createPerformance()">Create Report</button>
+
+  <!-- Existing Reports -->
+  <h3>📊 Existing Reports</h3>
+  <ul>
+    <li *ngFor="let p of performanceReports">
+      <div *ngIf="editingReportId !== p.performanceReportId">
+        Student: {{ p.studentId }} | Course: {{ p.courseId }} | Grade: {{ p.averageGrade }} | Remarks: {{ p.remarks }}
+        <button (click)="editReport(p)">✏️ Edit</button>
+      </div>
+      <div *ngIf="editingReportId === p.performanceReportId">
+        Student: {{ p.studentId }} | Course: {{ p.courseId }}
+        <input [(ngModel)]="p.averageGrade" type="number" placeholder="Grade" />
+        <input [(ngModel)]="p.remarks" placeholder="Remarks" />
+        <button (click)="updatePerformance(p)">✅ Update</button>
+        <button (click)="cancelEdit()">❌ Cancel</button>
+      </div>
+    </li>
+  </ul>
+</section>
 
 
 
-    <!-- Assign Course -->
-   <section *ngIf="activeSection === 'assign-course'" class="card">
+
+
+<section *ngIf="activeSection === 'assign-course'" class="card">
   <h2>📚 Assign Course</h2>
 
   <!-- Form -->
   <div style="margin-bottom: 1rem;">
-    <input [(ngModel)]="assignCourseData.studentId" placeholder="Student ID" />
-    <input [(ngModel)]="assignCourseData.courseId" placeholder="Course ID" />
+    <!-- Student Dropdown -->
+    <label for="studentSelect">👨‍🎓 Select Student:</label>
+    <select id="studentSelect" [(ngModel)]="assignCourseData.studentId">
+      <option value="" disabled selected>Select a student</option>
+      <option *ngFor="let student of enrolledStudents" [value]="student.studentId">
+        {{ student.studentName }} (ID: {{ student.studentId }})
+      </option>
+    </select>
+
+    <!-- Course Dropdown -->
+    <label for="courseSelect">📘 Select Course:</label>
+    <select id="courseSelect" [(ngModel)]="assignCourseData.courseId">
+      <option value="" disabled selected>Select a course</option>
+      <option *ngFor="let c of courses" [value]="c.courseId">
+        {{ c.courseName }} (ID: {{ c.courseId }})
+      </option>
+    </select>
+
     <button (click)="assignCourseToStudent()">Assign</button>
   </div>
 
@@ -258,12 +294,29 @@
 
 
 
+
 <section *ngIf="activeSection === 'assign-assignment'" class="card">
   <h2>🧾 Assign Assignment</h2>
 
   <!-- Assignment Form -->
-  <input [(ngModel)]="assignAssignmentData.studentId" placeholder="Student ID" />
-  <input [(ngModel)]="assignAssignmentData.assignmentId" placeholder="Assignment ID" />
+  <!-- Student Dropdown -->
+  <label for="studentSelect">👨‍🎓 Select Student:</label>
+  <select id="studentSelect" [(ngModel)]="assignAssignmentData.studentId">
+    <option value="" disabled selected>Select a student</option>
+    <option *ngFor="let student of enrolledStudents" [value]="student.studentId">
+      {{ student.studentName }} (ID: {{ student.studentId }})
+    </option>
+  </select>
+
+  <!-- Assignment Dropdown -->
+  <label for="assignmentSelect">📝 Select Assignment:</label>
+  <select id="assignmentSelect" [(ngModel)]="assignAssignmentData.assignmentId">
+    <option value="" disabled selected>Select an assignment</option>
+    <option *ngFor="let a of assignments" [value]="a.assignmentId">
+      {{ a.title }} (ID: {{ a.assignmentId }}, Course ID: {{ a.courseId }})
+    </option>
+  </select>
+
   <button (click)="assignAssignmentToStudenta()">Assign</button>
 
   <div class="assign-preview" style="margin-top: 2rem;">
@@ -315,11 +368,14 @@
 
 
 
+
     <!-- All Submissions -->
     <section *ngIf="activeSection === 'all-submissions'" class="card">
       <h2>📁 All Submissions</h2>
       <ul>
+         <button (click)="loadSubmittedAssignments()">Refresh Submissions</button>
         <li *ngFor="let s of submissions">
+         
           📄 <strong>{{ s.assignmentTitle }}</strong> by {{ s.studentName }}
           <br />
           Grade: {{ s.grade }} 
