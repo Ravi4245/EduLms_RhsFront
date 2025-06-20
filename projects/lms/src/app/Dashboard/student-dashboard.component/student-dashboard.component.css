@@ -457,3 +457,63 @@ section.my-assignments ul li {
 .btn-primary:hover {
   background-color: #2980b9;
 }
+
+
+
+
+
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.profile-item label {
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 0.3rem;
+}
+
+.profile-item span {
+  color: #333;
+}
+
+
+
+section.card select,
+section.card input[type="file"],
+section.card button {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+section.card label {
+  font-weight: bold;
+  margin-top: 1rem;
+  display: block;
+  color: #333;
+}
+
+
+
+
+
+
+
+
+
+

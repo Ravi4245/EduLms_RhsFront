@@ -25,6 +25,7 @@
 
   <!-- Content Area -->
   <div class="content">
+
     <!-- Pending Students -->
     <section *ngIf="activeSection === 'pending-students'" class="card">
       <h2>Pending Students</h2>
@@ -50,11 +51,25 @@
       <h2>Approved Students</h2>
       <table>
         <tr *ngFor="let student of getPaginatedData(approvedStudents, approvedStudentPage)">
-          <td>{{ student.fullName }}</td>
-          <td>{{ student.email }}</td>
-          <td>
-            <button (click)="deleteApprovedStudent(student.studentId)">Delete</button>
-          </td>
+          <ng-container *ngIf="editingStudent?.studentId !== student.studentId; else editStudentRow">
+            <td>{{ student.fullName }}</td>
+            <td>{{ student.email }}</td>
+            <td>
+              <button (click)="deleteApprovedStudent(student.studentId)">Delete</button>
+              <!-- <button (click)="startEditStudent(student)">Edit</button> -->
+            </td>
+          </ng-container>
+
+          <ng-template #editStudentRow>
+            <ng-container *ngIf="editingStudent">
+              <td><input [(ngModel)]="editingStudent.fullName" /></td>
+              <td><input [(ngModel)]="editingStudent.email" /></td>
+              <td>
+                <button (click)="updateStudentProfile(editingStudent); editingStudent = null;">Save</button>
+                <button (click)="editingStudent = null">Cancel</button>
+              </td>
+            </ng-container>
+          </ng-template>
         </tr>
       </table>
       <div class="pagination-controls">
@@ -89,11 +104,25 @@
       <h2>Approved Teachers</h2>
       <table>
         <tr *ngFor="let teacher of getPaginatedData(approvedTeachers, approvedTeacherPage)">
-          <td>{{ teacher.fullName }}</td>
-          <td>{{ teacher.email }}</td>
-          <td>
-            <button (click)="deleteApprovedTeacher(teacher.teacherId)">Delete</button>
-          </td>
+          <ng-container *ngIf="editingTeacher?.teacherId !== teacher.teacherId; else editTeacherRow">
+            <td>{{ teacher.fullName }}</td>
+            <td>{{ teacher.email }}</td>
+            <td>
+              <button (click)="deleteApprovedTeacher(teacher.teacherId)">Delete</button>
+              <!-- <button (click)="startEditTeacher(teacher)">Edit</button> -->
+            </td>
+          </ng-container>
+
+          <ng-template #editTeacherRow>
+            <ng-container *ngIf="editingTeacher">
+              <td><input [(ngModel)]="editingTeacher.fullName" /></td>
+              <td><input [(ngModel)]="editingTeacher.email" /></td>
+              <td>
+                <button (click)="saveTeacher()">Save</button>
+                <button (click)="editingTeacher = null">Cancel</button>
+              </td>
+            </ng-container>
+          </ng-template>
         </tr>
       </table>
       <div class="pagination-controls">
@@ -152,8 +181,6 @@
         <button (click)="changePage('report', 'next')" [disabled]="reportPage * itemsPerPage >= performanceReports.length">Next</button>
       </div>
     </section>
-
-    
 
   </div>
 </div>

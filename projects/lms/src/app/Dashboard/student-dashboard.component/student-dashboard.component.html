@@ -31,27 +31,48 @@
     
 
     <!-- Profile -->
-    <section *ngIf="activeSection === 'profile'" class="card">
+  
+<section *ngIf="activeSection === 'profile'" class="card">
   <h2>👤 Profile Details</h2>
+  
   <div class="profile-grid">
-    <div><strong>Full Name:</strong> {{ profile.fullName }}</div>
-    <div><strong>Email:</strong> {{ profile.email }}</div>
-    <!-- <div><strong>Mobile:</strong> {{ profile.mobile }}</div> -->
-    <div><strong>Gender:</strong> {{ profile.gender }}</div>
-    <div><strong>Date of Birth:</strong> {{ profile.dob | date }}</div>
-    <div><strong>Grade Level:</strong> {{ profile.gradeLevel }}</div>
-    <div><strong>Address:</strong> {{ profile.address }}</div>
+    <div class="profile-item">
+      <label>Full Name:</label>
+      <span>{{ profile.fullName }}</span>
+    </div>
+    <div class="profile-item">
+      <label>Email:</label>
+      <span>{{ profile.email }}</span>
+    </div>
+    <div class="profile-item">
+      <label>Gender:</label>
+      <span>{{ profile.gender }}</span>
+    </div>
+    <div class="profile-item">
+      <label>Date of Birth:</label>
+      <span>{{ profile.dob | date }}</span>
+    </div>
+    <div class="profile-item">
+      <label>Grade Level:</label>
+      <span>{{ profile.gradeLevel }}</span>
+    </div>
+    <div class="profile-item">
+      <label>Address:</label>
+      <span>{{ profile.address }}</span>
+    </div>
   </div>
 </section>
 
+
     <!-- Enroll in Course -->
+     
     <section *ngIf="activeSection === 'enroll'" class="card">
       <h2>📝 Enroll in a Course</h2>
       <label>Course ID</label>
       <input [(ngModel)]="enrollData.courseId" type="number" placeholder="Course ID" />
       <button (click)="enrollCourse()">Enroll</button>
     </section>
-
+    
     <!-- My Courses -->
 <section *ngIf="activeSection === 'my-courses'" class="card">
   <h2>📚 My Courses</h2>
@@ -102,16 +123,30 @@
 
 
 
+<!-- Submit Assignment -->
+<section *ngIf="activeSection === 'submit'" class="card">
+  <h2>📤 Submit Assignment</h2>
 
-    <!-- Submit Assignment -->
-    <section *ngIf="activeSection === 'submit'" class="card">
-      <h2>📤 Submit Assignment</h2>
-      <label>Assignment ID</label>
-      <input [(ngModel)]="submitData.assignmentId" type="number" placeholder="Assignment ID" />
-      <label>Upload File</label>
-      <input type="file" (change)="onFileChange($event)" accept=".pdf,.doc,.docx" />
-      <button (click)="submitAssignment()">Submit</button>
-    </section>
+  <!-- Assignment Dropdown -->
+  <label for="assignmentDropdown">📝 Select Assignment:</label>
+  <select id="assignmentDropdown" [(ngModel)]="submitData.assignmentId">
+    <option value="" disabled selected>Select an assignment</option>
+    <option *ngFor="let a of assignedAssignments" [value]="a.assignmentId">
+      {{ a.title }} (ID: {{ a.assignmentId }})
+    </option>
+  </select>
+
+  <!-- File Upload -->
+  <label for="fileUpload">📎 Upload File:</label>
+  <input id="fileUpload" type="file" (change)="onFileChange($event)" accept=".pdf,.doc,.docx" />
+
+  <!-- Submit Button -->
+  <button (click)="submitAssignment()">Submit</button>
+</section>
+
+
+
+
 
     <!-- Performance -->
     <section *ngIf="activeSection === 'performance'" class="card">
@@ -123,4 +158,5 @@
       </div>
     </section>
   </div>
+ 
 </div>

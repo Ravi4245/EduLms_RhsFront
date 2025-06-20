@@ -102,25 +102,47 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Buttons */
 button {
   background-color: #3498db;
   color: white;
-  padding: 10px 16px;
+  padding: 6px 12px;       /* reduced padding */
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s;
-  margin-top: 8px;
+  margin-top: 6px;
+  font-size: 0.85rem;      /* smaller font size */
+  font-weight: 500;        /* lighter font weight */
+  letter-spacing: 0.02em;  /* subtle letter spacing for clarity */
 }
 
 button:hover {
   background-color: #2980b9;
 }
 
+/* If you want to keep spacing between buttons */
 button + button {
-  margin-left: 10px;
+  margin-left: 8px;        /* slightly smaller gap */
 }
+
+/* Also update your .btn variants accordingly */
+.btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.btn-danger, .btn-secondary, .btn-edit, .btn-save, .btn-cancel {
+  font-weight: 500;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+/* You can keep their hover colors as is */
+
 
 /* Inputs */
 input {
@@ -275,4 +297,120 @@ section.my-assignments ul li {
 }
 .btn-cancel:hover {
   background-color: #7f8c8d;
+}
+
+
+
+
+
+
+.item-card {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  background-color: #fafafa;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.course-header, .assignment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-meta, .assignment-meta {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.actions {
+  margin-top: 0.5rem;
+}
+
+.actions button {
+  margin-right: 0.5rem;
+}
+
+.edit-form {
+  background: #fffef2;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.form-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+input[type="date"],
+input[type="text"],
+input[type="number"] {
+  padding: 0.5rem;
+  flex: 1;
+}
+
+
+
+
+.profile-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-field label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.profile-field span {
+  background-color: #fff;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+
+
+
+.submissions-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fefefe;
+  border: 1px solid #ccc;
+}
+
+.submissions-table th,
+.submissions-table td {
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.submissions-table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: 600;
+}
+
+.submissions-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.submissions-table a {
+  color: #0066cc;
+  text-decoration: none;
 }

@@ -48,6 +48,11 @@ export class AdminDashboardComponent implements OnInit {
   approvedTeachers: Teacher[] = [];
   courses: Course[] = [];
   performanceReports: PerformanceReport[] = [];
+  editingStudent: Student | null = null;
+editingTeacher: Teacher | null = null;
+
+
+
  
 
   studentPage: number = 1;
@@ -91,6 +96,23 @@ itemsPerPage: number = 5;
   this.activeSection = section;
 }
 
+// In your component class:
+startEditTeacher(teacher: Teacher) {
+  this.editingTeacher = { ...teacher };
+}
+
+startEditStudent(student: Student) {
+  this.editingStudent = { ...student };
+}
+
+saveTeacher() {
+  if (this.editingTeacher) {
+    this.updateTeacherProfile(this.editingTeacher);
+    this.editingTeacher = null;
+  }
+}
+
+
   loadApprovedStudents() {
     this.http.get<Student[]>('https://localhost:7072/api/Admin/ApprovedStudents')
       .subscribe((data) => {
@@ -121,18 +143,35 @@ itemsPerPage: number = 5;
   }
 
 deleteApprovedStudent(id: number) {
-  this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedStudent/${id}`)
+  this.http.get<{ canDelete: boolean }>(`https://localhost:7072/api/Admin/CanDeleteStudent/${id}`)
     .subscribe({
-      next: (res) => {
-        alert(res.message);
-        this.refreshAllData();
+      next: (checkRes) => {
+        if (!checkRes.canDelete) {
+          alert("❌ Cannot delete: This student is assigned to a course or has submitted assignments.");
+          return;
+        }
+
+        if (confirm("Are you sure you want to delete this approved student?")) {
+          this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedStudent/${id}`)
+            .subscribe({
+              next: (res) => {
+                alert(res.message || "✅ Student deleted successfully");
+                this.refreshAllData();
+              },
+              error: (err) => {
+                const errorMessage = err.error?.message || "❌ Error deleting student";
+                alert(errorMessage);
+              }
+            });
+        }
       },
-      error: (err) => {
-        // Show the message from backend or a default error
-        alert(err.error?.message || "Error deleting student");
+      error: () => {
+        alert("❌ Error checking if student can be deleted.");
       }
     });
 }
+
+
 
 
   // ---------------------- Teachers ----------------------
@@ -170,18 +209,35 @@ deleteApprovedStudent(id: number) {
   }
 
 deleteApprovedTeacher(id: number) {
-  this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedTeacher/${id}`)
+  this.http.get<{ canDelete: boolean }>(`https://localhost:7072/api/Admin/CanDeleteTeacher/${id}`)
     .subscribe({
-      next: (res) => {
-        alert(res.message || "Teacher deleted successfully");
-        this.refreshAllData();
+      next: (checkRes) => {
+        if (!checkRes.canDelete) {
+          alert("❌ Cannot delete: This teacher has created or is assigned to courses.");
+          return;
+        }
+
+        if (confirm("Are you sure you want to delete this approved teacher?")) {
+          this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteApprovedTeacher/${id}`)
+            .subscribe({
+              next: (res) => {
+                alert(res.message || "✅ Teacher deleted successfully");
+                this.refreshAllData();
+              },
+              error: (err) => {
+                const errorMessage = err.error?.message || "❌ Error deleting teacher";
+                alert(errorMessage);
+              }
+            });
+        }
       },
-      error: (err) => {
-        const errorMsg = err?.error?.message || "Error deleting teacher";
-        alert(errorMsg);
+      error: () => {
+        alert("❌ Error checking if teacher can be deleted.");
       }
     });
 }
+
+
 
 
 
@@ -195,13 +251,36 @@ deleteApprovedTeacher(id: number) {
       });
   }
 
-  deleteCourse(id: number) {
-    this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteCourse/${id}`)
-      .subscribe((response) => {
-        alert(response.message);
-        this.loadCourses();
-      });
-  }
+deleteCourse(id: number) {
+  this.http.get<{ canDelete: boolean }>(`https://localhost:7072/api/Admin/CanDeleteCourse/${id}`)
+    .subscribe({
+      next: (checkRes) => {
+        if (!checkRes.canDelete) {
+          alert("❌ Cannot delete: This course has assigned students or existing assignments.");
+          return;
+        }
+
+        if (confirm("Are you sure you want to delete this course?")) {
+          this.http.delete<any>(`https://localhost:7072/api/Admin/DeleteCourse/${id}`)
+            .subscribe({
+              next: (res) => {
+                alert(res.message || "✅ Course deleted successfully");
+                this.loadCourses();
+              },
+              error: (err) => {
+                const errorMessage = err.error?.message || "❌ Error deleting course";
+                alert(errorMessage);
+              }
+            });
+        }
+      },
+      error: () => {
+        alert("❌ Error checking if course can be deleted.");
+      }
+    });
+}
+
+
 
   editCourse(course: Course) {
     this.editingCourse = { ...course }; // Clone the course
@@ -239,6 +318,34 @@ deleteApprovedTeacher(id: number) {
 
   // Optionally, you can redirect to login page
   window.location.href = '/login'; // Adjust path if needed
+ }
+
+ // Update approved student profile
+updateStudentProfile(student: Student) {
+  this.http.put<any>(`https://localhost:7072/api/Admin/UpdateStudent/${student.studentId}`, student)
+    .subscribe({
+      next: (res) => {
+        alert(res.message || '✅ Student profile updated successfully');
+        this.loadApprovedStudents();
+      },
+      error: (err) => {
+        alert(err.error?.message || '❌ Error updating student profile');
+      }
+    });
+}
+
+// Update approved teacher profile
+updateTeacherProfile(teacher: Teacher) {
+  this.http.put<any>(`https://localhost:7072/api/Admin/UpdateTeacher/${teacher.teacherId}`, teacher)
+    .subscribe({
+      next: (res) => {
+        alert(res.message || '✅ Teacher profile updated successfully');
+        this.loadApprovedTeachers();
+      },
+      error: (err) => {
+        alert(err.error?.message || '❌ Error updating teacher profile');
+      }
+    });
 }
 
 changePage(section: string, direction: 'next' | 'prev') {

@@ -1,7 +1,7 @@
 <header class="top-navbar">
   <div class="navbar-content">
     <div class="navbar-center-text">
-      <h1>Hi {{ profile.fullName }}, welcome to your dashboard</h1>
+      <h1>Hi {{ profile.fullName }},       welcome to your dashboard</h1>
     </div>
     <button class="logout-btn" (click)="logout()">🚪 Logout</button>
   </div>
@@ -32,15 +32,34 @@
   <div class="content">
     <h1>👨‍🏫 Teacher Dashboard</h1>
 
-    <!-- Profile -->
-    <section *ngIf="activeSection === 'profile'" class="card">
-      <h2>👤 Profile</h2>
-      <p><strong>Full Name:</strong> {{ profile.fullName }}</p>
-      <p><strong>Email:</strong> {{ profile.email }}</p>
-      <p><strong>Experience:</strong> {{ profile.experience }} years</p>
-      <p><strong>Specialization:</strong> {{ profile.specialization }}</p>
-      <p><strong>Phone:</strong> {{ profile.phone }}</p>
-    </section>
+   <!-- Profile -->
+<section *ngIf="activeSection === 'profile'" class="card">
+  <h2>👤 Profile</h2>
+
+  <div class="profile-info">
+    <div class="profile-field">
+      <label>Full Name:</label>
+      <span>{{ profile.fullName }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Email:</label>
+      <span>{{ profile.email }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Experience:</label>
+      <span>{{ profile.experience }} years</span>
+    </div>
+    <div class="profile-field">
+      <label>Specialization:</label>
+      <span>{{ profile.specialization }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Phone:</label>
+      <span>{{ profile.phone }}</span>
+    </div>
+  </div>
+</section>
+
 
     <!-- Create Course -->
     <section *ngIf="activeSection === 'create-course'" class="card">
@@ -54,32 +73,28 @@
 
 
     <!-- my course -->
-<section *ngIf="activeSection === 'my-courses'" class="courses-section">
+
+<section *ngIf="activeSection === 'my-courses'" class="card">
   <h2 class="section-title">📚 My Courses</h2>
 
-  <div class="courses-list" *ngIf="courses.length > 0; else noCourses">
-    <div *ngFor="let c of courses" class="course-card">
-      <div class="course-info">
-        <h3 class="course-name">{{ c.courseName }}</h3>
-        <p class="course-category">{{ c.category }}</p>
-        <p class="course-id"><strong>Course ID:</strong> {{ c.courseId }}</p>
+  <div *ngIf="courses.length > 0; else noCourses">
+    <div *ngFor="let c of courses" class="item-card">
+      <div class="course-header">
+        <strong>{{ c.courseName }}</strong>
+        <span class="course-meta">(ID: {{ c.courseId }}) · {{ c.category }}</span>
       </div>
-      <div class="course-actions">
-        <button class="btn btn-danger" (click)="deleteCourse(c.courseId)">Delete</button>
-        <button 
-          *ngIf="c.pdfFilePath" 
-          class="btn btn-secondary" 
-          (click)="viewPdf(c.pdfFilePath)">
-          📄 View PDF
-        </button>
+      <div class="actions">
+        <button (click)="deleteCourse(c.courseId)">🗑️ Delete</button>
+        <button *ngIf="c.pdfFilePath" (click)="viewPdf(c.pdfFilePath)">📄 View PDF</button>
       </div>
     </div>
   </div>
 
   <ng-template #noCourses>
-    <p class="no-courses-msg">You have not created any courses yet.</p>
+    <p>You have not created any courses yet.</p>
   </ng-template>
 </section>
+
 
 
     <!-- Enrolled Students with Pagination -->
@@ -119,56 +134,43 @@
       <button (click)="createAssignment()">Create Assignment</button>
     </section>
 
-<section *ngIf="activeSection === 'my-assignments'" class="assignments-section">
-  <h2 class="section-title">🧾 My Created Assignments</h2>
 
-  <div class="assignment-list" *ngIf="assignments.length > 0; else noAssignments">
-    <div *ngFor="let a of assignments" class="assignment-card">
-      <div class="assignment-info">
-        <h3 class="assignment-title">{{ a.title }}</h3>
-        <p><strong>ID:</strong> {{ a.assignmentId }}</p>
-        <p><strong>Course ID:</strong> {{ a.courseId }}</p>
-        <p><strong>Due Date:</strong> {{ a.dueDate | date: 'longDate' }}</p>
-        <a 
-          *ngIf="a.uploadFilePath" 
-          class="btn btn-secondary" 
-          [href]="'https://localhost:7072/' + a.uploadFilePath" 
-          target="_blank">
-          📄 View PDF
-        </a>
+<!-- My Assignments -->
+<section *ngIf="activeSection === 'my-assignments'" class="card">
+  <h2>🧾 My Created Assignments</h2>
+
+  <div *ngIf="assignments.length > 0; else noAssignments">
+    <div *ngFor="let a of assignments" class="item-card">
+      <div class="assignment-header">
+        <strong>{{ a.title }}</strong>
+        <span class="assignment-meta">Assignment ID: {{ a.assignmentId }} | Course ID: {{ a.courseId }} | Due: {{ a.dueDate | date:'mediumDate' }}</span>
       </div>
-
-      <div class="assignment-actions">
-        <button class="btn btn-edit" (click)="startEditAssignment(a)">✏️ Edit</button>
-        <button class="btn btn-danger" (click)="deleteAssignment(a.assignmentId)">🗑️ Delete</button>
+      <div class="actions">
+        <button (click)="startEditAssignment(a)">✏️ Edit</button>
+        <button (click)="deleteAssignment(a.assignmentId)">🗑️ Delete</button>
+        <button *ngIf="a.uploadFilePath" (click)="viewPdf(a.uploadFilePath)">📄 View PDF</button>
       </div>
     </div>
   </div>
 
   <ng-template #noAssignments>
-    <p class="no-assignments-msg">No assignments have been created yet.</p>
+    <p>No assignments have been created yet.</p>
   </ng-template>
 
-  <!-- Edit form -->
+  <!-- Edit Assignment -->
   <div *ngIf="editingAssignment" class="edit-form">
     <h3>Edit Assignment (ID: {{ editingAssignment.assignmentId }})</h3>
-    <label>
-      Title:
-      <input [(ngModel)]="editingAssignment.title" />
-    </label>
-    <label>
-      Due Date:
+    <div class="form-group">
+      <input [(ngModel)]="editingAssignment.title" placeholder="Title" />
       <input type="date" [(ngModel)]="editingAssignment.dueDate" />
-    </label>
-    <label>
-      Course ID:
-      <input type="number" [(ngModel)]="editingAssignment.courseId" disabled />
-    </label>
-    <br />
-    <button class="btn btn-save" (click)="updateAssignment()">💾 Save</button>
-    <button class="btn btn-cancel" (click)="cancelEdit()">Cancel</button>
+    </div>
+    <div class="form-group">
+      <button (click)="updateAssignment()">💾 Save</button>
+      <button (click)="cancelEdit()">❌ Cancel</button>
+    </div>
   </div>
 </section>
+
 
 
     <!-- Performance Report -->
@@ -369,20 +371,36 @@
 
 
 
-    <!-- All Submissions -->
-    <section *ngIf="activeSection === 'all-submissions'" class="card">
-      <h2>📁 All Submissions</h2>
-      <ul>
-         <button (click)="loadSubmittedAssignments()">Refresh Submissions</button>
-        <li *ngFor="let s of submissions">
-         
-          📄 <strong>{{ s.assignmentTitle }}</strong> by {{ s.studentName }}
-          <br />
-          Grade: {{ s.grade }} 
-          <a [href]="'https://localhost:7072/' + s.submittedFilePath" target="_blank">View File</a>
-        </li>
-      </ul>
-    </section>
+   <!-- All Submissions -->
+<section *ngIf="activeSection === 'all-submissions'" class="card">
+  <h2>📁 All Submissions</h2>
+
+  <button (click)="loadSubmittedAssignments()" style="margin-bottom: 1rem;">🔄 Refresh Submissions</button>
+
+  <table class="submissions-table">
+    <thead>
+      <tr>
+        <th>Assignment Title</th>
+        <th>Student Name</th>
+        <!-- <th>Grade</th> -->
+        <th>Submitted File</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of submissions">
+        <td>{{ s.assignmentTitle }}</td>
+        <td>{{ s.studentName }}</td>
+        <!-- <td>{{ s.grade }}</td> -->
+        <td>
+          <a [href]="'https://localhost:7072/' + s.submittedFilePath" target="_blank">📄 View File</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="submissions.length === 0" style="margin-top: 1rem;">No submissions found.</p>
+</section>
+
 
 
  
