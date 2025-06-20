@@ -8,12 +8,15 @@ import { TeacherDashboardComponent } from './Dashboard/teacher-dashboard.compone
 import { StudentDashboardComponent } from './Dashboard/student-dashboard.component/student-dashboard.component';
 import { AuthGuard } from './auth-guard';
 import { FeatureDetailComponent } from './feature-detail/feature-detail';
+import { StudentPerformanceChartComponent } from './Dashboard/student-performance-chart/student-performance-chart';
 
 
 
 export const routes: Routes = [
   { path: '', component: Home },
 { path: 'feature-details/:type', component: FeatureDetailComponent },
+{ path: 'performance-chart', component: StudentPerformanceChartComponent },
+
 
 
   { path: 'student-register', component: StudentRegisterComponent },

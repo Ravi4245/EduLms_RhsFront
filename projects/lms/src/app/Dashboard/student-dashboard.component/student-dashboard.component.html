@@ -14,17 +14,18 @@
   
 
   <!-- Sidebar -->
-  <nav class="sidebar">
-    <h2>🎓 Student Menu</h2>
-    <ul>
-      <li (click)="activeSection = 'profile'">👤 Profile</li>
-      <li (click)="activeSection = 'enroll'">📝 Enroll in Course</li>
-      <li (click)="activeSection = 'my-courses'">📚 My Courses</li>
-      <li (click)="activeSection = 'assignments'">📄 Assignments</li>
-      <li (click)="activeSection = 'submit'">📤 Submit Assignment</li>
-      <li (click)="activeSection = 'performance'">📈 Performance Report</li>
-    </ul>
-  </nav>
+ <nav class="sidebar">
+  <h2>🎓 Student Menu</h2>
+  <ul>
+    <li (click)="onSectionChange('profile')">👤 Profile</li>
+    <li (click)="onSectionChange('enroll')">📝 Enroll in Course</li>
+    <li (click)="onSectionChange('my-courses')">📚 My Courses</li>
+    <li (click)="onSectionChange('assignments')">📄 Assignments</li>
+    <li (click)="onSectionChange('submit')">📤 Submit Assignment</li>
+    <li (click)="onSectionChange('performance')">📈 Performance Report</li>
+  </ul>
+</nav>
+
 
   <!-- Main Content -->
   <div class="content">
@@ -75,16 +76,35 @@
     
     <!-- My Courses -->
 <section *ngIf="activeSection === 'my-courses'" class="card">
-  <h2>📚 My Courses</h2>
-  <div class="course-grid">
-    <div class="course-card" *ngFor="let c of enrolledCourses; trackBy: trackByCourseId">
-      <p><strong>ID:</strong> {{ c.courseId }}</p>
-      <p><strong>Name:</strong> {{ c.courseName }}</p>
-      <p><strong>Category:</strong> {{ c.category }}</p>
-      <a *ngIf="c.pdfFilePath" [href]="'https://localhost:7072/' + c.pdfFilePath" target="_blank" class="view-link">
-        📄 View PDF
-      </a>
-    </div>
+  <h2 class="section-title">📚 My Courses</h2>
+
+  <div *ngIf="enrolledCourses.length === 0" class="info-msg">
+    You are not enrolled in any courses yet.
+  </div>
+
+  <div class="table-container" *ngIf="enrolledCourses.length > 0">
+    <table class="courses-table">
+      <thead>
+        <tr>
+          <th>Course ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>PDF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of enrolledCourses; trackBy: trackByCourseId">
+          <td>{{ c.courseId }}</td>
+          <td>{{ c.courseName }}</td>
+          <td>{{ c.category }}</td>
+          <td>
+            <a *ngIf="c.pdfFilePath" [href]="'https://localhost:7072/' + c.pdfFilePath" target="_blank" class="pdf-link">
+              📄 View PDF
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -94,30 +114,40 @@
 
 
 
+
+
 <section *ngIf="activeSection === 'assignments'" class="card">
-  <h2>📄 Assigned Assignments</h2>
+  <h2 class="section-title">📄 Assigned Assignments</h2>
 
-  <!-- Debug output: shows raw data -->
-  <!-- <pre *ngIf="assignedAssignments">{{ assignedAssignments | json }}</pre> -->
-
-  <!-- Show message if no assignments -->
-  <div *ngIf="assignedAssignments.length === 0">
-    <p>✅ No assignments available to show.</p>
+  <div *ngIf="assignedAssignments.length === 0" class="info-msg">
+    ✅ No assignments available to show.
   </div>
 
-  <!-- Render each assignment -->
-  <div class="assignment-grid" *ngIf="assignedAssignments.length > 0">
-    <div class="assignment-card" *ngFor="let a of assignedAssignments">
-      <p><strong>ID:</strong> {{ a.assignmentId }}</p>
-      <h3>{{ a.title }}</h3>
-      <p>{{ a.description }}</p>
-      <p><strong>Due:</strong> {{ a.dueDate | date }}</p>
-
-      <!-- Adjust the domain as needed -->
-      <a *ngIf="a.file" [href]="'https://localhost:7072/' + a.file" target="_blank" class="view-link">
-        📄 View PDF
-      </a>
-    </div>
+  <div class="table-container" *ngIf="assignedAssignments.length > 0">
+    <table class="assignments-table">
+      <thead>
+        <tr>
+          <th>Assignment ID</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Due Date</th>
+          <th>PDF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of assignedAssignments">
+          <td>{{ a.assignmentId }}</td>
+          <td>{{ a.title }}</td>
+          <td>{{ a.description }}</td>
+          <td>{{ a.dueDate | date }}</td>
+          <td>
+            <a *ngIf="a.file" [href]="'https://localhost:7072/' + a.file" target="_blank" class="pdf-link">
+              📄 View PDF
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -149,14 +179,47 @@
 
 
     <!-- Performance -->
-    <section *ngIf="activeSection === 'performance'" class="card">
-      <h2>📈 Performance Report</h2>
-      <div class="report-card" *ngFor="let p of performanceReports">
-        <p><strong>Course:</strong> {{ p.courseName }}</p>
-        <p><strong>Marks:</strong> {{ p.grade }}</p>
-        <p><strong>Remarks:</strong> {{ p.remarks }}</p>
-      </div>
-    </section>
+<!-- Performance -->
+<section *ngIf="activeSection === 'performance'" class="card">
+  <h2 class="section-title">📈 Performance Report</h2>
+
+  <!-- Table for Clean View -->
+  <div *ngIf="performanceReports.length > 0; else noReports">
+    <table class="performance-table">
+      <thead>
+        <tr>
+          <th>📘 Course</th>
+          <th>📝 Grade</th>
+          <th>💬 Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of performanceReports">
+          <td>{{ p.courseName }}</td>
+          <td>{{ p.grade }}</td>
+          <td>{{ p.remarks }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Fallback if no data -->
+  <ng-template #noReports>
+    <p class="info-msg">No performance data available yet.</p>
+  </ng-template>
+
+  <!-- Chart Display -->
+  <h3 class="text-center chart-heading">🎯 Grade Distribution</h3>
+  <div class="chart-container">
+    <app-student-performance-chart *ngIf="showChart"></app-student-performance-chart>
+  </div>
+</section>
+
+
+
+
+
+    
   </div>
  
 </div>

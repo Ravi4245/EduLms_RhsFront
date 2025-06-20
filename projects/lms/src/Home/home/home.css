@@ -9,14 +9,14 @@
 
 /* Navbar */
 .navbar {
-   background: linear-gradient(to right, #5280f4, #3676f8);
-  color: rgb(225, 196, 196);
+   background: linear-gradient(to right, #475476, #325aaa);
+  color: rgb(232, 230, 230);
   padding: 1rem 2rem;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 999;
-  box-shadow: 0 2px 8px rgba(232, 116, 48, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.909);
 }
 
 .navbar-container {
@@ -74,7 +74,7 @@
 }
 
 .hero-section .brand {
-  color: #4B73FF;
+  color: #3a62f0;
 }
 
 .hero-section p {
@@ -92,7 +92,7 @@
 
 /* Buttons */
 .button-group button {
-  background-color: #4B73FF;
+  background-color: #4e6cd8;
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -101,10 +101,11 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
+  box-shadow: 0 2px 8px rgb(0, 0, 0);
 }
 
 .button-group button:hover {
-  background-color: #3659C6;
+  background-color: #001349;
 }
 
 /* Features Section */

@@ -2,11 +2,15 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StudentPerformanceChartComponent } from '../student-performance-chart/student-performance-chart';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
+
 
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule,StudentPerformanceChartComponent],
   templateUrl: './student-dashboard.component.html',
   styleUrls: ['./student-dashboard.component.css']
 })
@@ -36,21 +40,30 @@ export class StudentDashboardComponent implements OnInit {
   };
 
   selectedFile: File | null = null;
+  showChart: boolean = false;
 
-  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
+
+ constructor(
+  private http: HttpClient,
+  private cd: ChangeDetectorRef,
+  @Inject(PLATFORM_ID) private platformId: Object
+) {}
 
 ngOnInit() {
-  const storedId = localStorage.getItem('studentId');
-  if (storedId) {
-    this.studentId = +storedId;
-    this.enrollData.studentId = this.studentId;
-    this.submitData.studentId = this.studentId;
+  if (isPlatformBrowser(this.platformId)) {
+    const storedId = localStorage.getItem('studentId');
+    if (storedId) {
+      this.studentId = +storedId;
+      this.enrollData.studentId = this.studentId;
+      this.submitData.studentId = this.studentId;
 
-    this.refreshAll();  // This will load all needed data
-  } else {
-    alert("Student ID not found. Please login again.");
+      this.refreshAll();
+    } else {
+      alert("Student ID not found. Please login again.");
+    }
   }
 }
+
 
   refreshAll() {
     this.loadProfile();
@@ -190,15 +203,17 @@ loadAssignments() {
   }
 
   loadPerformanceReport() {
-    this.http.get<any[]>(`https://localhost:7072/api/Student/PerformanceReport/${this.studentId}`)
-      .subscribe({
-        next: res => {
-          this.performanceReports = res;
-          this.cd.detectChanges();
-        },
-        error: err => console.error('❌ Performance report error:', err)
-      });
-  }
+  this.http.get<any[]>(`https://localhost:7072/api/Student/PerformanceReport/${this.studentId}`)
+    .subscribe({
+      next: res => {
+        this.performanceReports = res;
+        this.showChart = true; // ✅ enable chart only when data is ready
+        this.cd.detectChanges();
+      },
+      error: err => console.error('❌ Performance report error:', err)
+    });
+}
+
 
   loadAssignedAssignments() {
   const studentId = localStorage.getItem('studentId');
@@ -206,6 +221,15 @@ loadAssignments() {
     .subscribe(res => {
       this.assignedAssignments = res;
     });
+}
+
+onSectionChange(section: string) {
+  this.activeSection = section;
+
+  // Load chart only when Performance section is selected
+  if (section === 'performance') {
+    this.loadPerformanceReport();  // ✅ Only load once when performance section opens
+  }
 }
 
 
