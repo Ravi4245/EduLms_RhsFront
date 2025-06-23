@@ -1,5 +1,5 @@
 .form-container {
-  max-width: 500px;
+  max-width: 1000px;
   margin: auto;
   padding: 30px;
   background: #f9f9f9;
@@ -25,7 +25,7 @@
 }
 
 .full-width {
-  grid-column: span 2;
+  /* grid-column: span 4; */
 }
 
 label {

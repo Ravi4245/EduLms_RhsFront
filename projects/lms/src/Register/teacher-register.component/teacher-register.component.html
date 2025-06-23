@@ -1,90 +1,113 @@
-<div class="form-container">
+<div class="form-container my-4">
   <h2>🧑‍🏫 Teacher Registration</h2>
 
   <form (ngSubmit)="registerTeacher()" #teacherForm="ngForm">
-    <div class="form-grid">
-      <!-- Full Name -->
-      <div class="form-field">
-        <label>Full Name</label>
-        <input type="text" name="fullName" [(ngModel)]="teacher.fullName" (keyup)="checkFullName()" placeholder="Full Name" required maxlength="50" minlength="3" #fullName="ngModel" />
-        <div *ngIf="fullName.errors?.['required'] && fullName.touched" class="error">Full Name is required.</div>
-        <div *ngIf="fullName.errors?.['minlength'] && fullName.touched" class="error">Full Name must be at least 3 characters.</div>
-        <div *ngIf="fullName.errors?.['maxlength'] && fullName.touched" class="error">Full Name cannot exceed 50 characters.</div>
-        <div *ngIf="hasInvalidFullName" class="error">Do not enter numbers or special characters in Full Name.</div>
-      </div>
-
-      <!-- Email -->
-      <div class="form-field">
-        <label>Email</label>
-        <input type="email" name="email" [(ngModel)]="teacher.email" (keyup)="checkEmail()" placeholder="Email (e.g., name&#64;example.com)" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$" #email="ngModel" />
-        <div *ngIf="email.errors?.['required'] && email.touched" class="error">Email is required.</div>
-        <div *ngIf="(email.touched || email.dirty) && hasInvalidEmailFormat" class="error">Enter a valid Email ID.</div>
-      </div>
-
-      <!-- Password -->
-      <div class="form-field">
-        <label>Password</label>
-        <input type="password" name="password" [(ngModel)]="teacher.password" (keyup)="checkPassword()" placeholder="Password" required maxlength="20" minlength="8" #password="ngModel" />
-        <div *ngIf="password.errors?.['required'] && password.touched" class="error">Password is required.</div>
-        <div *ngIf="(password.touched || password.dirty) && hasInvalidPasswordFormat" class="error">Password must contain at least one uppercase letter, one number, and one special character.</div>
-      </div>
-
-      <!-- Phone Number -->
-      <div class="form-field">
-        <label>Phone Number</label>
-        <input type="text" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" (keyup)="checkPhoneNumber()" placeholder="Phone Number" required maxlength="10" minlength="10" pattern="^[0-9]{10}$" #phoneNumber="ngModel" />
-        <div *ngIf="phoneNumber.errors?.['required'] && phoneNumber.touched" class="error">Phone Number is required.</div>
-        <div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && hasInvalidPhoneFormat" class="error">Enter a valid 10-digit phone number (digits only).</div>
-      </div>
-
-      <!-- Qualification -->
-      <div class="form-field">
-        <label>Qualification</label>
-        <input type="text" name="qualification" [(ngModel)]="teacher.qualification" placeholder="Qualification" required minlength="2" #qualification="ngModel" />
-        <div *ngIf="qualification.errors?.['required'] && qualification.touched" class="error">Qualification is required.</div>
-        <div *ngIf="qualification.errors?.['minlength'] && qualification.touched" class="error">Qualification must be at least 2 characters.</div>
-      </div>
-
-      <!-- Experience -->
-      <div class="form-field">
-        <label>Experience (Years)</label>
-        <input type="number" name="experienceYears" [(ngModel)]="teacher.experienceYears" placeholder="Experience (Years)" required min="0" max="50" #experienceYears="ngModel" />
-        <div *ngIf="experienceYears.errors?.['required'] && experienceYears.touched" class="error">Experience is required.</div>
-        <div *ngIf="(experienceYears.errors?.['min'] || experienceYears.errors?.['max']) && experienceYears.touched" class="error">Experience must be between 0 and 50 years.</div>
-      </div>
-
-      <!-- Specialization -->
-      <div class="form-field">
-        <label>Specialization</label>
-        <input type="text" name="specialization" [(ngModel)]="teacher.specialization" placeholder="Specialization" required minlength="2" #specialization="ngModel" />
-        <div *ngIf="specialization.errors?.['required'] && specialization.touched" class="error">Specialization is required.</div>
-        <div *ngIf="specialization.errors?.['minlength'] && specialization.touched" class="error">Specialization must be at least 2 characters.</div>
-      </div>
-
-      <!-- Teacher No -->
-      <div class="form-field">
-        <label>Teacher No.</label>
-        <input type="text" name="teacherNo" [(ngModel)]="teacher.teacherNO" (keyup)="checkTeacherNo()" placeholder="Teacher No." required maxlength="5" pattern="^[0-9]{1,5}$" #teacherNo="ngModel" />
-        <div *ngIf="teacherNo.errors?.['required'] && teacherNo.touched" class="error">Teacher Number is required.</div>
-        <div *ngIf="(teacherNo.dirty || teacherNo.touched) && hasInvalidTeacherNo" class="error">Enter a valid Teacher Number (up to 5 digits).</div>
-      </div>
-
-      <!-- CAPTCHA -->
-      <div class="form-field full-width">
-        <label>CAPTCHA</label>
-        <div class="captcha-box">
-          <span class="captcha-text">{{ captcha }}</span>
-          <button type="button" class="refresh-btn" (click)="generateCaptcha()">🔄</button>
+    <div class="container">
+      <!-- Row 1 -->
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="fullName" [(ngModel)]="teacher.fullName" (keyup)="checkFullName()" placeholder="Full Name" required maxlength="50" minlength="3" #fullName="ngModel" />
+            <div *ngIf="fullName.errors?.['required'] && fullName.touched" class="error">Full Name is required.</div>
+            <div *ngIf="fullName.errors?.['minlength'] && fullName.touched" class="error">Full Name must be at least 3 characters.</div>
+            <div *ngIf="fullName.errors?.['maxlength'] && fullName.touched" class="error">Full Name cannot exceed 50 characters.</div>
+            <div *ngIf="hasInvalidFullName" class="error">Do not enter numbers or special characters in Full Name.</div>
+          </div>
         </div>
-        <input type="text" [(ngModel)]="userCaptchaInput" name="captchaInput" placeholder="Enter CAPTCHA" required />
+
+        <div class="col-3">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" [(ngModel)]="teacher.email" (keyup)="checkEmail()" placeholder="Email (e.g., name&#64;example.com)" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$" #email="ngModel" />
+            <div *ngIf="email.errors?.['required'] && email.touched" class="error">Email is required.</div>
+            <div *ngIf="(email.touched || email.dirty) && hasInvalidEmailFormat" class="error">Enter a valid Email ID.</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" [(ngModel)]="teacher.password" (keyup)="checkPassword()" placeholder="Password" required maxlength="20" minlength="8" #password="ngModel" />
+            <div *ngIf="password.errors?.['required'] && password.touched" class="error">Password is required.</div>
+            <div *ngIf="(password.touched || password.dirty) && hasInvalidPasswordFormat" class="error">Password must contain at least one uppercase letter, one number, and one special character.</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" name="phoneNumber" [(ngModel)]="teacher.phoneNumber" (keyup)="checkPhoneNumber()" placeholder="Phone Number" required maxlength="10" minlength="10" pattern="^[0-9]{10}$" #phoneNumber="ngModel" />
+            <div *ngIf="phoneNumber.errors?.['required'] && phoneNumber.touched" class="error">Phone Number is required.</div>
+            <div *ngIf="(phoneNumber.dirty || phoneNumber.touched) && hasInvalidPhoneFormat" class="error">Enter a valid 10-digit phone number (digits only).</div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <button type="submit" class="register-button">Register</button>
+      <!-- Row 2 -->
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label>Qualification</label>
+            <input type="text" name="qualification" [(ngModel)]="teacher.qualification" placeholder="Qualification" required minlength="2" #qualification="ngModel" />
+            <div *ngIf="qualification.errors?.['required'] && qualification.touched" class="error">Qualification is required.</div>
+            <div *ngIf="qualification.errors?.['minlength'] && qualification.touched" class="error">Qualification must be at least 2 characters.</div>
+          </div>
+        </div>
 
-    <div class="button-group">
-      <button class="clear-button" (click)="clearForm()">Clear</button>
-      <button class="back-button" (click)="goBack()">Back</button>
+        <div class="col-3">
+          <div class="form-group">
+            <label>Experience (Years)</label>
+            <input type="number" name="experienceYears" [(ngModel)]="teacher.experienceYears" placeholder="Experience (Years)" required min="0" max="50" #experienceYears="ngModel" />
+            <div *ngIf="experienceYears.errors?.['required'] && experienceYears.touched" class="error">Experience is required.</div>
+            <div *ngIf="(experienceYears.errors?.['min'] || experienceYears.errors?.['max']) && experienceYears.touched" class="error">Experience must be between 0 and 50 years.</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label>Specialization</label>
+            <input type="text" name="specialization" [(ngModel)]="teacher.specialization" placeholder="Specialization" required minlength="2" #specialization="ngModel" />
+            <div *ngIf="specialization.errors?.['required'] && specialization.touched" class="error">Specialization is required.</div>
+            <div *ngIf="specialization.errors?.['minlength'] && specialization.touched" class="error">Specialization must be at least 2 characters.</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label>Teacher No.</label>
+            <input type="text" name="teacherNo" [(ngModel)]="teacher.teacherNO" (keyup)="checkTeacherNo()" placeholder="Teacher No." required maxlength="5" pattern="^[0-9]{1,5}$" #teacherNo="ngModel" />
+            <div *ngIf="teacherNo.errors?.['required'] && teacherNo.touched" class="error">Teacher Number is required.</div>
+            <div *ngIf="(teacherNo.dirty || teacherNo.touched) && hasInvalidTeacherNo" class="error">Enter a valid Teacher Number (up to 5 digits).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPTCHA Row -->
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label>CAPTCHA</label>
+            <div class="captcha-box">
+              <span class="captcha-text">{{ captcha }}</span>
+              <button type="button" class="refresh-btn" (click)="generateCaptcha()">🔄</button>
+              <input type="text" [(ngModel)]="userCaptchaInput" name="captchaInput" placeholder="Enter CAPTCHA" required />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="row">
+        <div class="form-group full-width">
+          <button type="submit" class="register-button">Register</button>
+        </div>
+
+        <div class="button-group full-width">
+          <button class="clear-button" (click)="clearForm()">Clear</button>
+          <button class="back-button" (click)="goBack()">Back</button>
+        </div>
+      </div>
     </div>
   </form>
 </div>
