@@ -44,10 +44,10 @@ input, select {
 }
 
 .register-button {
-  background-color: #007BFF;
+  background-color: #4b98ea;
   color: white;
-  padding: 12px;
-  width: 100%;
+  padding: 8px 12px;
+  width: auto;
   border: none;
   border-radius: 6px;
   font-weight: bold;
@@ -66,7 +66,7 @@ input, select {
 
 .clear-button, .back-button {
   width: 48%;
-  padding: 10px;
+  padding: 8px 10px;
   border-radius: 6px;
   font-weight: bold;
   border: none;
@@ -74,12 +74,12 @@ input, select {
 }
 
 .clear-button {
-  background-color: #f44336;
+  background-color: #e45e54;
   color: white;
 }
 
 .back-button {
-  background-color: #6c757d;
+  background-color: #6b7176;
   color: white;
 }
 

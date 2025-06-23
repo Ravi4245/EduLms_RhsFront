@@ -35,10 +35,11 @@ select {
 }
 
 .register-button {
-  background-color: #007bff;
+  background-color: #4894e5;
   color: white;
-  padding: 12px;
-  width: 100%;
+  padding: 8px 12px;
+  width: auto;
+  font-size: 14px;
   border: none;
   border-radius: 6px;
   font-weight: bold;
@@ -46,7 +47,7 @@ select {
 }
 
 .register-button:hover {
-  background-color: #0056b3;
+  background-color: #096fdb;
 }
 
 .button-group {
@@ -58,7 +59,7 @@ select {
 .clear-button,
 .back-button {
   width: 48%;
-  padding: 10px;
+  padding: 8px 10px;
   border-radius: 6px;
   font-weight: bold;
   border: none;
@@ -66,12 +67,12 @@ select {
 }
 
 .clear-button {
-  background-color: #f44336;
+  background-color: #eb4a3e;
   color: white;
 }
 
 .back-button {
-  background-color: #6c757d;
+  background-color: #616568;
   color: white;
 }
 
@@ -145,7 +146,7 @@ select.ng-invalid.ng-touched {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #0057e7;
+  background-color: #295089;
   color: white;
   border: none;
   border-radius: 5px;
@@ -156,5 +157,5 @@ button {
 }
 
 button:hover {
-  background-color: #0042a7;
+  background-color: #1d2d44;
 }
