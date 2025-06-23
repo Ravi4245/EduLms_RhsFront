@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { StudentRegisterService,StudentModel } from '../../app/Services/student-register.service';
 
 @Component({
   selector: 'app-student-register',
@@ -12,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./student-register.component.css']
 })
 export class StudentRegisterComponent {
-  student = {
+  student: StudentModel = {
     fullName: '',
     email: '',
     password: '',
@@ -25,52 +26,41 @@ export class StudentRegisterComponent {
   };
 
   hasInvalidFullName = false;
-
-checkFullName() {
-  // Only allow letters, spaces, apostrophes, and hyphens
-  const validNamePattern = /^[a-zA-Z\s'-]+$/;
-
-  // Set to true if the full name does NOT match the valid pattern
-  this.hasInvalidFullName = !validNamePattern.test(this.student.fullName);
-}
-
   hasInvalidEmailFormat = false;
-
-checkEmail() {
-  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$/;
-  this.hasInvalidEmailFormat = !pattern.test(this.student.email || '');
-}
-hasInvalidPasswordFormat = false;
-
-checkPassword() {
-  const strongPasswordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
-  this.hasInvalidPasswordFormat = !strongPasswordPattern.test(this.student.password);
-}
-hasInvalidPhoneFormat = false;
-
-checkPhoneNumber() {
-    const phonePattern = /^\d{10}$/;
-    this.hasInvalidPhoneFormat = !phonePattern.test(this.student.phoneNumber);
-  }
-
-hasInvalidStudentNo = false;
-
-checkStudentNo() {
-  const validStudentNoPattern = /^\d{1,5}$/; // 1 to 5 digits only
-  this.hasInvalidStudentNo = !validStudentNoPattern.test(this.student.studentNo);
-}
-
-
-
-
-
-  
+  hasInvalidPasswordFormat = false;
+  hasInvalidPhoneFormat = false;
+  hasInvalidStudentNo = false;
 
   captcha = '';
   userCaptchaInput = '';
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private service: StudentRegisterService, private router: Router) {
     this.generateCaptcha();
+  }
+
+  checkFullName() {
+    const validNamePattern = /^[a-zA-Z\s'-]+$/;
+    this.hasInvalidFullName = !validNamePattern.test(this.student.fullName);
+  }
+
+  checkEmail() {
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$/;
+    this.hasInvalidEmailFormat = !pattern.test(this.student.email || '');
+  }
+
+  checkPassword() {
+    const strongPasswordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+    this.hasInvalidPasswordFormat = !strongPasswordPattern.test(this.student.password);
+  }
+
+  checkPhoneNumber() {
+    const phonePattern = /^\d{10}$/;
+    this.hasInvalidPhoneFormat = !phonePattern.test(this.student.phoneNumber);
+  }
+
+  checkStudentNo() {
+    const validStudentNoPattern = /^\d{1,5}$/;
+    this.hasInvalidStudentNo = !validStudentNoPattern.test(this.student.studentNo);
   }
 
   generateCaptcha() {
@@ -83,8 +73,8 @@ checkStudentNo() {
   }
 
   registerStudent() {
-    this.http.post('https://localhost:7072/api/Student/RegisterStudent', this.student).subscribe({
-      next: (res:any) => {
+    this.service.registerStudent(this.student).subscribe({
+      next: (res: any) => {
         alert(res.message);
         this.router.navigate(['/']);
       },

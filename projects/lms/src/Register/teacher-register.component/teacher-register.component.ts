@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { TeacherRegisterService,TeacherModel } from '../../app/Services/teacher-register-service';
 
 @Component({
   selector: 'app-teacher-register',
@@ -12,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./teacher-register.component.css']
 })
 export class TeacherRegisterComponent {
-  teacher = {
+  teacher: TeacherModel = {
     fullName: '',
     email: '',
     password: '',
@@ -21,56 +22,45 @@ export class TeacherRegisterComponent {
     experienceYears: null,
     specialization: '',
     teacherNO: ''
-  };  
+  };
 
+  hasInvalidFullName = false;
   hasNumberInFullName = false;
   hasInvalidEmailFormat = false;
   hasInvalidPasswordFormat = false;
   hasInvalidPhoneFormat = false;
   hasInvalidTeacherNo = false;
 
-  // Full Name validation: no numbers allowed
-  hasInvalidFullName = false;
+  captcha = '';
+  userCaptchaInput = '';
 
-checkFullName() {
-  // Allow only letters, spaces, apostrophes, and hyphens
-  const validNamePattern = /^[a-zA-Z\s'-]+$/;
+  constructor(private service: TeacherRegisterService, private router: Router) {
+    this.generateCaptcha();
+  }
 
-  // Set to true if input is invalid
-  this.hasInvalidFullName = !validNamePattern.test(this.teacher.fullName);
-}
+  checkFullName() {
+    const validNamePattern = /^[a-zA-Z\s'-]+$/;
+    this.hasInvalidFullName = !validNamePattern.test(this.teacher.fullName);
+  }
 
-
-  // Email validation: username@example.com
   checkEmail() {
-  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$/;
-  this.hasInvalidEmailFormat = !pattern.test(this.teacher.email || '');
-}
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$/;
+    this.hasInvalidEmailFormat = !pattern.test(this.teacher.email || '');
+  }
 
-
-  // Password validation: min 8 chars, max 20 chars, at least one uppercase, one number, one special char
   checkPassword() {
     const pwdPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?]).{8,20}$/;
     this.hasInvalidPasswordFormat = !pwdPattern.test(this.teacher.password);
   }
 
-  // Phone Number validation: exactly 10 digits only
   checkPhoneNumber() {
     const phonePattern = /^\d{10}$/;
     this.hasInvalidPhoneFormat = !phonePattern.test(this.teacher.phoneNumber);
   }
 
-  // Teacher No validation: up to 5 digits only
   checkTeacherNo() {
     const teacherNoPattern = /^\d{1,5}$/;
     this.hasInvalidTeacherNo = !teacherNoPattern.test(this.teacher.teacherNO);
-  }
-
-  captcha = '';
-  userCaptchaInput = '';
-
-  constructor(private http: HttpClient, private router: Router) {
-    this.generateCaptcha();
   }
 
   generateCaptcha() {
@@ -81,10 +71,11 @@ checkFullName() {
     }
     this.captcha = generated;
   }
+
   registerTeachera(teacherForm: any) {
     if (
       teacherForm.invalid ||
-      this.hasNumberInFullName ||
+      this.hasInvalidFullName ||
       this.hasInvalidEmailFormat ||
       this.hasInvalidPasswordFormat ||
       this.hasInvalidPhoneFormat ||
@@ -94,9 +85,10 @@ checkFullName() {
       return;
     }
   }
+
   registerTeacher() {
-    this.http.post('https://localhost:7072/api/Teacher/RegisterTeacher', this.teacher).subscribe({
-      next: (res:any) => {
+    this.service.registerTeacher(this.teacher).subscribe({
+      next: (res: any) => {
         alert(res.message);
         this.router.navigate(['/']);
       },

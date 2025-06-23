@@ -2,7 +2,7 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { FeedbackService,Feedback } from '../../app/Services/feedback.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 export class Home implements OnInit {
   darkMode: boolean = false;
 
-  feedback = {
+  feedback: Feedback = {
     email: '',
     message: ''
   };
@@ -27,7 +27,7 @@ export class Home implements OnInit {
     return this.darkMode;
   }
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private feedbackService: FeedbackService) {}
 
   ngOnInit() {
     this.generateCaptcha();
@@ -66,11 +66,11 @@ export class Home implements OnInit {
       return;
     }
 
-    this.http.post('https://localhost:7072/api/Feedback/Submit', this.feedback).subscribe({
+    this.feedbackService.submitFeedback(this.feedback).subscribe({
       next: () => {
         alert('✅ Feedback submitted successfully!');
-        form.resetForm(); // Clears all fields
-        this.generateCaptcha(); // Refresh CAPTCHA
+        form.resetForm();
+        this.generateCaptcha();
       },
       error: () => {
         alert('❌ Failed to submit feedback.');
