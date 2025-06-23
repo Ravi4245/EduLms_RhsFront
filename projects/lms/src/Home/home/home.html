@@ -118,33 +118,68 @@
       <p>We value your feedback!</p>
 
       <form class="feedback-form" #f="ngForm" (ngSubmit)="submitFeedback(f)">
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="feedback.email"
-          placeholder="Your Email"
-          required
-        />
-        <textarea
-          name="message"
-          [(ngModel)]="feedback.message"
-          placeholder="What can we improve?"
-          required
-        ></textarea>
+  <!-- Email Input -->
+  <div>
+    <input
+      #emailField="ngModel"
+      type="email"
+      name="email"
+      [(ngModel)]="feedback.email"
+      placeholder="Your Email"
+      required
+      pattern="^[a-zA-Z0-9._%+-]{1,30}@[a-zA-Z0-9.-]{1,20}\.(com|co\.in|in)$"
+      maxlength="70"
+    />
+    <!-- Email Validation Messages -->
+    <div *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)">
+      <small style="color:red" *ngIf="emailField.errors?.['required']">
+        Email is required.
+      </small>
+      <small style="color:red" *ngIf="emailField.errors?.['pattern']">
+        Invalid email format.
+      </small>
+      <small style="color:red" *ngIf="emailField.errors?.['maxlength']">
+        Email should not exceed 50 characters.
+      </small>
+    </div>
+  </div>
 
-        <!-- 🧠 Simple CAPTCHA -->
-        <div class="captcha-container">
-          <label>What is {{ captchaNum1 }} + {{ captchaNum2 }} ?</label>
-          <input
-            type="number"
-            [(ngModel)]="captchaAnswer"
-            name="captchaAnswer"
-            required
-          />
-        </div>
+  <!-- Message Textarea -->
+  <div>
+    <textarea
+      #messageField="ngModel"
+      name="message"
+      [(ngModel)]="feedback.message"
+      placeholder="What can we improve?"
+      required
+      maxlength="250"
+    ></textarea>
+    <!-- Message Validation Messages -->
+    <div *ngIf="messageField.invalid && (messageField.dirty || messageField.touched)">
+      <small style="color:red" *ngIf="messageField.errors?.['required']">
+        Feedback message is required.
+      </small>
+      <small style="color:red" *ngIf="messageField.errors?.['maxlength']">
+        Message cannot exceed 250 characters.
+      </small>
+    </div>
+  </div>
 
-        <button type="submit">Send Feedback</button>
-      </form>
+  <!-- CAPTCHA -->
+  <div class="captcha-container">
+    <label>What is {{ captchaNum1 }} + {{ captchaNum2 }}?</label>
+    <input
+      type="number"
+      [(ngModel)]="captchaAnswer"
+      name="captchaAnswer"
+      required
+    />
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" [disabled]="f.invalid">Send Feedback</button>
+</form>
+
     </div>
   </div>
 </section>
