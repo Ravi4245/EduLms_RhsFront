@@ -8,6 +8,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
   selector: 'app-student-performance-chart',
   standalone: true,
   imports: [CommonModule, NgChartsModule],
+
   templateUrl: './student-performance-chart.html',
   styleUrls: ['./student-performance-chart.css']
 })
@@ -113,3 +114,5 @@ export class StudentPerformanceChartComponent implements OnInit {
     }
   }
 }
+
+
