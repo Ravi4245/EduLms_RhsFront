@@ -94,3 +94,28 @@ select:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
+
+
+
+
+
+
+
+/* Center the entire login container on the screen */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+  background-color: #e9ecef; /* Optional: subtle background */
+}
+
+/* Style the login image */
+.login-image {
+  display: block;
+  margin: 0 auto 15px auto;
+  width: 80px; /* Adjust as needed */
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%; /* Optional: circle image */
+}

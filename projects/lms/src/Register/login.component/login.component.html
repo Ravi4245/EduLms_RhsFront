@@ -1,58 +1,59 @@
-<div class="login-container">
-  <h2>Login</h2>
+<div class="login-wrapper">
+  <div class="login-container">
+    <img src="/Images/RHSlogo.jpg" alt="Login Image" class="login-image" />
+    <h2>Login</h2>
 
-  <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-    
-    <!-- Email -->
-    <label for="email">Email</label>
-    <input
-      id="email"
-      type="email"
-      name="email"
-      placeholder="Email"
-      [(ngModel)]="loginData.email"
-      required
-      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$"
-      #email="ngModel"
-    />
-    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
-      <small *ngIf="email.errors?.['required']">Email is required.</small>
-      <small *ngIf="email.errors?.['pattern']">
-        Enter a valid email (e.g., user&#64;example.com or user&#64;example.co.in).
-      </small>
-    </div>  
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+      <!-- Email -->
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        name="email"
+        placeholder="Email"
+        [(ngModel)]="loginData.email"
+        required
+        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.in|in)$"
+        #email="ngModel"
+      />
+      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
+        <small *ngIf="email.errors?.['required']">Email is required.</small>
+        <small *ngIf="email.errors?.['pattern']">
+          Enter a valid email (e.g., user&#64;example.com or user&#64;example.co.in).
+        </small>
+      </div>  
 
-    <!-- Password -->
-    <label for="password">Password</label>
-    <input
-      id="password"
-      type="password"
-      name="password"
-      placeholder="Password"
-      [(ngModel)]="loginData.password"
-      required
-      minlength="8"
-      #password="ngModel"
-    />
-    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
-      <small *ngIf="password.errors?.['required']">Password is required.</small>
-      <small *ngIf="password.errors?.['minlength']">
-        Password must be at least 8 characters.
-      </small>
+      <!-- Password -->
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        name="password"
+        placeholder="Password"
+        [(ngModel)]="loginData.password"
+        required
+        minlength="8"
+        #password="ngModel"
+      />
+      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
+        <small *ngIf="password.errors?.['required']">Password is required.</small>
+        <small *ngIf="password.errors?.['minlength']">
+          Password must be at least 8 characters.
+        </small>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit" class="login-button">Login</button>
+    </form>
+
+    <div class="button-group">
+      <button class="clear-button" (click)="clearForm()">Clear all</button>
+      <button class="back-button" (click)="goBack()">Back</button>
     </div>
-
-    <!-- Error Message Display -->
-    <div *ngIf="errorMessage" class="error">
-      <p>{{ errorMessage }}</p>
-    </div>
-
-    <!-- Login Button -->
-    <button type="submit" class="login-button">Login</button>
-  </form>
-
-  <!-- Clear & Back Buttons -->
-  <div class="button-group">
-    <button class="clear-button" (click)="clearForm()">Clear all</button>
-    <button class="back-button" (click)="goBack()">Back</button>
   </div>
 </div>
