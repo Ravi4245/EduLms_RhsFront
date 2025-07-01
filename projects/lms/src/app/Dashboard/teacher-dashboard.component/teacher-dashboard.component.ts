@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TeacherDashboardService } from '../../Services/teacher-dashboard';
 
+
 interface AssignmentModel {
   assignmentId: number;
   courseId: number;
@@ -43,6 +44,14 @@ export class TeacherDashboardComponent implements OnInit {
   editingReportId: number | null = null;
   assignedStudentsByCourse: Student[] = [];
   assignedStudentsByAssignment: Student[] = [];
+
+
+  courseCurrentPage: number = 1;
+courseItemsPerPage: number = 3;
+
+assignmentCurrentPage: number = 1;
+assignmentItemsPerPage: number = 3;
+
 
   currentPage: number = 1;
   currentAssignmentPage: number = 1;
@@ -84,7 +93,7 @@ export class TeacherDashboardComponent implements OnInit {
   assignCourseData = { studentId: null as number | null, courseId: null as number | null };
   assignAssignmentData = { studentId: null as number | null, assignmentId: null as number | null };
 
-  constructor(private cd: ChangeDetectorRef, private router: Router, private service: TeacherDashboardService) {}
+  constructor(private http : HttpClient, private cd: ChangeDetectorRef, private router: Router, private service: TeacherDashboardService) {}
 
   ngOnInit(): void {
     const storedId = localStorage.getItem('teacherId');
@@ -110,6 +119,29 @@ export class TeacherDashboardComponent implements OnInit {
     const fullPath = `https://localhost:7072/${path}`;
     window.open(fullPath, '_blank');
   }
+
+get paginatedCourses() {
+  const start = (this.courseCurrentPage - 1) * this.courseItemsPerPage;
+  return this.courses.slice(start, start + this.courseItemsPerPage);
+}
+
+// get paginatedAssignments() {
+//   const start = (this.assignmentCurrentPage - 1) * this.assignmentItemsPerPage;
+//   return this.assignments.slice(start, start + this.assignmentItemsPerPage);
+// }
+
+get courseTotalPages() {
+  return Math.ceil(this.courses.length / this.courseItemsPerPage);
+}
+
+// get assignmentTotalPages() {
+//   return Math.ceil(this.assignments.length / this.assignmentItemsPerPage);
+// }
+
+
+
+
+
 
   get paginatedEnrolledStudents() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -157,12 +189,27 @@ export class TeacherDashboardComponent implements OnInit {
     });
   }
 
-  deleteCourse(courseId: number) {
-    this.service.deleteCourse(courseId, this.teacherId).subscribe(res => {
-      alert(res.message);
-      this.loadCourses();
+
+  deleteCourse(courseId: number, teacherId: number): void {
+  this.http.delete<{ message: string }>(`https://localhost:7072/api/Teacher/DeleteCourse/${courseId}/${teacherId}`)
+    .subscribe({
+      next: (response) => {
+        // Show success or informative alert with the message from backend
+        alert(response.message);
+        // Optionally, refresh course list or do something else here
+        this.loadCourses();  // example method to reload courses
+      },
+      error: (error) => {
+        // If backend sends BadRequest or other error, show the error message
+        if (error.error && error.error.message) {
+          alert(error.error.message);
+        } else {
+          alert('Something went wrong. Please try again later.');
+        }
+      }
     });
-  }
+}
+
 
   onFileSelected(event: any): void { this.selectedFile = event.target.files[0]; }
 
@@ -207,14 +254,29 @@ export class TeacherDashboardComponent implements OnInit {
 
   editReport(report: any) { this.editingReportId = report.performanceReportId; }
 
-  deleteAssignment(id: number) {
-    if (confirm('Are you sure you want to delete this assignment?')) {
-      this.service.deleteAssignment(id).subscribe(response => {
-        alert(response.message);
-        this.loadAssignments();
-      });
-    }
+ deleteAssignment(assignmentId: number, teacherId: number): void {
+  if (!confirm('Are you sure you want to delete this assigned assignment?')) {
+    return;
   }
+
+  this.http.delete<{ message: string }>(`https://localhost:7072/api/Teacher/DeleteAssignment/${assignmentId}/${teacherId}`)
+    .subscribe({
+      next: (response) => {
+        alert(response.message);
+        if (response.message.includes('successfully')) {
+          this.loadAssignments(); // Reload assignment list after deletion
+        }
+      },
+      error: (error) => {
+        if (error.error && error.error.message) {
+          alert(error.error.message);
+        } else {
+          alert('An error occurred while deleting the assignment.');
+        }
+      }
+    });
+}
+
 
   assignAssignmentToStudenta() {
     const { studentId, assignmentId } = this.assignAssignmentData;

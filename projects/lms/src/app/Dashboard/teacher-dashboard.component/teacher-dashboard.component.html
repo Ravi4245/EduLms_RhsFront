@@ -62,38 +62,64 @@
 
 
     <!-- Create Course -->
-    <section *ngIf="activeSection === 'create-course'" class="card">
-      <h2>📘 Create Course</h2>
-      <input name="courseName" [(ngModel)]="newCourse.courseName" placeholder="Course Name" />
-      <input name="description" [(ngModel)]="newCourse.description" placeholder="Description" />
-      <input name="category" [(ngModel)]="newCourse.category" placeholder="Category" />
-      <input type="file" (change)="onCoursePdfSelected($event)" accept=".pdf" />
-      <button (click)="createCourse()">Create Course</button>
-    </section>
+  <section *ngIf="activeSection === 'create-course'" class="card">
+  <h2>📘 Create Course</h2>
+  <form #courseForm="ngForm">
+    <input name="courseName" [(ngModel)]="newCourse.courseName" placeholder="Course Name" required #courseName="ngModel" />
+    <div *ngIf="courseName.invalid && courseName.touched" class="error">Course Name is required</div>
+
+    <input name="description" [(ngModel)]="newCourse.description" placeholder="Description" required #description="ngModel" />
+    <div *ngIf="description.invalid && description.touched" class="error">Description is required</div>
+
+    <input name="category" [(ngModel)]="newCourse.category" placeholder="Category" required #category="ngModel" />
+    <div *ngIf="category.invalid && category.touched" class="error">Category is required</div>
+
+    <input type="file" (change)="onCoursePdfSelected($event)" accept=".pdf" required />
+
+    <button [disabled]="courseForm.invalid" (click)="createCourse()">Create Course</button>
+  </form>
+</section>
+
 
 
     <!-- my course -->
-
+<!-- Courses Section -->
+<!-- My Courses -->
 <section *ngIf="activeSection === 'my-courses'" class="card">
-  <h2 class="section-title">📚 My Courses</h2>
+  <h2>📘 My Courses</h2>
 
-  <div *ngIf="courses.length > 0; else noCourses">
-    <div *ngFor="let c of courses" class="item-card">
-      <div class="course-header">
-        <strong>{{ c.courseName }}</strong>
-        <span class="course-meta">(ID: {{ c.courseId }}) · {{ c.category }}</span>
+  <div *ngIf="paginatedCourses.length > 0; else noCourses">
+    <div *ngFor="let course of paginatedCourses" class="course-card">
+      <div class="course-info">
+        <h3>{{ course.courseName }}</h3>
+        <p class="course-meta">
+          🏷️ Category: {{ course.category }}<br />
+          🆔 Course ID: {{ course.courseId }}
+        </p>
       </div>
-      <div class="actions">
-        <button (click)="deleteCourse(c.courseId)">🗑️ Delete</button>
-        <button *ngIf="c.pdfFilePath" (click)="viewPdf(c.pdfFilePath)">📄 View PDF</button>
+      <div class="course-actions">
+        <button class="view-btn" *ngIf="course.pdfFilePath" (click)="viewPdf(course.pdfFilePath)">📄 View PDF</button>
+        <button class="delete-btn" (click)="deleteCourse(course.courseId, teacherId)">🗑️ Delete</button>
       </div>
     </div>
   </div>
 
   <ng-template #noCourses>
-    <p>You have not created any courses yet.</p>
+    <p class="no-data">🚫 No courses created yet.</p>
   </ng-template>
+
+  <div class="pagination-controls">
+    <button (click)="courseCurrentPage = courseCurrentPage - 1" [disabled]="courseCurrentPage === 1">⬅️ Prev</button>
+    <span>Page {{ courseCurrentPage }} of {{ courseTotalPages }}</span>
+    <button (click)="courseCurrentPage = courseCurrentPage + 1" [disabled]="courseCurrentPage === courseTotalPages">Next ➡️</button>
+  </div>
 </section>
+
+
+
+
+
+
 
 
 
@@ -123,38 +149,52 @@
       </div>
     </section>
 
+
     <!-- Create Assignment -->
-    <section *ngIf="activeSection === 'create-assignment'" class="card">
-      <h2>📝 Create Assignment</h2>
-      <input [(ngModel)]="newAssignment.courseId" placeholder="Course ID" type="number" />
-      <input [(ngModel)]="newAssignment.title" placeholder="Title" />
-      <input [(ngModel)]="newAssignment.description" placeholder="Description" />
-      <input [(ngModel)]="newAssignment.dueDate" type="date" />
-      <input type="file" (change)="onFileSelected($event)" accept=".pdf" />
-      <button (click)="createAssignment()">Create Assignment</button>
-    </section>
+   <section *ngIf="activeSection === 'create-assignment'" class="card">
+  <h2>📝 Create Assignment</h2>
+  <form #assignmentForm="ngForm">
+    <input name="courseId" [(ngModel)]="newAssignment.courseId" placeholder="Course ID" type="number" required #courseId="ngModel" />
+    <div *ngIf="courseId.invalid && courseId.touched" class="error">Course ID is required</div>
+
+    <input name="title" [(ngModel)]="newAssignment.title" placeholder="Title" required #title="ngModel" />
+    <div *ngIf="title.invalid && title.touched" class="error">Title is required</div>
+
+    <input name="description" [(ngModel)]="newAssignment.description" placeholder="Description" required #desc="ngModel" />
+    <div *ngIf="desc.invalid && desc.touched" class="error">Description is required</div>
+
+    <input name="dueDate" [(ngModel)]="newAssignment.dueDate" type="date" required #dueDate="ngModel" />
+    <div *ngIf="dueDate.invalid && dueDate.touched" class="error">Due date is required</div>
+
+    <input type="file" (change)="onFileSelected($event)" accept=".pdf" required />
+    
+    <button [disabled]="assignmentForm.invalid" (click)="createAssignment()">Create Assignment</button>
+  </form>
+</section>
 
 
+
+<!-- My Assignments -->
 <!-- My Assignments -->
 <section *ngIf="activeSection === 'my-assignments'" class="card">
   <h2>🧾 My Created Assignments</h2>
 
   <div *ngIf="assignments.length > 0; else noAssignments">
-    <div *ngFor="let a of assignments" class="item-card">
+    <div *ngFor="let a of assignments" class="assignment-card">
       <div class="assignment-header">
-        <strong>{{ a.title }}</strong>
-        <span class="assignment-meta">Assignment ID: {{ a.assignmentId }} | Course ID: {{ a.courseId }} | Due: {{ a.dueDate | date:'mediumDate' }}</span>
+        <h3>{{ a.title }}</h3>
+        <p class="meta">📄 Assignment ID: {{ a.assignmentId }} | 📘 Course ID: {{ a.courseId }} | ⏳ Due: {{ a.dueDate | date:'mediumDate' }}</p>
       </div>
-      <div class="actions">
-        <button (click)="startEditAssignment(a)">✏️ Edit</button>
-        <button (click)="deleteAssignment(a.assignmentId)">🗑️ Delete</button>
-        <button *ngIf="a.uploadFilePath" (click)="viewPdf(a.uploadFilePath)">📄 View PDF</button>
+      <div class="assignment-actions">
+        <button class="edit-btn" (click)="startEditAssignment(a)">✏️ Edit</button>
+        <button class="delete-btn" (click)="deleteAssignment(a.assignmentId, teacherId)">🗑️ Delete</button>
+        <button class="view-btn" *ngIf="a.uploadFilePath" (click)="viewPdf(a.uploadFilePath)">📄 View PDF</button>
       </div>
     </div>
   </div>
 
   <ng-template #noAssignments>
-    <p>No assignments have been created yet.</p>
+    <p class="no-data">🚫 No assignments have been created yet.</p>
   </ng-template>
 
   <!-- Edit Assignment -->
@@ -173,51 +213,66 @@
 
 
 
+
+
+
+
+
+
     <!-- Performance Report -->
 <section *ngIf="activeSection === 'performance-report'" class="card">
   <h2>📈 Create Performance Report</h2>
 
-  <!-- Student Dropdown -->
-  <label for="student-select">👨‍🎓 Select Student:</label>
-  <select [(ngModel)]="newPerformance.studentId" id="student-select">
-    <option value="" disabled selected>Select a Student</option>
-    <option *ngFor="let student of enrolledStudents" [value]="student.studentId">
-      {{ student.studentName }} (ID: {{ student.studentId }})
-    </option>
-  </select>
+  <form #reportForm="ngForm">
+    <!-- Student Dropdown -->
+    <label for="student-select">👨‍🎓 Select Student:</label>
+    <select [(ngModel)]="newPerformance.studentId" name="studentId" id="student-select" required #studentId="ngModel">
+      <option value="" disabled>Select a Student</option>
+      <option *ngFor="let student of enrolledStudents" [value]="student.studentId">
+        {{ student.studentName }} (ID: {{ student.studentId }})
+      </option>
+    </select>
+    <div *ngIf="studentId.invalid && studentId.touched" class="error">Student selection is required</div>
 
-  <!-- Course Dropdown -->
-  <label for="course-select">📘 Select Course:</label>
-  <select [(ngModel)]="newPerformance.courseId" id="course-select">
-    <option value="" disabled selected>Select a Course</option>
-    <option *ngFor="let course of courses" [value]="course.courseId">
-      {{ course.courseName }} (ID: {{ course.courseId }})
-    </option>
-  </select>
+    <!-- Course Dropdown -->
+    <label for="course-select">📘 Select Course:</label>
+    <select [(ngModel)]="newPerformance.courseId" name="courseId" id="course-select" required #courseId="ngModel">
+      <option value="" disabled>Select a Course</option>
+      <option *ngFor="let course of courses" [value]="course.courseId">
+        {{ course.courseName }} (ID: {{ course.courseId }})
+      </option>
+    </select>
+    <div *ngIf="courseId.invalid && courseId.touched" class="error">Course selection is required</div>
 
-  <!-- Grade and Remarks -->
-  <input [(ngModel)]="newPerformance.averageGrade" type="number" placeholder="Marks" />
-  <input [(ngModel)]="newPerformance.remarks" placeholder="Remarks" />
-  <button (click)="createPerformance()">Create Report</button>
+    <!-- Grade and Remarks -->
+    <input [(ngModel)]="newPerformance.averageGrade" name="averageGrade" type="number" placeholder="Marks" required #grade="ngModel" />
+    <div *ngIf="grade.invalid && grade.touched" class="error">Marks are required</div>
 
-  <!-- Existing Reports -->
-  <h3>📊 Existing Reports</h3>
+    <input [(ngModel)]="newPerformance.remarks" name="remarks" placeholder="Remarks" required #remarks="ngModel" />
+    <div *ngIf="remarks.invalid && remarks.touched" class="error">Remarks are required</div>
+
+    <button [disabled]="reportForm.invalid" (click)="createPerformance()">Create Report</button>
+
+    <h3>📊 Existing Reports</h3>
   <ul>
     <li *ngFor="let p of performanceReports">
       <div *ngIf="editingReportId !== p.performanceReportId">
         Student: {{ p.studentId }} | Course: {{ p.courseId }} | Grade: {{ p.averageGrade }} | Remarks: {{ p.remarks }}
-        <button (click)="editReport(p)">✏️ Edit</button>
+        <!-- <button (click)="editReport(p)">✏️ Edit</button> -->
       </div>
-      <div *ngIf="editingReportId === p.performanceReportId">
+      <!-- <div *ngIf="editingReportId === p.performanceReportId">
         Student: {{ p.studentId }} | Course: {{ p.courseId }}
         <input [(ngModel)]="p.averageGrade" type="number" placeholder="Grade" />
         <input [(ngModel)]="p.remarks" placeholder="Remarks" />
         <button (click)="updatePerformance(p)">✅ Update</button>
         <button (click)="cancelEdit()">❌ Cancel</button>
-      </div>
+      </div> -->
     </li>
   </ul>
+  </form>
 </section>
+
+
 
 
 

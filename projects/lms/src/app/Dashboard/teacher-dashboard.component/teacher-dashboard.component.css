@@ -414,3 +414,173 @@ input[type="number"] {
   color: #0066cc;
   text-decoration: none;
 }
+
+
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+
+.pagination-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
+
+.assignment-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.assignment-header h3 {
+  margin: 0 0 0.5rem;
+  color: #333;
+}
+
+.meta {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.assignment-actions {
+  margin-top: 0.5rem;
+}
+
+.assignment-actions button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.edit-btn {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.view-btn {
+  background-color: #5bc0de;
+  color: white;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.view-btn:hover {
+  opacity: 0.9;
+}
+
+.edit-form {
+  margin-top: 2rem;
+  background-color: #fff3cd;
+  padding: 1rem;
+  border: 1px solid #ffeeba;
+  border-radius: 6px;
+}
+
+.no-data {
+  color: #999;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+
+
+
+
+
+.course-card {
+  background-color: #f6f9fc;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-info h3 {
+  margin: 0 0 0.3rem;
+  color: #333;
+}
+
+.course-meta {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.course-actions button {
+  margin-left: 10px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.view-btn {
+  background-color: #5bc0de;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.view-btn:hover,
+.delete-btn:hover {
+  opacity: 0.9;
+}
+
+.pagination-controls {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.pagination-controls button {
+  margin: 0 8px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination-controls button[disabled] {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.no-data {
+  color: #999;
+  text-align: center;
+  font-style: italic;
+}
+
+
+
+
+
