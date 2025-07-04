@@ -56,7 +56,10 @@
             <td>{{ student.email }}</td>
             <td>
               <button (click)="deleteApprovedStudent(student.studentId)">Delete</button>
-              <!-- <button (click)="startEditStudent(student)">Edit</button> -->
+            <button (click)="startEditStudent(student); activeSection = 'edit-student-profile'" [disabled]="!!editingStudent">✏️ Edit</button>
+
+
+
             </td>
           </ng-container>
 
@@ -64,6 +67,11 @@
             <ng-container *ngIf="editingStudent">
               <td><input [(ngModel)]="editingStudent.fullName" /></td>
               <td><input [(ngModel)]="editingStudent.email" /></td>
+               <!-- <td><input type="password" [(ngModel)]="editingStudent.password" name="password" placeholder="New Password" /></td> -->
+              <td><input [(ngModel)]="editingStudent.phoneNumber" /></td>
+             
+
+              
               <td>
                 <button (click)="updateStudentProfile(editingStudent); editingStudent = null;">Save</button>
                 <button (click)="editingStudent = null">Cancel</button>
@@ -109,7 +117,10 @@
             <td>{{ teacher.email }}</td>
             <td>
               <button (click)="deleteApprovedTeacher(teacher.teacherId)">Delete</button>
-              <!-- <button (click)="startEditTeacher(teacher)">Edit</button> -->
+             <button (click)="startEditTeacher(teacher); activeSection = 'edit-teacher-profile'" [disabled]="!!editingTeacher">✏️ Edit</button>
+
+
+
             </td>
           </ng-container>
 
@@ -117,6 +128,10 @@
             <ng-container *ngIf="editingTeacher">
               <td><input [(ngModel)]="editingTeacher.fullName" /></td>
               <td><input [(ngModel)]="editingTeacher.email" /></td>
+              <!-- <td><input type="password" [(ngModel)]="editingTeacher.password" name="password" placeholder="New Password" /></td> -->
+              <td><input [(ngModel)]="editingTeacher.phoneNumber" /></td>
+              
+
               <td>
                 <button (click)="saveTeacher()">Save</button>
                 <button (click)="editingTeacher = null">Cancel</button>
@@ -181,6 +196,55 @@
         <button (click)="changePage('report', 'next')" [disabled]="reportPage * itemsPerPage >= performanceReports.length">Next</button>
       </div>
     </section>
+
+
+    <!-- Edit Student Profile (Full Form) -->
+<section *ngIf="activeSection === 'edit-student-profile'" class="card">
+  <h2>Edit Student Profile</h2>
+
+  <form *ngIf="editingStudent" class="edit-form">
+    <label>Full Name: <input [(ngModel)]="editingStudent.fullName" name="fullName" /></label>
+    <label>Email: <input [(ngModel)]="editingStudent.email" name="email" /></label>
+      <label>Password: <input type="password" [(ngModel)]="editingStudent.password" name="studentPassword" /></label>
+    <label>Phone Number: <input [(ngModel)]="editingStudent.phoneNumber" name="phone" /></label>
+    <label>Date of Birth: <input type="date" [(ngModel)]="editingStudent.dateOfBirth" name="dob" /></label>
+    <label>Gender: <input [(ngModel)]="editingStudent.gender" name="gender" /></label>
+    <label>Address: <input [(ngModel)]="editingStudent.address" name="address" /></label>
+    <label>Grade Level: <input [(ngModel)]="editingStudent.gradeLevel" name="grade" /></label>
+    <label>Student No: <input [(ngModel)]="editingStudent.studentNo" name="studentNo" /></label>
+
+    <div class="button-row">
+      <button (click)="updateStudentProfile(editingStudent)">💾 Save</button>
+      <button (click)="editingStudent = null; activeSection = 'approved-students'">❌ Cancel</button>
+    </div>
+  </form>
+</section>
+
+
+
+
+ <!-- Edit Teacher Profile (Full Form) -->
+<section *ngIf="activeSection === 'edit-teacher-profile'" class="card">
+  <h2>Edit Teacher Profile</h2>
+
+  <form *ngIf="editingTeacher" class="edit-form">
+    <label>Full Name: <input [(ngModel)]="editingTeacher.fullName" name="fullName" /></label>
+    <label>Email: <input [(ngModel)]="editingTeacher.email" name="email" /></label>
+     <label>Password: <input type="password" [(ngModel)]="editingTeacher.password" name="teacherPassword" /></label>
+    <label>Phone Number: <input [(ngModel)]="editingTeacher.phoneNumber" name="phone" /></label>
+    <label>Qualification: <input [(ngModel)]="editingTeacher.qualification" name="qualification" /></label>
+    <label>Experience (Years): <input type="number" [(ngModel)]="editingTeacher.experienceYears" name="experience" /></label>
+    <label>Specialization: <input [(ngModel)]="editingTeacher.specialization" name="specialization" /></label>
+    <label>Teacher No: <input [(ngModel)]="editingTeacher.teacherNo" name="teacherNo" /></label>
+
+    <div class="button-row">
+      <button (click)="saveTeacher()">💾 Save</button>
+      <button (click)="editingTeacher = null; activeSection = 'approved-teachers'">❌ Cancel</button>
+    </div>
+  </form>
+</section>
+
+
 
   </div>
 </div>

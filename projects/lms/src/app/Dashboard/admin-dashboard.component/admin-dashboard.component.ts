@@ -8,15 +8,27 @@ interface Student {
   studentId: number;
   fullName: string;
   email: string;
+  password?: string;
   phoneNumber?: string;
+  dateOfBirth?: string; // use string to handle two-way binding properly
+  gender?: string;
+  address?: string;
+  gradeLevel?: string;
+  studentNo?: string;
 }
 
 interface Teacher {
   teacherId: number;
   fullName: string;
   email: string;
+  password?: string;
   phoneNumber?: string;
+  qualification?: string;
+  experienceYears?: number;
+  specialization?: string;
+  teacherNo?: string;
 }
+
 
 interface Course {
   courseId: number;
@@ -131,9 +143,12 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   updateStudentProfile(student: Student) {
+
+  
     this.adminService.updateStudent(student).subscribe({
       next: (res) => {
         alert(res.message || '✅ Student profile updated successfully');
+          this.editingStudent = null;
         this.loadApprovedStudents();
       },
       error: (err) => {
@@ -198,9 +213,11 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   updateTeacherProfile(teacher: Teacher) {
+ 
     this.adminService.updateTeacher(teacher).subscribe({
       next: (res) => {
         alert(res.message || '✅ Teacher profile updated successfully');
+        this.editingTeacher = null;
         this.loadApprovedTeachers();
       },
       error: (err) => {
@@ -285,6 +302,16 @@ export class AdminDashboardComponent implements OnInit {
       this.editingTeacher = null;
     }
   }
+
+
+  saveStudent() {
+  if (this.editingStudent) {
+    this.updateStudentProfile(this.editingStudent);
+    this.editingStudent = null;
+  }
+}
+
+
 
   setActiveSection(section: string) {
     this.activeSection = section;
